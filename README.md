@@ -1,5 +1,7 @@
 # Online Banking App Simulation
 
+![image](https://github.com/papulik/Collab-Group-N1/assets/63560236/c63ac34e-d7c0-4eb9-9af4-362618489840)
+
 An iOS app that simulates an online banking experience. The app includes essential banking features such as user login, registration, money transfers, card management, transaction history, and currency conversion.
 
 ## Features
@@ -14,12 +16,6 @@ An iOS app that simulates an online banking experience. The app includes essenti
     - **Add/Delete Cards**: Add new cards or delete existing ones.
   - **Transaction History**: View a detailed history of all transactions in a table view.
   - **Currency Calculator Converter**: Convert currencies with a detailed list and search functionality.
-
-## Screenshots
-
-![image](https://github.com/papulik/Collab-Group-N1/assets/63560236/c63ac34e-d7c0-4eb9-9af4-362618489840)
-![image](https://github.com/papulik/Collab-Group-N1/assets/63560236/d6e25fb1-f2b4-44b6-ac0d-64e67c3b290d)
-![image](https://github.com/papulik/Collab-Group-N1/assets/63560236/6dfea115-dbbd-4554-88af-4fc169b105ed)
 
 ## Installation
 
@@ -43,13 +39,7 @@ Follow these steps to set up the project on your local machine:
     open YourProjectName.xcodeproj
     ```
 
-4. **Install dependencies** (if any, for example, using CocoaPods or Swift Package Manager):
-
-    ```bash
-    pod install
-    ```
-
-5. **Build and run the project** in Xcode:
+4. **Build and run the project** in Xcode:
 
     - Select the target device or simulator.
     - Click the `Run` button or press `Cmd + R`.
