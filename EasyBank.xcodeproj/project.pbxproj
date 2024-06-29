@@ -21,6 +21,8 @@
 		60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146E2C305C310054FDD3 /* CustomButtonView.swift */; };
 		60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */; };
 		60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */; };
+		60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214792C30D0090054FDD3 /* RegisterViewModel.swift */; };
+		60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +42,8 @@
 		60E2146E2C305C310054FDD3 /* CustomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonView.swift; sourceTree = "<group>"; };
 		60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWrapper.swift; sourceTree = "<group>"; };
 		60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldWrapper.swift; sourceTree = "<group>"; };
+		60E214792C30D0090054FDD3 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +169,7 @@
 			isa = PBXGroup;
 			children = (
 				60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */,
+				60E214792C30D0090054FDD3 /* RegisterViewModel.swift */,
 			);
 			path = Register;
 			sourceTree = "<group>";
@@ -173,6 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				60E214602C2ECF840054FDD3 /* LoginView.swift */,
+				60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */,
 			);
 			path = Login;
 			sourceTree = "<group>";
@@ -279,8 +285,10 @@
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
 				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
+				60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */,
 				60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */,
 				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
+				60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */,
 				60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */,
 				60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */,
 				60E214442C2DAFD10054FDD3 /* AppDelegate.swift in Sources */,

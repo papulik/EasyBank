@@ -8,20 +8,17 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var isEmailValid: Bool = true
-    @State private var isPasswordValid: Bool = true
-    
+    @StateObject private var viewModel = LoginViewModel()
+
     var body: some View {
         ScrollView {
             VStack {
                 header
-                CustomTextFieldWrapper(text: $email, placeholder: "Your Email", isValid: isEmailValid)
+                CustomTextFieldWrapper(text: $viewModel.email, placeholder: "Your Email", isValid: viewModel.isEmailValid)
                     .frame(height: 60)
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
-                CustomSecureFieldWrapper(text: $password, placeholder: "Password", isValid: isPasswordValid)
+                CustomSecureFieldWrapper(text: $viewModel.password, placeholder: "Password", isValid: viewModel.isPasswordValid)
                     .frame(height: 60)
                     .padding(.horizontal, 20)
                     .padding(.top, 16)
@@ -34,7 +31,7 @@ struct LoginView: View {
             }
         }
     }
-    
+
     private var header: some View {
         HStack {
             Text("Log In")
@@ -45,26 +42,18 @@ struct LoginView: View {
             Spacer()
         }
     }
-    
+
     private var loginButton: some View {
-        CustomButton(title: "Log In", action: validateAndLogin)
+        CustomButton(title: "Log In", action: viewModel.validateAndLogin)
             .padding(.top, 20)
             .padding(.bottom, 30)
     }
-    
-    private func validateAndLogin() {
-        self.isEmailValid = !self.email.isEmpty
-        self.isPasswordValid = !self.password.isEmpty
-        if self.isEmailValid && self.isPasswordValid {
-            // Handle login logic here
-        }
-    }
-    
+
     private var signUpPrompt: some View {
         HStack {
             Text("Don't have an account?")
             Button(action: {
-                // Handle sign up action here
+                // Handle sign-up action here
             }) {
                 Text("Sign Up")
                     .foregroundColor(.blue)
@@ -74,7 +63,7 @@ struct LoginView: View {
         }
         .padding(.bottom, 20)
     }
-    
+
     private var orSeparator: some View {
         HStack {
             line
@@ -83,13 +72,13 @@ struct LoginView: View {
             line
         }
     }
-    
+
     private var line: some View {
         VStack { Divider().background(Color.gray) }
             .frame(height: 1)
             .padding(.horizontal, 10)
     }
-    
+
     private var socialLoginButtons: some View {
         VStack(spacing: 12) {
             socialButton(imageName: "EmailImage", text: "Continue with Email")
@@ -98,7 +87,7 @@ struct LoginView: View {
         }
         .padding(.horizontal, 20)
     }
-    
+
     private func socialButton(imageName: String, text: String) -> some View {
         Button(action: {
             // Handle social login action here
@@ -113,7 +102,7 @@ struct LoginView: View {
                     .foregroundColor(.black)
                 Spacer()
             }
-            
+
         }
         .frame(minWidth: 0, maxWidth: .infinity)
         .padding()
