@@ -1,6 +1,6 @@
 # Online Banking App Simulation
 
-![image](https://github.com/papulik/Collab-Group-N1/assets/63560236/c63ac34e-d7c0-4eb9-9af4-362618489840)
+//Images For App <<<
 
 An iOS app that simulates an online banking experience. The app includes essential banking features such as user login, registration, money transfers, card management, transaction history, and currency conversion.
 
