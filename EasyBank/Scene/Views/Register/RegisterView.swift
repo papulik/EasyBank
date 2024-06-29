@@ -25,12 +25,14 @@ struct RegisterView: View {
             Spacer()
             termsAndPrivacy
             CustomButton(title: "Register", action: validateAndRegister)
+                .padding(.bottom, 25)
         }
     }
     
     private var header: some View {
         Text("Registration Form")
-            .font(.title)
+            .font(.largeTitle)
+            .fontWeight(.semibold)
             .padding(.top, 40)
     }
     

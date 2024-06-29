@@ -63,7 +63,7 @@ struct CustomSecureField: View {
             Image(systemName: self.isSecure ? "eye.slash.fill" : "eye.fill")
                 .foregroundColor(.gray)
                 .padding(.trailing, 30)
-                .padding(.top, 10)
+                .padding(.leading, 15)
         }
     }
 
