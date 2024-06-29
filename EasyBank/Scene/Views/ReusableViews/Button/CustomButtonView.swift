@@ -19,8 +19,10 @@ struct CustomButton: View {
                 .foregroundColor(.white)
                 .background(Color.blue)
                 .cornerRadius(10)
-                .padding(.horizontal, 20)
-                .padding(.top, 20)
         }
+        .padding(.horizontal, 20)
+        .padding(.top, 20)
+        .buttonStyle(PlainButtonStyle())
+        .clipped()
     }
 }

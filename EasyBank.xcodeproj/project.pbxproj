@@ -19,6 +19,8 @@
 		60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */; };
 		60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */; };
 		60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146E2C305C310054FDD3 /* CustomButtonView.swift */; };
+		60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */; };
+		60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
 		60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldView.swift; sourceTree = "<group>"; };
 		60E2146E2C305C310054FDD3 /* CustomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonView.swift; sourceTree = "<group>"; };
+		60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWrapper.swift; sourceTree = "<group>"; };
+		60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldWrapper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,9 +154,9 @@
 		60E214692C305B3D0054FDD3 /* ReusableViews */ = {
 			isa = PBXGroup;
 			children = (
-				60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */,
-				60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */,
-				60E2146E2C305C310054FDD3 /* CustomButtonView.swift */,
+				60E214762C30CD8F0054FDD3 /* TextField */,
+				60E214772C30CDA60054FDD3 /* SecureField */,
+				60E214782C30CDB00054FDD3 /* Button */,
 			);
 			path = ReusableViews;
 			sourceTree = "<group>";
@@ -171,6 +175,32 @@
 				60E214602C2ECF840054FDD3 /* LoginView.swift */,
 			);
 			path = Login;
+			sourceTree = "<group>";
+		};
+		60E214762C30CD8F0054FDD3 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */,
+				60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */,
+			);
+			path = TextField;
+			sourceTree = "<group>";
+		};
+		60E214772C30CDA60054FDD3 /* SecureField */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */,
+				60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */,
+			);
+			path = SecureField;
+			sourceTree = "<group>";
+		};
+		60E214782C30CDB00054FDD3 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146E2C305C310054FDD3 /* CustomButtonView.swift */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -249,7 +279,9 @@
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
 				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
+				60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */,
 				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
+				60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */,
 				60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */,
 				60E214442C2DAFD10054FDD3 /* AppDelegate.swift in Sources */,
 				60E214682C2EFDB80054FDD3 /* OnBoardingPage.swift in Sources */,

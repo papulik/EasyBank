@@ -12,28 +12,40 @@ struct LoginView: View {
     @State private var password: String = ""
     @State private var isEmailValid: Bool = true
     @State private var isPasswordValid: Bool = true
-
+    
     var body: some View {
-        VStack {
-            header
-            CustomTextField(placeholder: "Your Email", text: $email, isValid: isEmailValid, validationMessage: "This field is required")
-            CustomSecureField(placeholder: "Password", text: $password, isValid: isPasswordValid, validationMessage: "Password is required")
-            loginButton
-            signUpPrompt
-            orSeparator
-            socialLoginButtons
-            
+        ScrollView {
+            VStack {
+                header
+                CustomTextFieldWrapper(text: $email, placeholder: "Your Email", isValid: isEmailValid)
+                    .frame(height: 60)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
+                CustomSecureFieldWrapper(text: $password, placeholder: "Password", isValid: isPasswordValid)
+                    .frame(height: 60)
+                    .padding(.horizontal, 20)
+                    .padding(.top, 16)
+                loginButton
+                signUpPrompt
+                orSeparator
+                socialLoginButtons
+                    .padding(.bottom, 10)
+                Spacer()
+            }
         }
-        
     }
     
     private var header: some View {
-        Text("Log In")
-            .font(.largeTitle)
-            .fontWeight(.semibold)
-            .padding(.bottom, 20)
+        HStack {
+            Text("Log In")
+                .font(.title)
+                .fontWeight(.semibold)
+                .padding(.top, 30)
+                .padding(.leading, 20)
+            Spacer()
+        }
     }
-
+    
     private var loginButton: some View {
         CustomButton(title: "Log In", action: validateAndLogin)
             .padding(.top, 20)
@@ -57,9 +69,10 @@ struct LoginView: View {
                 Text("Sign Up")
                     .foregroundColor(.blue)
             }
+            .buttonStyle(BorderlessButtonStyle())
+            .clipped()
         }
         .padding(.bottom, 20)
-        .padding(.top, 10)
     }
     
     private var orSeparator: some View {
@@ -69,7 +82,6 @@ struct LoginView: View {
                 .foregroundColor(.gray)
             line
         }
-        .padding(.vertical, 10)
     }
     
     private var line: some View {
@@ -77,9 +89,9 @@ struct LoginView: View {
             .frame(height: 1)
             .padding(.horizontal, 10)
     }
-
+    
     private var socialLoginButtons: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 12) {
             socialButton(imageName: "EmailImage", text: "Continue with Email")
             socialButton(imageName: "GoogleImage", text: "Continue with Google")
             socialButton(imageName: "AppleImage", text: "Continue with Apple")
@@ -88,29 +100,32 @@ struct LoginView: View {
     }
     
     private func socialButton(imageName: String, text: String) -> some View {
-            Button(action: {
-                // Handle social login action here
-            }) {
-                HStack {
-                    Image(imageName)
-                        .resizable()
-                        .frame(width: 24, height: 21)
-                        .scaledToFit()
-                    Spacer()
-                    Text(text)
-                        .foregroundColor(.black)
-                    Spacer()
-                }
-                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 25)
-                .padding()
-                .background(Color.white)
-                .cornerRadius(10)
-                .overlay(
-                    RoundedRectangle(cornerRadius: 10)
-                        .stroke(Color.gray, lineWidth: 1)
-                )
+        Button(action: {
+            // Handle social login action here
+        }) {
+            HStack {
+                Image(imageName)
+                    .resizable()
+                    .frame(width: 24, height: 21)
+                    .scaledToFit()
+                Spacer()
+                Text(text)
+                    .foregroundColor(.black)
+                Spacer()
             }
+            
         }
+        .frame(minWidth: 0, maxWidth: .infinity)
+        .padding()
+        .background(Color.white)
+        .cornerRadius(10)
+        .overlay(
+            RoundedRectangle(cornerRadius: 10)
+                .stroke(Color.gray, lineWidth: 1)
+        )
+        .buttonStyle(BorderlessButtonStyle())
+        .clipped()
+    }
 }
 
 #Preview {
