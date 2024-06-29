@@ -16,6 +16,9 @@
 		60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214602C2ECF840054FDD3 /* LoginView.swift */; };
 		60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214622C2ED0330054FDD3 /* Coordinator.swift */; };
 		60E214682C2EFDB80054FDD3 /* OnBoardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214672C2EFDB80054FDD3 /* OnBoardingPage.swift */; };
+		60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */; };
+		60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */; };
+		60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146E2C305C310054FDD3 /* CustomButtonView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +33,9 @@
 		60E214602C2ECF840054FDD3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		60E214622C2ED0330054FDD3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		60E214672C2EFDB80054FDD3 /* OnBoardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingPage.swift; sourceTree = "<group>"; };
+		60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
+		60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldView.swift; sourceTree = "<group>"; };
+		60E2146E2C305C310054FDD3 /* CustomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,8 +131,9 @@
 		60E214652C2ED2650054FDD3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */,
-				60E214602C2ECF840054FDD3 /* LoginView.swift */,
+				60E214692C305B3D0054FDD3 /* ReusableViews */,
+				60E214702C305C840054FDD3 /* Register */,
+				60E214712C305CA40054FDD3 /* Login */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -138,6 +145,32 @@
 				60E214672C2EFDB80054FDD3 /* OnBoardingPage.swift */,
 			);
 			path = OnBoarding;
+			sourceTree = "<group>";
+		};
+		60E214692C305B3D0054FDD3 /* ReusableViews */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */,
+				60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */,
+				60E2146E2C305C310054FDD3 /* CustomButtonView.swift */,
+			);
+			path = ReusableViews;
+			sourceTree = "<group>";
+		};
+		60E214702C305C840054FDD3 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		60E214712C305CA40054FDD3 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				60E214602C2ECF840054FDD3 /* LoginView.swift */,
+			);
+			path = Login;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -213,7 +246,10 @@
 				60E214482C2DAFD10054FDD3 /* OnBoardingVC.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
+				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
+				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
+				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
 				60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */,
 				60E214442C2DAFD10054FDD3 /* AppDelegate.swift in Sources */,
 				60E214682C2EFDB80054FDD3 /* OnBoardingPage.swift in Sources */,
