@@ -9,6 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
+    var coordinator: OnboardingCoordinator?
 
     var body: some View {
         ScrollView {
@@ -31,7 +32,7 @@ struct LoginView: View {
             }
         }
     }
-
+    
     private var header: some View {
         HStack {
             Text("Log In")
@@ -42,18 +43,18 @@ struct LoginView: View {
             Spacer()
         }
     }
-
+    
     private var loginButton: some View {
         CustomButton(title: "Log In", action: viewModel.validateAndLogin)
             .padding(.top, 20)
             .padding(.bottom, 30)
     }
-
+    
     private var signUpPrompt: some View {
         HStack {
             Text("Don't have an account?")
             Button(action: {
-                // Handle sign-up action here
+                coordinator?.showRegister()
             }) {
                 Text("Sign Up")
                     .foregroundColor(.blue)
@@ -63,7 +64,7 @@ struct LoginView: View {
         }
         .padding(.bottom, 20)
     }
-
+    
     private var orSeparator: some View {
         HStack {
             line
@@ -72,13 +73,13 @@ struct LoginView: View {
             line
         }
     }
-
+    
     private var line: some View {
         VStack { Divider().background(Color.gray) }
             .frame(height: 1)
             .padding(.horizontal, 10)
     }
-
+    
     private var socialLoginButtons: some View {
         VStack(spacing: 12) {
             socialButton(imageName: "EmailImage", text: "Continue with Email")
@@ -87,7 +88,7 @@ struct LoginView: View {
         }
         .padding(.horizontal, 20)
     }
-
+    
     private func socialButton(imageName: String, text: String) -> some View {
         Button(action: {
             // Handle social login action here
@@ -102,7 +103,7 @@ struct LoginView: View {
                     .foregroundColor(.black)
                 Spacer()
             }
-
+            
         }
         .frame(minWidth: 0, maxWidth: .infinity)
         .padding()

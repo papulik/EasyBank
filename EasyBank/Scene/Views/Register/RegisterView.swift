@@ -9,6 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject private var viewModel = RegisterViewModel()
+    var coordinator: OnboardingCoordinator?
 
     var body: some View {
         VStack {
@@ -48,7 +49,7 @@ struct RegisterView: View {
         HStack {
             Text("Already have an account?")
             Button(action: {
-                // Handle sign-in navigation
+                coordinator?.showLogin()
             }) {
                 Text("Sign In")
                     .foregroundColor(.blue)

@@ -22,13 +22,15 @@ class OnboardingCoordinator: Coordinator {
     }
 
     func showRegister() {
-        let registerView = RegisterView()
+        var registerView = RegisterView()
+        registerView.coordinator = self
         let hostingController = UIHostingController(rootView: registerView)
         navigationController.pushViewController(hostingController, animated: true)
     }
 
     func showLogin() {
-        let loginView = LoginView()
+        var loginView = LoginView()
+        loginView.coordinator = self
         let hostingController = UIHostingController(rootView: loginView)
         navigationController.pushViewController(hostingController, animated: true)
     }
