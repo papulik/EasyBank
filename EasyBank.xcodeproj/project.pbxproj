@@ -24,6 +24,7 @@
 		60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214792C30D0090054FDD3 /* RegisterViewModel.swift */; };
 		60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */; };
 		60E2147F2C30D72C0054FDD3 /* SimpleNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 60E2147E2C30D72C0054FDD3 /* SimpleNetworking */; };
+		60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214802C30E0ED0054FDD3 /* TabBarController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -45,6 +46,7 @@
 		60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldWrapper.swift; sourceTree = "<group>"; };
 		60E214792C30D0090054FDD3 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		60E214802C30E0ED0054FDD3 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				60E214662C2EFC940054FDD3 /* OnBoarding */,
+				60E214822C30E0F20054FDD3 /* TabBar */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -209,6 +212,14 @@
 				60E2146E2C305C310054FDD3 /* CustomButtonView.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		60E214822C30E0F20054FDD3 /* TabBar */ = {
+			isa = PBXGroup;
+			children = (
+				60E214802C30E0ED0054FDD3 /* TabBarController.swift */,
+			);
+			path = TabBar;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -290,6 +301,7 @@
 				60E214482C2DAFD10054FDD3 /* OnBoardingVC.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
+				60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */,
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
 				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,

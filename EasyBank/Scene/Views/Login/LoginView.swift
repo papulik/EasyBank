@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
-    var coordinator: OnboardingCoordinator?
+    weak var coordinator: OnboardingCoordinator?
 
     var body: some View {
         ScrollView {
@@ -45,9 +45,14 @@ struct LoginView: View {
     }
     
     private var loginButton: some View {
-        CustomButton(title: "Log In", action: viewModel.validateAndLogin)
-            .padding(.top, 20)
-            .padding(.bottom, 30)
+        CustomButton(title: "Log In", action: {
+            viewModel.validateAndLogin()
+            if viewModel.isEmailValid && viewModel.isPasswordValid {
+                coordinator?.showMainApp()
+            }
+        })
+        .padding(.top, 20)
+        .padding(.bottom, 30)
     }
     
     private var signUpPrompt: some View {
@@ -119,5 +124,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView(coordinator: nil)
 }
