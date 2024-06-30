@@ -26,11 +26,23 @@ struct RegisterView: View {
                 .frame(height: 60)
                 .padding(.horizontal, 20)
                 .padding(.top, 16)
+            if let error = viewModel.registrationError {
+                Text(error)
+                    .foregroundColor(.red)
+                    .padding(.top, 10)
+            }
             signInPrompt
             Spacer()
             termsAndPrivacy
-            CustomButton(title: "Register", action: viewModel.validateAndRegister)
-                .padding(.bottom, 25)
+            CustomButton(title: "Register", action: {
+                viewModel.validateAndRegister { success in
+                    if success {
+                        coordinator?.showMainApp()
+                    }
+                }
+            })
+            .padding(.top, 20)
+            .padding(.bottom, 30)
         }
     }
     

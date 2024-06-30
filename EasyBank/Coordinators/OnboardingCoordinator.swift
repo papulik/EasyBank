@@ -34,4 +34,9 @@ class OnboardingCoordinator: Coordinator {
         let hostingController = UIHostingController(rootView: loginView)
         navigationController.pushViewController(hostingController, animated: true)
     }
+    
+    func showMainApp() {
+        let tabBarController = TabBarController()
+        navigationController.setViewControllers([tabBarController], animated: true)
+    }
 }
