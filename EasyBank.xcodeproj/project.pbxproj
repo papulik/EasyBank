@@ -25,6 +25,11 @@
 		60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */; };
 		60E2147F2C30D72C0054FDD3 /* SimpleNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 60E2147E2C30D72C0054FDD3 /* SimpleNetworking */; };
 		60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214802C30E0ED0054FDD3 /* TabBarController.swift */; };
+		60E214842C315EBB0054FDD3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 60E214832C315EBB0054FDD3 /* GoogleService-Info.plist */; };
+		60E214882C3166BD0054FDD3 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 60E214872C3166BD0054FDD3 /* FirebaseAuth */; };
+		60E2148A2C3166C50054FDD3 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 60E214892C3166C50054FDD3 /* FirebaseFirestore */; };
+		60E2148C2C3167100054FDD3 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 60E2148B2C3167100054FDD3 /* FirebaseAnalytics */; };
+		60E2148E2C3168100054FDD3 /* FirestoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2148D2C3168100054FDD3 /* FirestoreService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -47,6 +52,8 @@
 		60E214792C30D0090054FDD3 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		60E214802C30E0ED0054FDD3 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		60E214832C315EBB0054FDD3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		60E2148D2C3168100054FDD3 /* FirestoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +62,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				60E2147F2C30D72C0054FDD3 /* SimpleNetworking in Frameworks */,
+				60E214882C3166BD0054FDD3 /* FirebaseAuth in Frameworks */,
+				60E2148C2C3167100054FDD3 /* FirebaseAnalytics in Frameworks */,
+				60E2148A2C3166C50054FDD3 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -66,6 +76,7 @@
 			children = (
 				60E214422C2DAFD10054FDD3 /* EasyBank */,
 				60E214412C2DAFD10054FDD3 /* Products */,
+				60E214862C3166BD0054FDD3 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -85,6 +96,8 @@
 				60E2145A2C2DB3DC0054FDD3 /* Scene */,
 				60E214572C2DB39F0054FDD3 /* Resources */,
 				60E214582C2DB3AE0054FDD3 /* SupportingFiles */,
+				60E214832C315EBB0054FDD3 /* GoogleService-Info.plist */,
+				60E2148D2C3168100054FDD3 /* FirestoreService.swift */,
 			);
 			path = EasyBank;
 			sourceTree = "<group>";
@@ -222,6 +235,13 @@
 			path = TabBar;
 			sourceTree = "<group>";
 		};
+		60E214862C3166BD0054FDD3 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -240,6 +260,9 @@
 			name = EasyBank;
 			packageProductDependencies = (
 				60E2147E2C30D72C0054FDD3 /* SimpleNetworking */,
+				60E214872C3166BD0054FDD3 /* FirebaseAuth */,
+				60E214892C3166C50054FDD3 /* FirebaseFirestore */,
+				60E2148B2C3167100054FDD3 /* FirebaseAnalytics */,
 			);
 			productName = EasyBank;
 			productReference = 60E214402C2DAFD10054FDD3 /* EasyBank.app */;
@@ -271,6 +294,7 @@
 			mainGroup = 60E214372C2DAFD10054FDD3;
 			packageReferences = (
 				60E2147D2C30D72C0054FDD3 /* XCRemoteSwiftPackageReference "SimpleNetworking" */,
+				60E214852C3163B90054FDD3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = 60E214412C2DAFD10054FDD3 /* Products */;
 			projectDirPath = "";
@@ -287,6 +311,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				60E2144D2C2DAFD20054FDD3 /* Assets.xcassets in Resources */,
+				60E214842C315EBB0054FDD3 /* GoogleService-Info.plist in Resources */,
 				60E214502C2DAFD20054FDD3 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -303,6 +328,7 @@
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
 				60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */,
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
+				60E2148E2C3168100054FDD3 /* FirestoreService.swift in Sources */,
 				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
 				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
 				60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */,
@@ -461,8 +487,8 @@
 				INFOPLIST_FILE = EasyBank/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -488,8 +514,8 @@
 				INFOPLIST_FILE = EasyBank/SupportingFiles/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -535,6 +561,14 @@
 				kind = branch;
 			};
 		};
+		60E214852C3163B90054FDD3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.28.1;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -542,6 +576,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 60E2147D2C30D72C0054FDD3 /* XCRemoteSwiftPackageReference "SimpleNetworking" */;
 			productName = SimpleNetworking;
+		};
+		60E214872C3166BD0054FDD3 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60E214852C3163B90054FDD3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		60E214892C3166C50054FDD3 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60E214852C3163B90054FDD3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		60E2148B2C3167100054FDD3 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60E214852C3163B90054FDD3 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

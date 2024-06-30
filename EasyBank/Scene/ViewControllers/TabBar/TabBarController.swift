@@ -21,16 +21,54 @@ class TabBarController: UITabBarController {
 import UIKit
 
 class HomeViewController: UIViewController {
+    private let sendMoneyButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Send Money", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        return button
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
-        let label = UILabel()
-        label.text = "Home View Controller"
-        label.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(label)
+
+        view.addSubview(sendMoneyButton)
+        sendMoneyButton.addTarget(self, action: #selector(sendMoneyTapped), for: .touchUpInside)
+        
         NSLayoutConstraint.activate([
-            label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            sendMoneyButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            sendMoneyButton.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+    }
+
+    @objc private func sendMoneyTapped() {
+        FirestoreService.shared.getCurrentUser { [weak self] result in
+            switch result {
+            case .success(let currentUser):
+                print("Current User: \(currentUser)")
+                FirestoreService.shared.getUsers { result in
+                    switch result {
+                    case .success(let users):
+                        print("Fetched Users: \(users)")
+                        guard let toUser = users.first(where: { $0.id != currentUser.id }) else {
+                            print("No other user found to send money to")
+                            return
+                        }
+                        FirestoreService.shared.sendMoney(fromUser: currentUser, toUser: toUser, amount: 10.0) { result in
+                            switch result {
+                            case .success():
+                                print("Money sent successfully")
+                            case .failure(let error):
+                                print("Error sending money: \(error)")
+                            }
+                        }
+                    case .failure(let error):
+                        print("Error fetching users: \(error)")
+                    }
+                }
+            case .failure(let error):
+                print("Error fetching current user: \(error)")
+            }
+        }
     }
 }
