@@ -1,0 +1,15 @@
+{
+  "originHash" : "2de2aff0965b29fe47697aaaeb1af9dbaee74f76f6dc0cf6ffb6f896bd06d9d8",
+  "pins" : [
+    {
+      "identity" : "simplenetworking",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/papulik/SimpleNetworking.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "39bd80f4cfddcc2dee160e82d4ccf0850ab2164e"
+      }
+    }
+  ],
+  "version" : 3
+}

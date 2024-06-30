@@ -16,6 +16,14 @@
 		60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214602C2ECF840054FDD3 /* LoginView.swift */; };
 		60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214622C2ED0330054FDD3 /* Coordinator.swift */; };
 		60E214682C2EFDB80054FDD3 /* OnBoardingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214672C2EFDB80054FDD3 /* OnBoardingPage.swift */; };
+		60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */; };
+		60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */; };
+		60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2146E2C305C310054FDD3 /* CustomButtonView.swift */; };
+		60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */; };
+		60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */; };
+		60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214792C30D0090054FDD3 /* RegisterViewModel.swift */; };
+		60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */; };
+		60E2147F2C30D72C0054FDD3 /* SimpleNetworking in Frameworks */ = {isa = PBXBuildFile; productRef = 60E2147E2C30D72C0054FDD3 /* SimpleNetworking */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +38,13 @@
 		60E214602C2ECF840054FDD3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		60E214622C2ED0330054FDD3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
 		60E214672C2EFDB80054FDD3 /* OnBoardingPage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingPage.swift; sourceTree = "<group>"; };
+		60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldView.swift; sourceTree = "<group>"; };
+		60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldView.swift; sourceTree = "<group>"; };
+		60E2146E2C305C310054FDD3 /* CustomButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButtonView.swift; sourceTree = "<group>"; };
+		60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextFieldWrapper.swift; sourceTree = "<group>"; };
+		60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomSecureFieldWrapper.swift; sourceTree = "<group>"; };
+		60E214792C30D0090054FDD3 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
+		60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -37,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				60E2147F2C30D72C0054FDD3 /* SimpleNetworking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,8 +141,9 @@
 		60E214652C2ED2650054FDD3 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */,
-				60E214602C2ECF840054FDD3 /* LoginView.swift */,
+				60E214692C305B3D0054FDD3 /* ReusableViews */,
+				60E214702C305C840054FDD3 /* Register */,
+				60E214712C305CA40054FDD3 /* Login */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -138,6 +155,60 @@
 				60E214672C2EFDB80054FDD3 /* OnBoardingPage.swift */,
 			);
 			path = OnBoarding;
+			sourceTree = "<group>";
+		};
+		60E214692C305B3D0054FDD3 /* ReusableViews */ = {
+			isa = PBXGroup;
+			children = (
+				60E214762C30CD8F0054FDD3 /* TextField */,
+				60E214772C30CDA60054FDD3 /* SecureField */,
+				60E214782C30CDB00054FDD3 /* Button */,
+			);
+			path = ReusableViews;
+			sourceTree = "<group>";
+		};
+		60E214702C305C840054FDD3 /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */,
+				60E214792C30D0090054FDD3 /* RegisterViewModel.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		60E214712C305CA40054FDD3 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				60E214602C2ECF840054FDD3 /* LoginView.swift */,
+				60E2147B2C30D1390054FDD3 /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		60E214762C30CD8F0054FDD3 /* TextField */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146A2C305B810054FDD3 /* CustomTextFieldView.swift */,
+				60E214722C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift */,
+			);
+			path = TextField;
+			sourceTree = "<group>";
+		};
+		60E214772C30CDA60054FDD3 /* SecureField */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146C2C305C000054FDD3 /* CustomSecureFieldView.swift */,
+				60E214742C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift */,
+			);
+			path = SecureField;
+			sourceTree = "<group>";
+		};
+		60E214782C30CDB00054FDD3 /* Button */ = {
+			isa = PBXGroup;
+			children = (
+				60E2146E2C305C310054FDD3 /* CustomButtonView.swift */,
+			);
+			path = Button;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,6 +227,9 @@
 			dependencies = (
 			);
 			name = EasyBank;
+			packageProductDependencies = (
+				60E2147E2C30D72C0054FDD3 /* SimpleNetworking */,
+			);
 			productName = EasyBank;
 			productReference = 60E214402C2DAFD10054FDD3 /* EasyBank.app */;
 			productType = "com.apple.product-type.application";
@@ -184,6 +258,9 @@
 				Base,
 			);
 			mainGroup = 60E214372C2DAFD10054FDD3;
+			packageReferences = (
+				60E2147D2C30D72C0054FDD3 /* XCRemoteSwiftPackageReference "SimpleNetworking" */,
+			);
 			productRefGroup = 60E214412C2DAFD10054FDD3 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -213,7 +290,14 @@
 				60E214482C2DAFD10054FDD3 /* OnBoardingVC.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
+				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
+				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
+				60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */,
+				60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */,
+				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
+				60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */,
+				60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */,
 				60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */,
 				60E214442C2DAFD10054FDD3 /* AppDelegate.swift in Sources */,
 				60E214682C2EFDB80054FDD3 /* OnBoardingPage.swift in Sources */,
@@ -429,6 +513,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		60E2147D2C30D72C0054FDD3 /* XCRemoteSwiftPackageReference "SimpleNetworking" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/papulik/SimpleNetworking.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		60E2147E2C30D72C0054FDD3 /* SimpleNetworking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 60E2147D2C30D72C0054FDD3 /* XCRemoteSwiftPackageReference "SimpleNetworking" */;
+			productName = SimpleNetworking;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 60E214382C2DAFD10054FDD3 /* Project object */;
 }
