@@ -6,20 +6,6 @@
 //
 
 import Foundation
-
-struct User: Codable {
-    let id: String
-    let email: String
-    let balance: Double
-}
-
-struct Transaction: Codable {
-    let fromUserId: String
-    let toUserId: String
-    let amount: Double
-    let timestamp: Date
-}
-
 import FirebaseFirestore
 import FirebaseAuth
 
