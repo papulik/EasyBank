@@ -25,6 +25,7 @@ class OnboardingCoordinator: Coordinator {
         var registerView = RegisterView()
         registerView.coordinator = self
         let hostingController = UIHostingController(rootView: registerView)
+        hostingController.navigationItem.hidesBackButton = true
         navigationController.pushViewController(hostingController, animated: true)
     }
 
@@ -32,6 +33,7 @@ class OnboardingCoordinator: Coordinator {
         var loginView = LoginView()
         loginView.coordinator = self
         let hostingController = UIHostingController(rootView: loginView)
+        hostingController.navigationItem.hidesBackButton = true
         navigationController.pushViewController(hostingController, animated: true)
     }
     
