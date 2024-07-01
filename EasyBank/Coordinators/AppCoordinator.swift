@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class OnboardingCoordinator: Coordinator {
+class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController) {
@@ -36,7 +36,18 @@ class OnboardingCoordinator: Coordinator {
     }
     
     func showMainApp() {
-        let tabBarController = TabBarController()
+        let tabBarController = TabBarController(coordinator: self)
+        setupTabBarController(tabBarController)
         navigationController.setViewControllers([tabBarController], animated: true)
+    }
+    
+    private func setupTabBarController(_ tabBarController: TabBarController) {
+        let homeViewModel = HomeViewModel()
+        let homeVC = HomeViewController(viewModel: homeViewModel)
+        homeVC.coordinator = self
+        
+        let homeNavigationController = UINavigationController(rootViewController: homeVC)
+
+        tabBarController.viewControllers = [homeNavigationController]
     }
 }

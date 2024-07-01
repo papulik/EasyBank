@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
-    weak var coordinator: OnboardingCoordinator?
+    weak var coordinator: AppCoordinator?
 
     var body: some View {
         ScrollView {
@@ -44,6 +44,7 @@ struct LoginView: View {
                 Spacer()
             }
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     private var header: some View {
@@ -89,16 +90,16 @@ struct LoginView: View {
     
     private var socialLoginButtons: some View {
         VStack(spacing: 12) {
-            socialButton(imageName: "EmailImage", text: "Continue with Email")
-            socialButton(imageName: "GoogleImage", text: "Continue with Google")
-            socialButton(imageName: "AppleImage", text: "Continue with Apple")
+            socialButton(imageName: "EmailImage", text: "Continue with Email", url: "https://github.com")
+            socialButton(imageName: "GoogleImage", text: "Continue with Google", url: "https://www.google.com")
+            socialButton(imageName: "AppleImage", text: "Continue with Apple", url: "https://www.apple.com")
         }
         .padding(.horizontal, 20)
     }
     
-    private func socialButton(imageName: String, text: String) -> some View {
+    private func socialButton(imageName: String, text: String, url: String) -> some View {
         Button(action: {
-            // Handle social login action here
+            openURL(url)
         }) {
             HStack {
                 Image(imageName)
@@ -122,6 +123,12 @@ struct LoginView: View {
         )
         .buttonStyle(BorderlessButtonStyle())
         .clipped()
+    }
+    
+    private func openURL(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
     }
 }
 

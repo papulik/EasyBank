@@ -9,7 +9,9 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject private var viewModel = RegisterViewModel()
-    var coordinator: OnboardingCoordinator?
+    var coordinator: AppCoordinator?
+    @State private var showTermsOfUse = false
+    @State private var showPrivacyPolicy = false
 
     var body: some View {
         VStack {
@@ -44,6 +46,7 @@ struct RegisterView: View {
             .padding(.top, 20)
             .padding(.bottom, 30)
         }
+        .navigationBarBackButtonHidden(true)
     }
     
     private var header: some View {
@@ -75,20 +78,26 @@ struct RegisterView: View {
         HStack {
             Text("By registering, you accept")
             Button(action: {
-                // Show terms of use
+                openURL("https://www.apple.com/legal/internet-services/itunes/dev/stdeula/")
             }) {
                 Text("Terms of Use")
                     .foregroundColor(.blue)
             }
             Text("and")
             Button(action: {
-                // Show privacy policy
+                openURL("https://www.apple.com/legal/privacy/")
             }) {
                 Text("Privacy Policy")
                     .foregroundColor(.blue)
             }
         }
         .font(.caption)
+    }
+
+    private func openURL(_ urlString: String) {
+        if let url = URL(string: urlString) {
+            UIApplication.shared.open(url)
+        }
     }
 }
 

@@ -11,7 +11,7 @@
 		60E214482C2DAFD10054FDD3 /* OnBoardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214472C2DAFD10054FDD3 /* OnBoardingVC.swift */; };
 		60E2144D2C2DAFD20054FDD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60E2144C2C2DAFD20054FDD3 /* Assets.xcassets */; };
 		60E214502C2DAFD20054FDD3 /* Base in Resources */ = {isa = PBXBuildFile; fileRef = 60E2144F2C2DAFD20054FDD3 /* Base */; };
-		60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2145C2C2ECF130054FDD3 /* OnboardingCoordinator.swift */; };
+		60E2145D2C2ECF130054FDD3 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2145C2C2ECF130054FDD3 /* AppCoordinator.swift */; };
 		60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */; };
 		60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214602C2ECF840054FDD3 /* LoginView.swift */; };
 		60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214622C2ED0330054FDD3 /* Coordinator.swift */; };
@@ -43,7 +43,7 @@
 		60E2144C2C2DAFD20054FDD3 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		60E2144F2C2DAFD20054FDD3 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		60E214512C2DAFD20054FDD3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		60E2145C2C2ECF130054FDD3 /* OnboardingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCoordinator.swift; sourceTree = "<group>"; };
+		60E2145C2C2ECF130054FDD3 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		60E2145E2C2ECF6D0054FDD3 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		60E214602C2ECF840054FDD3 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		60E214622C2ED0330054FDD3 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
@@ -149,7 +149,7 @@
 			isa = PBXGroup;
 			children = (
 				60E214622C2ED0330054FDD3 /* Coordinator.swift */,
-				60E2145C2C2ECF130054FDD3 /* OnboardingCoordinator.swift */,
+				60E2145C2C2ECF130054FDD3 /* AppCoordinator.swift */,
 			);
 			path = Coordinators;
 			sourceTree = "<group>";
@@ -367,7 +367,7 @@
 				60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */,
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2148E2C3168100054FDD3 /* FirestoreService.swift in Sources */,
-				60E2145D2C2ECF130054FDD3 /* OnboardingCoordinator.swift in Sources */,
+				60E2145D2C2ECF130054FDD3 /* AppCoordinator.swift in Sources */,
 				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
 				60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */,
 				60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */,
