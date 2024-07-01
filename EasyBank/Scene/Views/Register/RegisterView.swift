@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RegisterView: View {
     @StateObject private var viewModel = RegisterViewModel()
-    var coordinator: OnboardingCoordinator?
+    var coordinator: AppCoordinator?
     @State private var showTermsOfUse = false
     @State private var showPrivacyPolicy = false
 

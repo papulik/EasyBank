@@ -6,12 +6,14 @@
 //
 
 import Foundation
+import FirebaseAuth
 
 protocol HomeViewModelDelegate: AnyObject {
     func didFetchCurrentUser(_ user: User)
     func didFetchUsers(_ users: [User])
     func didEncounterError(_ error: String)
     func didSendMoney()
+    func didLogout(success: Bool)
 }
 
 class HomeViewModel {
@@ -51,10 +53,19 @@ class HomeViewModel {
             switch result {
             case .success():
                 self?.delegate?.didSendMoney()
-                self?.fetchCurrentUser() // Refresh user data after transaction
+                self?.fetchCurrentUser()
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error sending money: \(error.localizedDescription)")
             }
+        }
+    }
+
+    func logout() {
+        do {
+            try Auth.auth().signOut()
+            delegate?.didLogout(success: true)
+        } catch {
+            delegate?.didLogout(success: false)
         }
     }
 }

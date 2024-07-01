@@ -8,7 +8,7 @@
 import UIKit
 import SwiftUI
 
-class OnboardingCoordinator: Coordinator {
+class AppCoordinator: Coordinator {
     var navigationController: UINavigationController
 
     init(navigationController: UINavigationController) {
@@ -25,7 +25,6 @@ class OnboardingCoordinator: Coordinator {
         var registerView = RegisterView()
         registerView.coordinator = self
         let hostingController = UIHostingController(rootView: registerView)
-        hostingController.navigationItem.hidesBackButton = true
         navigationController.pushViewController(hostingController, animated: true)
     }
 
@@ -33,12 +32,19 @@ class OnboardingCoordinator: Coordinator {
         var loginView = LoginView()
         loginView.coordinator = self
         let hostingController = UIHostingController(rootView: loginView)
-        hostingController.navigationItem.hidesBackButton = true
         navigationController.pushViewController(hostingController, animated: true)
     }
     
     func showMainApp() {
-        let tabBarController = TabBarController()
+        let tabBarController = TabBarController(coordinator: self)
+        setupTabBarController(tabBarController)
         navigationController.setViewControllers([tabBarController], animated: true)
+    }
+
+    private func setupTabBarController(_ tabBarController: TabBarController) {
+        let homeViewModel = HomeViewModel()
+        let homeVC = HomeViewController(viewModel: homeViewModel)
+        homeVC.coordinator = self
+        tabBarController.viewControllers = [homeVC]
     }
 }

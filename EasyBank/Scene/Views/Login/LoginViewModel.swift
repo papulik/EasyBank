@@ -5,6 +5,7 @@
 //  Created by Zuka Papuashvili on 30.06.24.
 //
 
+import Foundation
 import FirebaseAuth
 
 class LoginViewModel: ObservableObject {

@@ -12,13 +12,13 @@ import Firebase
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var coordinator: OnboardingCoordinator?
+    var coordinator: AppCoordinator?
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         FirebaseApp.configure()
 
         let navigationController = UINavigationController()
-        coordinator = OnboardingCoordinator(navigationController: navigationController)
+        coordinator = AppCoordinator(navigationController: navigationController)
         coordinator?.start()
 
         let window = UIWindow(frame: UIScreen.main.bounds)

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
-    weak var coordinator: OnboardingCoordinator?
+    weak var coordinator: AppCoordinator?
 
     var body: some View {
         ScrollView {
