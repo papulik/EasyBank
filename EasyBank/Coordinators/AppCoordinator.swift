@@ -40,11 +40,14 @@ class AppCoordinator: Coordinator {
         setupTabBarController(tabBarController)
         navigationController.setViewControllers([tabBarController], animated: true)
     }
-
+    
     private func setupTabBarController(_ tabBarController: TabBarController) {
         let homeViewModel = HomeViewModel()
         let homeVC = HomeViewController(viewModel: homeViewModel)
         homeVC.coordinator = self
-        tabBarController.viewControllers = [homeVC]
+        
+        let homeNavigationController = UINavigationController(rootViewController: homeVC)
+
+        tabBarController.viewControllers = [homeNavigationController]
     }
 }
