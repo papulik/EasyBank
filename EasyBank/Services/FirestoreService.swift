@@ -67,7 +67,7 @@ class FirestoreService {
             return
         }
         
-        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date())
+        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date(), iconName: "")
         
         let batch = db.batch()
         

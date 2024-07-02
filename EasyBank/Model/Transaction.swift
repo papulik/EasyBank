@@ -12,4 +12,5 @@ struct Transaction: Codable {
     let toUserId: String
     let amount: Double
     let timestamp: Date
+    let iconName: String?
 }

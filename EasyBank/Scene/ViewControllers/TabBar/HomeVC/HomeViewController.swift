@@ -32,45 +32,49 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private lazy var cardCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
-        layout.scrollDirection = .horizontal
-        layout.minimumLineSpacing = 16
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: CardCollectionViewCell.reuseIdentifier)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.showsHorizontalScrollIndicator = false
-        return collectionView
+    private lazy var cardCollectionView: CardCollectionView = {
+        let view = CardCollectionView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.collectionView.dataSource = self
+        view.collectionView.delegate = self
+        return view
     }()
     
-    private lazy var sendMoneyButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Send Money", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        button.backgroundColor = .blue
-        button.layer.cornerRadius = 10
-        button.tintColor = .white
-        button.addAction(UIAction { [weak self] _ in
+    private lazy var sendMoneyButtonView: SendMoneyButtonView = {
+        let view = SendMoneyButtonView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.button.addAction(UIAction { [weak self] _ in
             self?.sendMoneyTapped()
         }, for: .touchUpInside)
-        return button
+        return view
     }()
     
-    private let transactionLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Transactions"
-        label.font = .systemFont(ofSize: 17, weight: .semibold)
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
+    private lazy var transactionLabelView: TransactionLabelView = {
+        let view = TransactionLabelView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
+    
+    private lazy var transactionTableView: TransactionTableView = {
+        let view = TransactionTableView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tableView.dataSource = self
+        view.tableView.delegate = self
+        return view
+    }()
+    
+    private var transactions: [Transaction] = [
+        Transaction(fromUserId: "1", toUserId: "DHL Express", amount: 5.20, timestamp: Date(), iconName: "dhl"),
+        Transaction(fromUserId: "1", toUserId: "Wolt", amount: 36.48, timestamp: Date(), iconName: "wolt"),
+        Transaction(fromUserId: "1", toUserId: "Starbucks", amount: 7.62, timestamp: Date(), iconName: "starbucks"),
+        Transaction(fromUserId: "1", toUserId: "Starbucks", amount: 7.62, timestamp: Date(), iconName: "starbucks"),
+        Transaction(fromUserId: "1", toUserId: "Starbucks", amount: 7.62, timestamp: Date(), iconName: "starbucks")
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
         title = "Home"
-        navigationController?.navigationBar.prefersLargeTitles = true
         
         viewModel.delegate = self
         setupNavigationBar()
@@ -103,8 +107,9 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(cardCollectionView)
-        contentView.addSubview(sendMoneyButton)
-        contentView.addSubview(transactionLabel)
+        contentView.addSubview(sendMoneyButtonView)
+        contentView.addSubview(transactionLabelView)
+        contentView.addSubview(transactionTableView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -123,17 +128,21 @@ class HomeViewController: UIViewController {
             cardCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            sendMoneyButton.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
-            sendMoneyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            sendMoneyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44),
+            sendMoneyButtonView.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
+            sendMoneyButtonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            sendMoneyButtonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            sendMoneyButtonView.heightAnchor.constraint(equalToConstant: 44),
             
-            transactionLabel.topAnchor.constraint(equalTo: sendMoneyButton.bottomAnchor, constant: 20),
-            transactionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            transactionLabel.heightAnchor.constraint(equalToConstant: 30),
-            transactionLabel.widthAnchor.constraint(equalToConstant: 200),
+            transactionLabelView.topAnchor.constraint(equalTo: sendMoneyButtonView.bottomAnchor, constant: 20),
+            transactionLabelView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
             
-            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: transactionLabel.bottomAnchor, constant: 20)
+            transactionTableView.topAnchor.constraint(equalTo: transactionLabelView.bottomAnchor, constant: 5),
+            transactionTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            transactionTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            transactionTableView.heightAnchor.constraint(equalToConstant: 250),
+            
+            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: transactionTableView.bottomAnchor, constant: 20)
         ])
     }
     
@@ -165,6 +174,24 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 200, height: 150)
+    }
+}
+
+// MARK: - UITableViewDataSource, UITableViewDelegate
+extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return transactions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+        let transaction = transactions[indexPath.row]
+        cell.configure(with: transaction)
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
 }
 

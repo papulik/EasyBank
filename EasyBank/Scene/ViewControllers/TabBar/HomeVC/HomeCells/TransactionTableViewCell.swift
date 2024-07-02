@@ -10,33 +10,25 @@ import UIKit
 class TransactionTableViewCell: UITableViewCell {
     static let reuseIdentifier = "TransactionTableViewCell"
     
-    let iconImageView: UIImageView = {
+    private let transactionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let amountLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private let iconImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
+        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
-    }()
-    
-    let titleLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .medium)
-        return label
-    }()
-    
-    let amountLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .bold)
-        return label
-    }()
-    
-    let dateLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 14, weight: .regular)
-        label.textColor = .gray
-        return label
     }()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -49,26 +41,31 @@ class TransactionTableViewCell: UITableViewCell {
     }
     
     private func setupViews() {
-        addSubview(iconImageView)
-        addSubview(titleLabel)
-        addSubview(amountLabel)
-        addSubview(dateLabel)
+        contentView.addSubview(iconImageView)
+        contentView.addSubview(transactionLabel)
+        contentView.addSubview(amountLabel)
         
         NSLayoutConstraint.activate([
-            iconImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-            iconImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            iconImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             iconImageView.widthAnchor.constraint(equalToConstant: 40),
             iconImageView.heightAnchor.constraint(equalToConstant: 40),
             
-            titleLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
-            titleLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            transactionLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            transactionLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
             
-            amountLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            amountLabel.centerYAnchor.constraint(equalTo: centerYAnchor),
-            
-            dateLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            dateLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 8),
-            dateLabel.trailingAnchor.constraint(equalTo: amountLabel.leadingAnchor, constant: -16)
+            amountLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            amountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
+    }
+    
+    func configure(with transaction: Transaction) {
+        transactionLabel.text = transaction.toUserId
+        amountLabel.text = String(transaction.amount)
+        if let iconName = transaction.iconName, let image = UIImage(named: iconName) {
+            iconImageView.image = image
+        } else {
+            iconImageView.image = UIImage(systemName: "photo")
+        }
     }
 }

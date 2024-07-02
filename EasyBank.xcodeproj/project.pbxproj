@@ -37,6 +37,10 @@
 		60E2149C2C342B3F0054FDD3 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149B2C342B3F0054FDD3 /* CardCollectionViewCell.swift */; };
 		60E2149E2C342B600054FDD3 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149D2C342B600054FDD3 /* TransactionTableViewCell.swift */; };
 		60E214A02C342B7F0054FDD3 /* ContactCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */; };
+		60E214A42C3460B90054FDD3 /* CardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A32C3460B90054FDD3 /* CardCollectionView.swift */; };
+		60E214A62C3460E90054FDD3 /* SendMoneyButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A52C3460E90054FDD3 /* SendMoneyButtonView.swift */; };
+		60E214A82C3461460054FDD3 /* TransactionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A72C3461460054FDD3 /* TransactionLabelView.swift */; };
+		60E214AA2C346E630054FDD3 /* TransactionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A92C346E630054FDD3 /* TransactionTableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +72,10 @@
 		60E2149B2C342B3F0054FDD3 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
 		60E2149D2C342B600054FDD3 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
 		60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewCell.swift; sourceTree = "<group>"; };
+		60E214A32C3460B90054FDD3 /* CardCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionView.swift; sourceTree = "<group>"; };
+		60E214A52C3460E90054FDD3 /* SendMoneyButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyButtonView.swift; sourceTree = "<group>"; };
+		60E214A72C3461460054FDD3 /* TransactionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionLabelView.swift; sourceTree = "<group>"; };
+		60E214A92C346E630054FDD3 /* TransactionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -271,6 +279,7 @@
 			children = (
 				60E2148F2C318BCA0054FDD3 /* HomeViewController.swift */,
 				60E214932C3193BE0054FDD3 /* HomeViewModel.swift */,
+				60E214A22C3460850054FDD3 /* UIViews */,
 				60E214A12C342B900054FDD3 /* HomeCells */,
 			);
 			path = HomeVC;
@@ -293,6 +302,17 @@
 				60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */,
 			);
 			path = HomeCells;
+			sourceTree = "<group>";
+		};
+		60E214A22C3460850054FDD3 /* UIViews */ = {
+			isa = PBXGroup;
+			children = (
+				60E214A32C3460B90054FDD3 /* CardCollectionView.swift */,
+				60E214A52C3460E90054FDD3 /* SendMoneyButtonView.swift */,
+				60E214A72C3461460054FDD3 /* TransactionLabelView.swift */,
+				60E214A92C346E630054FDD3 /* TransactionTableView.swift */,
+			);
+			path = UIViews;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -377,11 +397,15 @@
 			buildActionMask = 2147483647;
 			files = (
 				60E214482C2DAFD10054FDD3 /* OnBoardingVC.swift in Sources */,
+				60E214A62C3460E90054FDD3 /* SendMoneyButtonView.swift in Sources */,
 				60E214942C3193BE0054FDD3 /* HomeViewModel.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
+				60E214A82C3461460054FDD3 /* TransactionLabelView.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
+				60E214A42C3460B90054FDD3 /* CardCollectionView.swift in Sources */,
 				60E2149C2C342B3F0054FDD3 /* CardCollectionViewCell.swift in Sources */,
 				60E214902C318BCA0054FDD3 /* HomeViewController.swift in Sources */,
+				60E214AA2C346E630054FDD3 /* TransactionTableView.swift in Sources */,
 				60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */,
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
 				60E2148E2C3168100054FDD3 /* FirestoreService.swift in Sources */,
