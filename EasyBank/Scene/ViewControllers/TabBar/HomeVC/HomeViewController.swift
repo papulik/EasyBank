@@ -26,12 +26,10 @@ class HomeViewController: UIViewController {
         return scrollView
     }()
     
-    private lazy var contentView: UIStackView = {
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 16
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        return stackView
+    private lazy var contentView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
     }()
     
     private lazy var cardCollectionView: UICollectionView = {
@@ -51,10 +49,21 @@ class HomeViewController: UIViewController {
         let button = UIButton(type: .system)
         button.setTitle("Send Money", for: .normal)
         button.translatesAutoresizingMaskIntoConstraints = false
+        button.backgroundColor = .blue
+        button.layer.cornerRadius = 10
+        button.tintColor = .white
         button.addAction(UIAction { [weak self] _ in
             self?.sendMoneyTapped()
         }, for: .touchUpInside)
         return button
+    }()
+    
+    private let transactionLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Transactions"
+        label.font = .systemFont(ofSize: 17, weight: .semibold)
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     override func viewDidLoad() {
@@ -93,9 +102,9 @@ class HomeViewController: UIViewController {
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
-        
-        contentView.addArrangedSubview(cardCollectionView)
-        contentView.addArrangedSubview(sendMoneyButton)
+        contentView.addSubview(cardCollectionView)
+        contentView.addSubview(sendMoneyButton)
+        contentView.addSubview(transactionLabel)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -104,14 +113,27 @@ class HomeViewController: UIViewController {
             scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 20),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -20),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            cardCollectionView.heightAnchor.constraint(equalToConstant: 150),
+            cardCollectionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            cardCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            cardCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            cardCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44)
+            sendMoneyButton.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
+            sendMoneyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            sendMoneyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            transactionLabel.topAnchor.constraint(equalTo: sendMoneyButton.bottomAnchor, constant: 20),
+            transactionLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            transactionLabel.heightAnchor.constraint(equalToConstant: 30),
+            transactionLabel.widthAnchor.constraint(equalToConstant: 200),
+            
+            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: transactionLabel.bottomAnchor, constant: 20)
         ])
     }
     
