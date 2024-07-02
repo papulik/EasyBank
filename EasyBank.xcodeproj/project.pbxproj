@@ -34,6 +34,9 @@
 		60E214942C3193BE0054FDD3 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214932C3193BE0054FDD3 /* HomeViewModel.swift */; };
 		60E214962C31967B0054FDD3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214952C31967B0054FDD3 /* User.swift */; };
 		60E214992C3196A80054FDD3 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214982C3196A80054FDD3 /* Transaction.swift */; };
+		60E2149C2C342B3F0054FDD3 /* CardCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149B2C342B3F0054FDD3 /* CardCollectionViewCell.swift */; };
+		60E2149E2C342B600054FDD3 /* TransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149D2C342B600054FDD3 /* TransactionTableViewCell.swift */; };
+		60E214A02C342B7F0054FDD3 /* ContactCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -62,6 +65,9 @@
 		60E214932C3193BE0054FDD3 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		60E214952C31967B0054FDD3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		60E214982C3196A80054FDD3 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
+		60E2149B2C342B3F0054FDD3 /* CardCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionViewCell.swift; sourceTree = "<group>"; };
+		60E2149D2C342B600054FDD3 /* TransactionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableViewCell.swift; sourceTree = "<group>"; };
+		60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,6 +271,7 @@
 			children = (
 				60E2148F2C318BCA0054FDD3 /* HomeViewController.swift */,
 				60E214932C3193BE0054FDD3 /* HomeViewModel.swift */,
+				60E214A12C342B900054FDD3 /* HomeCells */,
 			);
 			path = HomeVC;
 			sourceTree = "<group>";
@@ -276,6 +283,16 @@
 				60E214982C3196A80054FDD3 /* Transaction.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		60E214A12C342B900054FDD3 /* HomeCells */ = {
+			isa = PBXGroup;
+			children = (
+				60E2149B2C342B3F0054FDD3 /* CardCollectionViewCell.swift */,
+				60E2149D2C342B600054FDD3 /* TransactionTableViewCell.swift */,
+				60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */,
+			);
+			path = HomeCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -363,6 +380,7 @@
 				60E214942C3193BE0054FDD3 /* HomeViewModel.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
+				60E2149C2C342B3F0054FDD3 /* CardCollectionViewCell.swift in Sources */,
 				60E214902C318BCA0054FDD3 /* HomeViewController.swift in Sources */,
 				60E214812C30E0ED0054FDD3 /* TabBarController.swift in Sources */,
 				60E2146B2C305B810054FDD3 /* CustomTextFieldView.swift in Sources */,
@@ -370,6 +388,8 @@
 				60E2145D2C2ECF130054FDD3 /* AppCoordinator.swift in Sources */,
 				60E2146F2C305C310054FDD3 /* CustomButtonView.swift in Sources */,
 				60E2147C2C30D1390054FDD3 /* LoginViewModel.swift in Sources */,
+				60E2149E2C342B600054FDD3 /* TransactionTableViewCell.swift in Sources */,
+				60E214A02C342B7F0054FDD3 /* ContactCollectionViewCell.swift in Sources */,
 				60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */,
 				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
 				60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */,
