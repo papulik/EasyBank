@@ -63,13 +63,7 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private var transactions: [Transaction] = [
-        Transaction(fromUserId: "1", toUserId: "DHL Express", amount: 5.20, timestamp: Date(), iconName: "dhl"),
-        Transaction(fromUserId: "1", toUserId: "Wolt", amount: 36.48, timestamp: Date(), iconName: "wolt"),
-        Transaction(fromUserId: "1", toUserId: "Starbucks", amount: 7.62, timestamp: Date(), iconName: "starbucks"),
-        Transaction(fromUserId: "1", toUserId: "Starbucks", amount: 7.62, timestamp: Date(), iconName: "starbucks"),
-        Transaction(fromUserId: "1", toUserId: "Starbucks", amount: 7.62, timestamp: Date(), iconName: "starbucks")
-    ]
+    private var transactions: [Transaction] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -82,6 +76,7 @@ class HomeViewController: UIViewController {
         viewModel.fetchCurrentUser()
     }
     
+    //MARK: - Setup Navigation Bar LogOut Button with Alert
     private func setupNavigationBar() {
         let logoutAction = UIAction(image: UIImage(systemName: "arrow.left.square")) { [weak self] _ in
             guard let self = self else { return }
@@ -103,6 +98,7 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = logoutBarButtonItem
     }
 
+    //MARK: - Setup UI
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -195,9 +191,8 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - HomeViewModelDelegate
+//MARK: - HomeViewModelDelegate Methods
 extension HomeViewController: HomeViewModelDelegate {
-    
     func didFetchCurrentUser(_ user: User) {
         print("Current User: \(user)")
     }
@@ -212,6 +207,12 @@ extension HomeViewController: HomeViewModelDelegate {
     
     func didSendMoney() {
         print("Money sent successfully")
+        viewModel.fetchTransactions()
+    }
+    
+    func didFetchTransactions(_ transactions: [Transaction]) {
+        self.transactions = transactions
+        transactionTableView.tableView.reloadData()
     }
     
     func didLogout(success: Bool) {

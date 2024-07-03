@@ -14,14 +14,16 @@ protocol HomeViewModelDelegate: AnyObject {
     func didEncounterError(_ error: String)
     func didSendMoney()
     func didLogout(success: Bool)
+    func didFetchTransactions(_ transactions: [Transaction])
 }
 
 class HomeViewModel {
     weak var delegate: HomeViewModelDelegate?
-
+    
     var currentUser: User?
     var users: [User] = []
-
+    var transactions: [Transaction] = []
+    
     func fetchCurrentUser() {
         FirestoreService.shared.getCurrentUser { [weak self] result in
             switch result {
@@ -29,6 +31,7 @@ class HomeViewModel {
                 self?.currentUser = user
                 self?.delegate?.didFetchCurrentUser(user)
                 self?.fetchUsers()
+                self?.fetchTransactions()
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
             }
@@ -56,6 +59,19 @@ class HomeViewModel {
                 self?.fetchCurrentUser()
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error sending money: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    func fetchTransactions() {
+        guard let userId = currentUser?.id else { return }
+        FirestoreService.shared.getTransactions(forUser: userId) { [weak self] result in
+            switch result {
+            case .success(let transactions):
+                self?.transactions = transactions
+                self?.delegate?.didFetchTransactions(transactions)
+            case .failure(let error):
+                self?.delegate?.didEncounterError("Error fetching transactions: \(error.localizedDescription)")
             }
         }
     }
