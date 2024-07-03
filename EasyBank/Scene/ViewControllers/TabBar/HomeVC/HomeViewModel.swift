@@ -23,6 +23,7 @@ class HomeViewModel {
     var currentUser: User?
     var users: [User] = []
     var transactions: [Transaction] = []
+    var userNames: [String: String] = [:]
     
     func fetchCurrentUser() {
         FirestoreService.shared.getCurrentUser { [weak self] result in
@@ -31,7 +32,6 @@ class HomeViewModel {
                 self?.currentUser = user
                 self?.delegate?.didFetchCurrentUser(user)
                 self?.fetchUsers()
-                self?.fetchTransactions()
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
             }
@@ -57,21 +57,35 @@ class HomeViewModel {
             case .success():
                 self?.delegate?.didSendMoney()
                 self?.fetchCurrentUser()
+                self?.fetchTransactions()
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error sending money: \(error.localizedDescription)")
             }
         }
     }
     
-    func fetchTransactions() {
+    private func fetchTransactions() {
         guard let userId = currentUser?.id else { return }
         FirestoreService.shared.getTransactions(forUser: userId) { [weak self] result in
             switch result {
             case .success(let transactions):
                 self?.transactions = transactions
-                self?.delegate?.didFetchTransactions(transactions)
+                self?.fetchUserNames(for: transactions)
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error fetching transactions: \(error.localizedDescription)")
+            }
+        }
+    }
+    
+    private func fetchUserNames(for transactions: [Transaction]) {
+        let userIds = Array(Set(transactions.map { $0.fromUserId } + transactions.map { $0.toUserId }))
+        FirestoreService.shared.getUserNames(userIds: userIds) { [weak self] result in
+            switch result {
+            case .success(let userNames):
+                self?.userNames = userNames
+                self?.delegate?.didFetchTransactions(transactions)
+            case .failure(let error):
+                self?.delegate?.didEncounterError("Error fetching user names: \(error.localizedDescription)")
             }
         }
     }

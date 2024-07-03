@@ -76,7 +76,6 @@ class HomeViewController: UIViewController {
         viewModel.fetchCurrentUser()
     }
     
-    //MARK: - Setup Navigation Bar LogOut Button with Alert
     private func setupNavigationBar() {
         let logoutAction = UIAction(image: UIImage(systemName: "arrow.left.square")) { [weak self] _ in
             guard let self = self else { return }
@@ -98,7 +97,6 @@ class HomeViewController: UIViewController {
         navigationItem.rightBarButtonItem = logoutBarButtonItem
     }
 
-    //MARK: - Setup UI
     private func setupViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -182,7 +180,9 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
         let transaction = transactions[indexPath.row]
-        cell.configure(with: transaction)
+        let fromUserName = viewModel.userNames[transaction.fromUserId] ?? transaction.fromUserId
+        let toUserName = viewModel.userNames[transaction.toUserId] ?? transaction.toUserId
+        cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName)
         return cell
     }
     
@@ -191,7 +191,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-//MARK: - HomeViewModelDelegate Methods
+// MARK: - HomeViewModelDelegate
 extension HomeViewController: HomeViewModelDelegate {
     func didFetchCurrentUser(_ user: User) {
         print("Current User: \(user)")
@@ -207,7 +207,6 @@ extension HomeViewController: HomeViewModelDelegate {
     
     func didSendMoney() {
         print("Money sent successfully")
-        viewModel.fetchTransactions()
     }
     
     func didFetchTransactions(_ transactions: [Transaction]) {

@@ -11,4 +11,5 @@ struct User: Codable {
     let id: String
     let email: String
     let balance: Double
+    let name: String
 }

@@ -102,4 +102,21 @@ class FirestoreService {
                 }
             }
     }
+    
+    func getUserNames(userIds: [String], completion: @escaping (Result<[String: String], Error>) -> Void) {
+        db.collection("users").whereField("id", in: userIds).getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var userNames = [String: String]()
+                querySnapshot?.documents.forEach { document in
+                    let user = try? document.data(as: User.self)
+                    if let user = user {
+                        userNames[user.id] = user.name
+                    }
+                }
+                completion(.success(userNames))
+            }
+        }
+    }
 }

@@ -59,9 +59,9 @@ class TransactionTableViewCell: UITableViewCell {
         ])
     }
     
-    func configure(with transaction: Transaction) {
-        transactionLabel.text = transaction.toUserId
-        amountLabel.text = String(transaction.amount)
+    func configure(with transaction: Transaction, fromUserName: String, toUserName: String) {
+        transactionLabel.text = "From: \(fromUserName) To: \(toUserName)"
+        amountLabel.text = String(format: "%.2f", transaction.amount)
         if let iconName = transaction.iconName, let image = UIImage(named: iconName) {
             iconImageView.image = image
         } else {
