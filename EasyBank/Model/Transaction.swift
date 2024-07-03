@@ -13,4 +13,5 @@ struct Transaction: Codable {
     let amount: Double
     let timestamp: Date
     let iconName: String?
+    var isIncoming: Bool?
 }

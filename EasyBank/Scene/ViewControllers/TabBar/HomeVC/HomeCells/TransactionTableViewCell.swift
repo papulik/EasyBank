@@ -24,6 +24,14 @@ class TransactionTableViewCell: UITableViewCell {
         return label
     }()
     
+    private let dateLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12)
+        label.textColor = .lightGray
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
     private let iconImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
@@ -44,6 +52,7 @@ class TransactionTableViewCell: UITableViewCell {
         contentView.addSubview(iconImageView)
         contentView.addSubview(transactionLabel)
         contentView.addSubview(amountLabel)
+        contentView.addSubview(dateLabel)
         
         NSLayoutConstraint.activate([
             iconImageView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -51,17 +60,28 @@ class TransactionTableViewCell: UITableViewCell {
             iconImageView.widthAnchor.constraint(equalToConstant: 40),
             iconImageView.heightAnchor.constraint(equalToConstant: 40),
             
-            transactionLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            transactionLabel.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 10),
             transactionLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
+            
+            dateLabel.topAnchor.constraint(equalTo: transactionLabel.bottomAnchor, constant: 4),
+            dateLabel.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor, constant: 16),
+            dateLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -10),
             
             amountLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             amountLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         ])
     }
     
-    func configure(with transaction: Transaction, fromUserName: String, toUserName: String) {
-        transactionLabel.text = "From: \(fromUserName) To: \(toUserName)"
+    func configure(with transaction: Transaction, fromUserName: String, toUserName: String, currentUserId: String) {
+        transactionLabel.text = transaction.isIncoming ?? false ? "From: \(fromUserName)" : "To: \(toUserName)"
         amountLabel.text = String(format: "%.2f", transaction.amount)
+        amountLabel.textColor = transaction.isIncoming ?? false ? .green : .red
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .medium
+        dateFormatter.timeStyle = .short
+        dateLabel.text = dateFormatter.string(from: transaction.timestamp)
+        
         if let iconName = transaction.iconName, let image = UIImage(named: iconName) {
             iconImageView.image = image
         } else {

@@ -67,7 +67,7 @@ class FirestoreService {
             return
         }
         
-        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date(), iconName: "")
+        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date(), iconName: "georgia")
         
         let batch = db.batch()
         
@@ -91,14 +91,21 @@ class FirestoreService {
     func getTransactions(forUser userId: String, completion: @escaping (Result<[Transaction], Error>) -> Void) {
         db.collection("transactions")
             .whereField("fromUserId", isEqualTo: userId)
-            .addSnapshotListener { querySnapshot, error in
+            .getDocuments { [weak self] querySnapshot, error in
                 if let error = error {
                     completion(.failure(error))
                 } else {
-                    let transactions = querySnapshot?.documents.compactMap {
-                        try? $0.data(as: Transaction.self)
-                    } ?? []
-                    completion(.success(transactions))
+                    let sentTransactions = querySnapshot?.documents.compactMap { try? $0.data(as: Transaction.self) } ?? []
+                    self?.db.collection("transactions")
+                        .whereField("toUserId", isEqualTo: userId)
+                        .getDocuments { querySnapshot, error in
+                            if let error = error {
+                                completion(.failure(error))
+                            } else {
+                                let receivedTransactions = querySnapshot?.documents.compactMap { try? $0.data(as: Transaction.self) } ?? []
+                                completion(.success(sentTransactions + receivedTransactions))
+                            }
+                        }
                 }
             }
     }

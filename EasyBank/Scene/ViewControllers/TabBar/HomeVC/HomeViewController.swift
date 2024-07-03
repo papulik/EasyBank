@@ -60,6 +60,7 @@ class HomeViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tableView.dataSource = self
         view.tableView.delegate = self
+        view.tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
         return view
     }()
     
@@ -74,6 +75,15 @@ class HomeViewController: UIViewController {
         setupNavigationBar()
         setupViews()
         viewModel.fetchCurrentUser()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        if viewModel.currentUser != nil {
+            viewModel.fetchTransactions()
+        } else {
+            viewModel.fetchCurrentUser()
+        }
     }
     
     private func setupNavigationBar() {
@@ -182,7 +192,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         let transaction = transactions[indexPath.row]
         let fromUserName = viewModel.userNames[transaction.fromUserId] ?? transaction.fromUserId
         let toUserName = viewModel.userNames[transaction.toUserId] ?? transaction.toUserId
-        cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName)
+        cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
         return cell
     }
     
@@ -210,7 +220,7 @@ extension HomeViewController: HomeViewModelDelegate {
     }
     
     func didFetchTransactions(_ transactions: [Transaction]) {
-        self.transactions = transactions
+        self.transactions = transactions.sorted { $0.timestamp > $1.timestamp }
         transactionTableView.tableView.reloadData()
     }
     
