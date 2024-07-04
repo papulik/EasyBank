@@ -37,6 +37,7 @@ class HomeViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.collectionView.dataSource = self
         view.collectionView.delegate = self
+        view.collectionView.register(CardCollectionViewCell.self, forCellWithReuseIdentifier: CardCollectionViewCell.reuseIdentifier)
         return view
     }()
     
@@ -60,7 +61,6 @@ class HomeViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tableView.dataSource = self
         view.tableView.delegate = self
-        view.tableView.register(TransactionTableViewCell.self, forCellReuseIdentifier: TransactionTableViewCell.reuseIdentifier)
         return view
     }()
     
@@ -167,12 +167,14 @@ class HomeViewController: UIViewController {
 // MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+        return 3
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardCollectionViewCell.reuseIdentifier, for: indexPath) as! CardCollectionViewCell
-        cell.configure(with: "🏦 123456789012345\(indexPath.row)", balance: "$710.20", imageName: "georgia")
+        if let currentUser = viewModel.currentUser {
+            cell.configure(with: currentUser.id, balance: String(format: "%.2f", currentUser.balance))
+        }
         return cell
     }
     
@@ -205,6 +207,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 extension HomeViewController: HomeViewModelDelegate {
     func didFetchCurrentUser(_ user: User) {
         print("Current User: \(user)")
+        cardCollectionView.collectionView.reloadData()
     }
     
     func didFetchUsers(_ users: [User]) {
