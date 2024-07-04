@@ -50,8 +50,9 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private lazy var transactionLabelView: TransactionLabelView = {
-        let view = TransactionLabelView()
+    private lazy var transactionLabelView: HeaderLabel = {
+        let view = HeaderLabel()
+        view.label.text = "Transactions"
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -64,7 +65,25 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private var transactions: [Transaction] = []
+    private lazy var recentContactsLabelView: HeaderLabel = {
+        let view = HeaderLabel()
+        view.label.text = "Recent Contacts"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var contactsCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.itemSize = CGSize(width: 60, height: 80)
+        layout.minimumLineSpacing = 10
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(ContactCollectionViewCell.self, forCellWithReuseIdentifier: ContactCollectionViewCell.reuseIdentifier)
+        return collectionView
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,6 +94,7 @@ class HomeViewController: UIViewController {
         setupNavigationBar()
         setupViews()
         viewModel.fetchCurrentUser()
+        viewModel.contacts = viewModel.generateDummyContacts()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -114,6 +134,8 @@ class HomeViewController: UIViewController {
         contentView.addSubview(sendMoneyButtonView)
         contentView.addSubview(transactionLabelView)
         contentView.addSubview(transactionTableView)
+        contentView.addSubview(recentContactsLabelView)
+        contentView.addSubview(contactsCollectionView)
         
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
@@ -146,7 +168,16 @@ class HomeViewController: UIViewController {
             transactionTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             transactionTableView.heightAnchor.constraint(equalToConstant: 250),
             
-            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: transactionTableView.bottomAnchor, constant: 20)
+            recentContactsLabelView.topAnchor.constraint(equalTo: transactionTableView.bottomAnchor, constant: 16),
+            recentContactsLabelView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            recentContactsLabelView.heightAnchor.constraint(equalToConstant: 35),
+            
+            contactsCollectionView.topAnchor.constraint(equalTo: recentContactsLabelView.bottomAnchor, constant: 10),
+            contactsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            contactsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
+            contactsCollectionView.heightAnchor.constraint(equalToConstant: 80),
+            
+            contentView.bottomAnchor.constraint(greaterThanOrEqualTo: contactsCollectionView.bottomAnchor, constant: 20)
         ])
     }
     
@@ -164,34 +195,49 @@ class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - UICollectionViewDataSource, UICollectionViewDelegateFlowLayout
+// MARK: - Card Collection View DataSource and Delegate
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
+        if collectionView == cardCollectionView.collectionView {
+            return 1
+        } else {
+            return viewModel.contacts.count
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardCollectionViewCell.reuseIdentifier, for: indexPath) as! CardCollectionViewCell
-        if let currentUser = viewModel.currentUser {
-            cell.configure(with: currentUser.id, balance: String(format: "%.2f", currentUser.balance))
+        if collectionView == cardCollectionView.collectionView {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardCollectionViewCell.reuseIdentifier, for: indexPath) as! CardCollectionViewCell
+            if let currentUser = viewModel.currentUser {
+                cell.configure(with: currentUser.id, balance: String(format: "%.2f", currentUser.balance))
+            }
+            return cell
+        } else {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ContactCollectionViewCell.reuseIdentifier, for: indexPath) as! ContactCollectionViewCell
+            let contact = viewModel.contacts[indexPath.item]
+            cell.configure(with: contact)
+            return cell
         }
-        return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 200, height: 150)
+        if collectionView == cardCollectionView.collectionView {
+            return CGSize(width: 200, height: 150)
+        } else {
+            return CGSize(width: 60, height: 80)
+        }
     }
 }
 
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return transactions.count
+        return viewModel.transactions.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-        let transaction = transactions[indexPath.row]
+        let transaction = viewModel.transactions[indexPath.row]
         let fromUserName = viewModel.userNames[transaction.fromUserId] ?? transaction.fromUserId
         let toUserName = viewModel.userNames[transaction.toUserId] ?? transaction.toUserId
         cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
@@ -208,10 +254,12 @@ extension HomeViewController: HomeViewModelDelegate {
     func didFetchCurrentUser(_ user: User) {
         print("Current User: \(user)")
         cardCollectionView.collectionView.reloadData()
+        contactsCollectionView.reloadData()
     }
     
     func didFetchUsers(_ users: [User]) {
         print("Fetched Users: \(users)")
+        contactsCollectionView.reloadData()
     }
     
     func didEncounterError(_ error: String) {
@@ -223,7 +271,7 @@ extension HomeViewController: HomeViewModelDelegate {
     }
     
     func didFetchTransactions(_ transactions: [Transaction]) {
-        self.transactions = transactions.sorted { $0.timestamp > $1.timestamp }
+        viewModel.transactions = transactions.sorted { $0.timestamp > $1.timestamp }
         transactionTableView.tableView.reloadData()
     }
     
