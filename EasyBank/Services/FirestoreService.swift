@@ -111,6 +111,11 @@ class FirestoreService {
     }
     
     func getUserNames(userIds: [String], completion: @escaping (Result<[String: String], Error>) -> Void) {
+        guard !userIds.isEmpty else {
+            completion(.success([:]))
+            return
+        }
+        
         db.collection("users").whereField("id", in: userIds).getDocuments { querySnapshot, error in
             if let error = error {
                 completion(.failure(error))

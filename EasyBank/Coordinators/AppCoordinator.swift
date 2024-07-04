@@ -54,6 +54,7 @@ class AppCoordinator: Coordinator {
         let homeVC = HomeViewController(viewModel: homeViewModel)
         homeVC.coordinator = self
         
+        homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
 
         tabBarController.viewControllers = [homeNavigationController]

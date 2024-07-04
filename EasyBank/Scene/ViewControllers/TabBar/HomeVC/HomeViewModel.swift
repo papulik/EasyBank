@@ -34,7 +34,7 @@ class HomeViewModel {
                 print("Fetched current user: \(user)")
                 self?.delegate?.didFetchCurrentUser(user)
                 self?.fetchUsers()
-                self?.fetchTransactions() // Fetch transactions here after setting the current user
+                self?.fetchTransactions()
             case .failure(let error):
                 self?.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
             }

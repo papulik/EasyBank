@@ -67,9 +67,8 @@ class CardCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with cardId: String, balance: String, imageName: String) {
-        cardIdLabel.text = cardId
+    func configure(with cardId: String, balance: String) {
+        cardIdLabel.text = "id: \(cardId)"
         balanceLabel.text = balance
-        flagImageView.image = UIImage(named: imageName)
     }
 }
