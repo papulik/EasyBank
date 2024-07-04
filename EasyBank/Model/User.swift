@@ -13,11 +13,3 @@ struct User: Codable {
     let balance: Double
     let name: String
 }
-
-import Foundation
-
-struct Contact: Identifiable {
-    let id: String
-    let name: String
-    let imageName: String
-}

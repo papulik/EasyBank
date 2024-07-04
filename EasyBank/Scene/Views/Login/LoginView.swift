@@ -10,41 +10,52 @@ import SwiftUI
 struct LoginView: View {
     @StateObject private var viewModel = LoginViewModel()
     weak var coordinator: AppCoordinator?
+    @State private var isLoading = false
 
     var body: some View {
-        ScrollView {
-            VStack {
-                header
-                CustomTextFieldWrapper(text: $viewModel.email, placeholder: "Your Email", isValid: viewModel.isEmailValid)
-                    .frame(height: 60)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                CustomSecureFieldWrapper(text: $viewModel.password, placeholder: "Password", isValid: viewModel.isPasswordValid)
-                    .frame(height: 60)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                if let error = viewModel.loginError {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .padding(.top, 10)
-                }
-                CustomButton(title: "Log In", action: {
-                    viewModel.validateAndLogin { success in
-                        if success {
-                            coordinator?.showMainApp()
+        VStack {
+            if isLoading {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle())
+                    .padding(.top, 100)
+            } else {
+                ScrollView {
+                    VStack {
+                        header
+                        CustomTextFieldWrapper(text: $viewModel.email, placeholder: "Your Email", isValid: viewModel.isEmailValid)
+                            .frame(height: 60)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
+                        CustomSecureFieldWrapper(text: $viewModel.password, placeholder: "Password", isValid: viewModel.isPasswordValid)
+                            .frame(height: 60)
+                            .padding(.horizontal, 20)
+                            .padding(.top, 16)
+                        if let error = viewModel.loginError {
+                            Text(error)
+                                .foregroundColor(.red)
+                                .padding(.top, 10)
                         }
+                        CustomButton(title: "Log In", action: {
+                            isLoading = true
+                            viewModel.validateAndLogin { success in
+                                isLoading = false
+                                if success {
+                                    coordinator?.showMainApp()
+                                }
+                            }
+                        })
+                        .padding(.top, 20)
+                        .padding(.bottom, 30)
+                        signUpPrompt
+                        orSeparator
+                        socialLoginButtons
+                            .padding(.bottom, 10)
+                        Spacer()
                     }
-                })
-                .padding(.top, 20)
-                .padding(.bottom, 30)
-                signUpPrompt
-                orSeparator
-                socialLoginButtons
-                    .padding(.bottom, 10)
-                Spacer()
+                }
+                .navigationBarBackButtonHidden(true)
             }
         }
-        .navigationBarBackButtonHidden(true)
     }
     
     private var header: some View {
