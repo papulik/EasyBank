@@ -12,48 +12,39 @@ struct RegisterView: View {
     var coordinator: AppCoordinator?
     @State private var showTermsOfUse = false
     @State private var showPrivacyPolicy = false
-    @State private var isLoading = false
 
     var body: some View {
         VStack {
-            if isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding(.top, 100)
-            } else {
-                header
-                CustomTextFieldWrapper(text: $viewModel.email, placeholder: "Your Email", isValid: viewModel.isEmailValid)
-                    .frame(height: 60)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                CustomSecureFieldWrapper(text: $viewModel.password, placeholder: "Password", isValid: viewModel.isPasswordValid)
-                    .frame(height: 60)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                CustomSecureFieldWrapper(text: $viewModel.repeatPassword, placeholder: "Repeat Password", isValid: viewModel.isRepeatPasswordValid)
-                    .frame(height: 60)
-                    .padding(.horizontal, 20)
-                    .padding(.top, 16)
-                if let error = viewModel.registrationError {
-                    Text(error)
-                        .foregroundColor(.red)
-                        .padding(.top, 10)
-                }
-                signInPrompt
-                Spacer()
-                termsAndPrivacy
-                CustomButton(title: "Register", action: {
-                    isLoading = true
-                    viewModel.validateAndRegister { success in
-                        isLoading = false
-                        if success {
-                            coordinator?.showMainApp()
-                        }
-                    }
-                })
-                .padding(.top, 20)
-                .padding(.bottom, 30)
+            header
+            CustomTextFieldWrapper(text: $viewModel.email, placeholder: "Your Email", isValid: viewModel.isEmailValid)
+                .frame(height: 60)
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+            CustomSecureFieldWrapper(text: $viewModel.password, placeholder: "Password", isValid: viewModel.isPasswordValid)
+                .frame(height: 60)
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+            CustomSecureFieldWrapper(text: $viewModel.repeatPassword, placeholder: "Repeat Password", isValid: viewModel.isRepeatPasswordValid)
+                .frame(height: 60)
+                .padding(.horizontal, 20)
+                .padding(.top, 16)
+            if let error = viewModel.registrationError {
+                Text(error)
+                    .foregroundColor(.red)
+                    .padding(.top, 10)
             }
+            signInPrompt
+            Spacer()
+            termsAndPrivacy
+            CustomButton(title: "Register", action: {
+                viewModel.validateAndRegister { success in
+                    if success {
+                        coordinator?.showMainApp()
+                    }
+                }
+            })
+            .padding(.top, 20)
+            .padding(.bottom, 30)
         }
         .navigationBarBackButtonHidden(true)
     }

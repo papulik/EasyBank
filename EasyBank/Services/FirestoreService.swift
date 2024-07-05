@@ -13,32 +13,8 @@ class FirestoreService {
     static let shared = FirestoreService()
     
     private let db = Firestore.firestore()
-    private let userDefaults = UserDefaults.standard
     
     private init() {}
-    
-    private func saveData<T: Codable>(_ data: T, forKey key: String) {
-        let encoder = JSONEncoder()
-        if let encoded = try? encoder.encode(data) {
-            print("Saving data to UserDefaults with key: \(key)")
-            userDefaults.set(encoded, forKey: key)
-        }
-    }
-    
-    private func loadData<T: Codable>(forKey key: String, as type: T.Type) -> T? {
-        if let savedData = userDefaults.object(forKey: key) as? Data {
-            let decoder = JSONDecoder()
-            if let loadedData = try? decoder.decode(type, from: savedData) {
-                print("Loaded data from UserDefaults with key: \(key)")
-                return loadedData
-            }
-        }
-        return nil
-    }
-    
-    private func removeData(forKey key: String) {
-        userDefaults.removeObject(forKey: key)
-    }
     
     func createUser(uid: String, user: User, completion: @escaping (Result<Void, Error>) -> Void) {
         do {
@@ -46,7 +22,6 @@ class FirestoreService {
                 if let error = error {
                     completion(.failure(error))
                 } else {
-                    self.saveData(user, forKey: "currentUser")
                     completion(.success(()))
                 }
             }
@@ -63,7 +38,6 @@ class FirestoreService {
             if let document = document, document.exists {
                 do {
                     let user = try document.data(as: User.self)
-                    self.saveData(user, forKey: "currentUser")
                     completion(.success(user))
                 } catch {
                     completion(.failure(error))
@@ -82,7 +56,6 @@ class FirestoreService {
                 let users = querySnapshot?.documents.compactMap {
                     try? $0.data(as: User.self)
                 } ?? []
-                self.saveData(users, forKey: "users")
                 completion(.success(users))
             }
         }
@@ -110,9 +83,6 @@ class FirestoreService {
             if let error = error {
                 completion(.failure(error))
             } else {
-                self.updateLocalTransactions(with: transaction)
-                self.updateLocalUser(fromUser)
-                self.updateLocalUser(toUser)
                 completion(.success(()))
             }
         }
@@ -133,9 +103,7 @@ class FirestoreService {
                                 completion(.failure(error))
                             } else {
                                 let receivedTransactions = querySnapshot?.documents.compactMap { try? $0.data(as: Transaction.self) } ?? []
-                                let transactions = sentTransactions + receivedTransactions
-                                self?.saveData(transactions, forKey: "transactions_\(userId)")
-                                completion(.success(transactions))
+                                completion(.success(sentTransactions + receivedTransactions))
                             }
                         }
                 }
@@ -160,29 +128,6 @@ class FirestoreService {
                     }
                 }
                 completion(.success(userNames))
-            }
-        }
-    }
-    
-    private func updateLocalTransactions(with transaction: Transaction) {
-        let userId = Auth.auth().currentUser?.uid ?? ""
-        if var cachedTransactions: [Transaction] = loadData(forKey: "transactions_\(userId)", as: [Transaction].self) {
-            cachedTransactions.append(transaction)
-            saveData(cachedTransactions, forKey: "transactions_\(userId)")
-        } else {
-            saveData([transaction], forKey: "transactions_\(userId)")
-        }
-    }
-    
-    private func updateLocalUser(_ user: User) {
-        if let currentUser: User = loadData(forKey: "currentUser", as: User.self), currentUser.id == user.id {
-            saveData(user, forKey: "currentUser")
-        }
-        
-        if var users: [User] = loadData(forKey: "users", as: [User].self) {
-            if let index = users.firstIndex(where: { $0.id == user.id }) {
-                users[index] = user
-                saveData(users, forKey: "users")
             }
         }
     }

@@ -52,9 +52,5 @@ class ContactCollectionViewCell: UICollectionViewCell {
             nameLabel.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
-    
-    func configure(with user: Contact) {
-        nameLabel.text = user.name
-        imageView.image = UIImage(named: user.imageName)
-    }
 }
+

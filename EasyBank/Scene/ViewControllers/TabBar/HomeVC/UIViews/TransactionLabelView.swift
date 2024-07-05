@@ -7,10 +7,11 @@
 
 import UIKit
 
-class HeaderLabel: UIView {
+class TransactionLabelView: UIView {
     
     private(set) lazy var label: UILabel = {
         let label = UILabel()
+        label.text = "Transactions"
         label.font = .systemFont(ofSize: 17, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
