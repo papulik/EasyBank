@@ -67,7 +67,7 @@ class FirestoreService {
             return
         }
         
-        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date())
+        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date(), iconName: "georgia")
         
         let batch = db.batch()
         
@@ -84,6 +84,50 @@ class FirestoreService {
                 completion(.failure(error))
             } else {
                 completion(.success(()))
+            }
+        }
+    }
+    
+    func getTransactions(forUser userId: String, completion: @escaping (Result<[Transaction], Error>) -> Void) {
+        db.collection("transactions")
+            .whereField("fromUserId", isEqualTo: userId)
+            .getDocuments { [weak self] querySnapshot, error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    let sentTransactions = querySnapshot?.documents.compactMap { try? $0.data(as: Transaction.self) } ?? []
+                    self?.db.collection("transactions")
+                        .whereField("toUserId", isEqualTo: userId)
+                        .getDocuments { querySnapshot, error in
+                            if let error = error {
+                                completion(.failure(error))
+                            } else {
+                                let receivedTransactions = querySnapshot?.documents.compactMap { try? $0.data(as: Transaction.self) } ?? []
+                                completion(.success(sentTransactions + receivedTransactions))
+                            }
+                        }
+                }
+            }
+    }
+    
+    func getUserNames(userIds: [String], completion: @escaping (Result<[String: String], Error>) -> Void) {
+        guard !userIds.isEmpty else {
+            completion(.success([:]))
+            return
+        }
+        
+        db.collection("users").whereField("id", in: userIds).getDocuments { querySnapshot, error in
+            if let error = error {
+                completion(.failure(error))
+            } else {
+                var userNames = [String: String]()
+                querySnapshot?.documents.forEach { document in
+                    let user = try? document.data(as: User.self)
+                    if let user = user {
+                        userNames[user.id] = user.name
+                    }
+                }
+                completion(.success(userNames))
             }
         }
     }
