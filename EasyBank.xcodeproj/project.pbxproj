@@ -39,9 +39,8 @@
 		60E214A02C342B7F0054FDD3 /* ContactCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */; };
 		60E214A42C3460B90054FDD3 /* CardCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A32C3460B90054FDD3 /* CardCollectionView.swift */; };
 		60E214A62C3460E90054FDD3 /* SendMoneyButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A52C3460E90054FDD3 /* SendMoneyButtonView.swift */; };
-		60E214A82C3461460054FDD3 /* HeaderLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A72C3461460054FDD3 /* HeaderLabel.swift */; };
+		60E214A82C3461460054FDD3 /* TransactionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A72C3461460054FDD3 /* TransactionLabelView.swift */; };
 		60E214AA2C346E630054FDD3 /* TransactionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A92C346E630054FDD3 /* TransactionTableView.swift */; };
-		60E214AC2C37299F0054FDD3 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214AB2C37299F0054FDD3 /* Contact.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,9 +74,8 @@
 		60E2149F2C342B7F0054FDD3 /* ContactCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactCollectionViewCell.swift; sourceTree = "<group>"; };
 		60E214A32C3460B90054FDD3 /* CardCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardCollectionView.swift; sourceTree = "<group>"; };
 		60E214A52C3460E90054FDD3 /* SendMoneyButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyButtonView.swift; sourceTree = "<group>"; };
-		60E214A72C3461460054FDD3 /* HeaderLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderLabel.swift; sourceTree = "<group>"; };
+		60E214A72C3461460054FDD3 /* TransactionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionLabelView.swift; sourceTree = "<group>"; };
 		60E214A92C346E630054FDD3 /* TransactionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableView.swift; sourceTree = "<group>"; };
-		60E214AB2C37299F0054FDD3 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -292,7 +290,6 @@
 			children = (
 				60E214952C31967B0054FDD3 /* User.swift */,
 				60E214982C3196A80054FDD3 /* Transaction.swift */,
-				60E214AB2C37299F0054FDD3 /* Contact.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -312,7 +309,7 @@
 			children = (
 				60E214A32C3460B90054FDD3 /* CardCollectionView.swift */,
 				60E214A52C3460E90054FDD3 /* SendMoneyButtonView.swift */,
-				60E214A72C3461460054FDD3 /* HeaderLabel.swift */,
+				60E214A72C3461460054FDD3 /* TransactionLabelView.swift */,
 				60E214A92C346E630054FDD3 /* TransactionTableView.swift */,
 			);
 			path = UIViews;
@@ -403,7 +400,7 @@
 				60E214A62C3460E90054FDD3 /* SendMoneyButtonView.swift in Sources */,
 				60E214942C3193BE0054FDD3 /* HomeViewModel.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
-				60E214A82C3461460054FDD3 /* HeaderLabel.swift in Sources */,
+				60E214A82C3461460054FDD3 /* TransactionLabelView.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
 				60E214A42C3460B90054FDD3 /* CardCollectionView.swift in Sources */,
 				60E2149C2C342B3F0054FDD3 /* CardCollectionViewCell.swift in Sources */,
@@ -419,7 +416,6 @@
 				60E214A02C342B7F0054FDD3 /* ContactCollectionViewCell.swift in Sources */,
 				60E214732C30CD3D0054FDD3 /* CustomTextFieldWrapper.swift in Sources */,
 				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
-				60E214AC2C37299F0054FDD3 /* Contact.swift in Sources */,
 				60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */,
 				60E214992C3196A80054FDD3 /* Transaction.swift in Sources */,
 				60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */,

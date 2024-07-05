@@ -74,7 +74,7 @@ class TransactionTableViewCell: UITableViewCell {
     
     func configure(with transaction: Transaction, fromUserName: String, toUserName: String, currentUserId: String) {
         transactionLabel.text = transaction.isIncoming ?? false ? "From: \(fromUserName)" : "To: \(toUserName)"
-        amountLabel.text = "\(String(format: "%.2f", transaction.amount)) ₾"
+        amountLabel.text = String(format: "%.2f", transaction.amount)
         amountLabel.textColor = transaction.isIncoming ?? false ? .green : .red
         
         let dateFormatter = DateFormatter()
