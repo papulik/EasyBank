@@ -24,7 +24,8 @@ class HomeViewModel {
     var users: [User] = []
     var transactions: [Transaction] = []
     var userNames: [String: String] = [:]
-    
+    var contacts: [Contact] = []
+
     func fetchCurrentUser() {
         print("Fetching current user")
         FirestoreService.shared.getCurrentUser { [weak self] result in
@@ -119,5 +120,18 @@ class HomeViewModel {
         } catch {
             delegate?.didLogout(success: false)
         }
+    }
+    
+    func generateDummyContacts() -> [Contact] {
+        let dummyContacts = [
+            Contact(id: UUID().uuidString, name: "Alice", imageName: "contacts1"),
+            Contact(id: UUID().uuidString, name: "Bob", imageName: "contacts2"),
+            Contact(id: UUID().uuidString, name: "Eve", imageName: "contacts3"),
+            Contact(id: UUID().uuidString, name: "Charlie", imageName: "contacts4"),
+            Contact(id: UUID().uuidString, name: "Billy", imageName: "contacts5"),
+            Contact(id: UUID().uuidString, name: "Nick", imageName: "contacts6"),
+            Contact(id: UUID().uuidString, name: "Loren", imageName: "contacts7"),
+        ]
+        return dummyContacts
     }
 }
