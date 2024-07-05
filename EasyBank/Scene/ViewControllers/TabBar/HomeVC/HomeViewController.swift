@@ -195,7 +195,7 @@ class HomeViewController: UIViewController {
     }
 }
 
-// MARK: - Card Collection View DataSource and Delegate
+// MARK: - Card Collection & Contacts View DataSource and Delegate
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == cardCollectionView.collectionView {
