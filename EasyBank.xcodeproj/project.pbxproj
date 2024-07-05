@@ -101,6 +101,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		60766CA12C387FE500E67741 /* SendVC */ = {
+			isa = PBXGroup;
+			children = (
+				60766C9F2C38457000E67741 /* SendMoneyVC.swift */,
+			);
+			path = SendVC;
+			sourceTree = "<group>";
+		};
 		60E214372C2DAFD10054FDD3 = {
 			isa = PBXGroup;
 			children = (
@@ -264,6 +272,7 @@
 				60E214802C30E0ED0054FDD3 /* TabBarController.swift */,
 				60E214922C3193A80054FDD3 /* HomeVC */,
 				60E214AF2C3842300054FDD3 /* CardsVC */,
+				60766CA12C387FE500E67741 /* SendVC */,
 			);
 			path = TabBar;
 			sourceTree = "<group>";
@@ -330,7 +339,6 @@
 			children = (
 				60E214AD2C38422A0054FDD3 /* CardsViewController.swift */,
 				60E214B02C3842680054FDD3 /* CardsViewModelDelegate.swift */,
-				60766C9F2C38457000E67741 /* SendMoneyVC.swift */,
 			);
 			path = CardsVC;
 			sourceTree = "<group>";
