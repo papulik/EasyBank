@@ -67,7 +67,8 @@ class RegisterViewModel: ObservableObject {
         guard let uid = authResult?.user.uid else { return }
         let emailParts = email.split(separator: "@")
         let userName = String(emailParts.first ?? "")
-        let user = User(id: uid, email: email, balance: 2493.50, name: userName)
+        let defaultCard = Card(id: UUID().uuidString, balance: 2493.50)
+        let user = User(id: uid, email: email, name: userName, cards: [defaultCard])
         FirestoreService.shared.createUser(uid: uid, user: user) { result in
             switch result {
             case .success:

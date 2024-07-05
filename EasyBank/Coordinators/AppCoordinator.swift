@@ -54,9 +54,16 @@ class AppCoordinator: Coordinator {
         let homeVC = HomeViewController(viewModel: homeViewModel)
         homeVC.coordinator = self
         
+        let cardsViewModel = CardsViewModel()
+        let cardsVC = CardsViewController(viewModel: cardsViewModel)
+        cardsVC.coordinator = self
+        
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
+        cardsVC.tabBarItem = UITabBarItem(title: "Cards", image: UIImage(systemName: "creditcard.fill"), tag: 1)
+        
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
-
-        tabBarController.viewControllers = [homeNavigationController]
+        let cardsNavigationController = UINavigationController(rootViewController: cardsVC)
+        
+        tabBarController.viewControllers = [homeNavigationController, cardsNavigationController]
     }
 }
