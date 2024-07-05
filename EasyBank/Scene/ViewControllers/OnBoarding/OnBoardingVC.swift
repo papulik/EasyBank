@@ -8,7 +8,7 @@
 import UIKit
 
 class OnBoardingVC: UIViewController {
-    weak var coordinator: OnboardingCoordinator?
+    weak var coordinator: AppCoordinator?
 
     private var pageViewController: UIPageViewController!
     private var pageControl: UIPageControl!
