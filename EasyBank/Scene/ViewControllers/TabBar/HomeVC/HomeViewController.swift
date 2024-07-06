@@ -95,6 +95,7 @@ class HomeViewController: UIViewController {
         setupViews()
         viewModel.fetchCurrentUser()
         viewModel.contacts = viewModel.generateDummyContacts()
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -180,14 +181,20 @@ class HomeViewController: UIViewController {
             contentView.bottomAnchor.constraint(greaterThanOrEqualTo: contactsCollectionView.bottomAnchor, constant: 20)
         ])
     }
+
+    func clearUserDefaults() {
+        let defaults = UserDefaults.standard
+        if let bundleID = Bundle.main.bundleIdentifier {
+            defaults.removePersistentDomain(forName: bundleID)
+        }
+        defaults.synchronize()
+    }
+
     
     private func sendMoneyTapped() {
-        print("Send Money button tapped")
-        guard let toUser = viewModel.users.first(where: { $0.id != viewModel.currentUser?.id }) else {
-            print("No other user found to send money to")
-            return
-        }
-        viewModel.sendMoney(toUser: toUser, amount: 10.0)
+        let sendMoneyVC = SendMoneyViewController(viewModel: viewModel)
+        sendMoneyVC.modalPresentationStyle = .pageSheet
+        present(sendMoneyVC, animated: true, completion: nil)
     }
     
     private func logoutTapped() {
@@ -199,7 +206,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == cardCollectionView.collectionView {
-            return 1
+            return viewModel.currentUser?.cards.count ?? 0
         } else {
             return viewModel.contacts.count
         }
@@ -208,8 +215,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == cardCollectionView.collectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardCollectionViewCell.reuseIdentifier, for: indexPath) as! CardCollectionViewCell
-            if let currentUser = viewModel.currentUser {
-                cell.configure(with: currentUser.id, balance: String(format: "%.2f", currentUser.balance))
+            if let card = viewModel.currentUser?.cards[indexPath.item] {
+                cell.configure(with: card.id, balance: String(format: "%.2f", card.balance))
             }
             return cell
         } else {
@@ -249,12 +256,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - HomeViewModelDelegate
 extension HomeViewController: HomeViewModelDelegate {
     func didFetchCurrentUser(_ user: User) {
         print("Current User: \(user)")
         cardCollectionView.collectionView.reloadData()
         contactsCollectionView.reloadData()
+        viewModel.fetchTransactions()
     }
     
     func didFetchUsers(_ users: [User]) {
@@ -268,9 +275,11 @@ extension HomeViewController: HomeViewModelDelegate {
     
     func didSendMoney() {
         print("Money sent successfully")
+        viewModel.fetchTransactions()
     }
     
     func didFetchTransactions(_ transactions: [Transaction]) {
+        print("Fetched Transactions: \(transactions)")
         viewModel.transactions = transactions.sorted { $0.timestamp > $1.timestamp }
         transactionTableView.tableView.reloadData()
     }

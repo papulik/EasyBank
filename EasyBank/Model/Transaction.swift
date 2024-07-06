@@ -10,6 +10,8 @@ import Foundation
 struct Transaction: Codable {
     let fromUserId: String
     let toUserId: String
+    let fromCardId: String
+    let toCardId: String
     let amount: Double
     let timestamp: Date
     let iconName: String?
