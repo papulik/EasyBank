@@ -120,3 +120,9 @@ class SendMoneyViewController: UIViewController {
         present(alert, animated: true, completion: nil)
     }
 }
+
+extension SendMoneyViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}

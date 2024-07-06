@@ -9,13 +9,27 @@ import UIKit
 
 class HalfSizePresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
-        guard let containerView = containerView else { return CGRect.zero }
-        return CGRect(x: 0, y: containerView.bounds.height / 2, width: containerView.bounds.width, height: containerView.bounds.height / 2)
+        guard let containerView = containerView else { return .zero }
+        let height = containerView.bounds.height / 2
+        let yOffset = containerView.bounds.height - height
+        return CGRect(x: 0, y: yOffset, width: containerView.bounds.width, height: height)
     }
     
     override func presentationTransitionWillBegin() {
-        super.presentationTransitionWillBegin()
-        presentedViewController.view.layer.cornerRadius = 15
-        presentedViewController.view.clipsToBounds = true
+        guard let containerView = containerView else { return }
+        let dimmingView = UIView(frame: containerView.bounds)
+        dimmingView.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        dimmingView.alpha = 0
+        containerView.addSubview(dimmingView)
+        
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
+            dimmingView.alpha = 1
+        })
+    }
+    
+    override func dismissalTransitionWillBegin() {
+        presentedViewController.transitionCoordinator?.animate(alongsideTransition: { _ in
+            self.containerView?.subviews.last?.alpha = 0
+        })
     }
 }

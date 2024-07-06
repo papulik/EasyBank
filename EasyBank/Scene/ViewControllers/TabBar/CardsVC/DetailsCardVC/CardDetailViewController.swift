@@ -9,8 +9,11 @@ import UIKit
 
 class CardDetailViewController: UIViewController {
     private var card: Card
-    private var balanceTextField: UITextField!
     private var viewModel: CardsViewModel
+    private var balanceTextField: UITextField!
+    private var expiryDateTextField: UITextField!
+    private var cardHolderNameTextField: UITextField!
+    private var cardTypeTextField: UITextField!
     
     init(card: Card, viewModel: CardsViewModel) {
         self.card = card
@@ -43,6 +46,21 @@ class CardDetailViewController: UIViewController {
         balanceTextField.borderStyle = .roundedRect
         balanceTextField.translatesAutoresizingMaskIntoConstraints = false
         
+        expiryDateTextField = UITextField()
+        expiryDateTextField.text = card.expiryDate
+        expiryDateTextField.borderStyle = .roundedRect
+        expiryDateTextField.translatesAutoresizingMaskIntoConstraints = false
+        
+        cardHolderNameTextField = UITextField()
+        cardHolderNameTextField.text = card.cardHolderName
+        cardHolderNameTextField.borderStyle = .roundedRect
+        cardHolderNameTextField.translatesAutoresizingMaskIntoConstraints = false
+        
+        cardTypeTextField = UITextField()
+        cardTypeTextField.text = card.type
+        cardTypeTextField.borderStyle = .roundedRect
+        cardTypeTextField.translatesAutoresizingMaskIntoConstraints = false
+        
         let saveButton = UIButton(type: .system)
         saveButton.setTitle("Save", for: .normal)
         saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
@@ -50,6 +68,9 @@ class CardDetailViewController: UIViewController {
         
         view.addSubview(idLabel)
         view.addSubview(balanceTextField)
+        view.addSubview(expiryDateTextField)
+        view.addSubview(cardHolderNameTextField)
+        view.addSubview(cardTypeTextField)
         view.addSubview(saveButton)
         
         NSLayoutConstraint.activate([
@@ -61,16 +82,36 @@ class CardDetailViewController: UIViewController {
             balanceTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             balanceTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
-            saveButton.topAnchor.constraint(equalTo: balanceTextField.bottomAnchor, constant: 20),
+            expiryDateTextField.topAnchor.constraint(equalTo: balanceTextField.bottomAnchor, constant: 20),
+            expiryDateTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            expiryDateTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            cardHolderNameTextField.topAnchor.constraint(equalTo: expiryDateTextField.bottomAnchor, constant: 20),
+            cardHolderNameTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            cardHolderNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            cardTypeTextField.topAnchor.constraint(equalTo: cardHolderNameTextField.bottomAnchor, constant: 20),
+            cardTypeTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            cardTypeTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            
+            saveButton.topAnchor.constraint(equalTo: cardTypeTextField.bottomAnchor, constant: 20),
             saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
     
     @objc private func saveTapped() {
-        guard let balanceText = balanceTextField.text, let newBalance = Double(balanceText) else {
-            showAlert(title: "Invalid Input", message: "Please enter a valid balance.")
+        guard let balanceText = balanceTextField.text, let newBalance = Double(balanceText),
+              let newExpiryDate = expiryDateTextField.text,
+              let newCardHolderName = cardHolderNameTextField.text,
+              let newType = cardTypeTextField.text else {
+            showAlert(title: "Invalid Input", message: "Please enter valid details.")
             return
         }
+        
+        card.balance = newBalance
+        card.expiryDate = newExpiryDate
+        card.cardHolderName = newCardHolderName
+        card.type = newType
         
         viewModel.updateCardBalance(cardId: card.id, newBalance: newBalance)
         dismiss(animated: true, completion: nil)

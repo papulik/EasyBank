@@ -31,9 +31,9 @@ class CardsViewModel {
         }
     }
     
-    func addCard(balance: Double) {
+    func addCard(balance: Double, expiryDate: String, cardHolderName: String, type: String) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
-        let newCard = Card(id: UUID().uuidString, balance: balance)
+        let newCard = Card(id: UUID().uuidString, balance: balance, expiryDate: expiryDate, cardHolderName: cardHolderName, type: type)
         FirestoreService.shared.getCurrentUser { [weak self] result in
             switch result {
             case .success(var user):
