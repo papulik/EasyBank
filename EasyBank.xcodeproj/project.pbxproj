@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		60766CA02C38457000E67741 /* SendMoneyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60766C9F2C38457000E67741 /* SendMoneyVC.swift */; };
+		60766CA32C39983100E67741 /* CardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60766CA22C39983100E67741 /* CardDetailViewController.swift */; };
+		60766CA62C39988900E67741 /* HalfSizePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60766CA52C39988900E67741 /* HalfSizePresentationController.swift */; };
 		60E214442C2DAFD10054FDD3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214432C2DAFD10054FDD3 /* AppDelegate.swift */; };
 		60E214482C2DAFD10054FDD3 /* OnBoardingVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214472C2DAFD10054FDD3 /* OnBoardingVC.swift */; };
 		60E2144D2C2DAFD20054FDD3 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 60E2144C2C2DAFD20054FDD3 /* Assets.xcassets */; };
@@ -49,6 +51,8 @@
 
 /* Begin PBXFileReference section */
 		60766C9F2C38457000E67741 /* SendMoneyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyVC.swift; sourceTree = "<group>"; };
+		60766CA22C39983100E67741 /* CardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewController.swift; sourceTree = "<group>"; };
+		60766CA52C39988900E67741 /* HalfSizePresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfSizePresentationController.swift; sourceTree = "<group>"; };
 		60E214402C2DAFD10054FDD3 /* EasyBank.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = EasyBank.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60E214432C2DAFD10054FDD3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		60E214472C2DAFD10054FDD3 /* OnBoardingVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnBoardingVC.swift; sourceTree = "<group>"; };
@@ -107,6 +111,14 @@
 				60766C9F2C38457000E67741 /* SendMoneyVC.swift */,
 			);
 			path = SendVC;
+			sourceTree = "<group>";
+		};
+		60766CA42C39986A00E67741 /* ReusableComponents */ = {
+			isa = PBXGroup;
+			children = (
+				60766CA52C39988900E67741 /* HalfSizePresentationController.swift */,
+			);
+			path = ReusableComponents;
 			sourceTree = "<group>";
 		};
 		60E214372C2DAFD10054FDD3 = {
@@ -270,6 +282,7 @@
 			isa = PBXGroup;
 			children = (
 				60E214802C30E0ED0054FDD3 /* TabBarController.swift */,
+				60766CA42C39986A00E67741 /* ReusableComponents */,
 				60E214922C3193A80054FDD3 /* HomeVC */,
 				60E214AF2C3842300054FDD3 /* CardsVC */,
 				60766CA12C387FE500E67741 /* SendVC */,
@@ -339,6 +352,7 @@
 			children = (
 				60E214AD2C38422A0054FDD3 /* CardsViewController.swift */,
 				60E214B02C3842680054FDD3 /* CardsViewModel.swift */,
+				60766CA22C39983100E67741 /* CardDetailViewController.swift */,
 			);
 			path = CardsVC;
 			sourceTree = "<group>";
@@ -429,7 +443,9 @@
 				60E214942C3193BE0054FDD3 /* HomeViewModel.swift in Sources */,
 				60E2145F2C2ECF6D0054FDD3 /* RegisterView.swift in Sources */,
 				60E214A82C3461460054FDD3 /* HeaderLabel.swift in Sources */,
+				60766CA32C39983100E67741 /* CardDetailViewController.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
+				60766CA62C39988900E67741 /* HalfSizePresentationController.swift in Sources */,
 				60E214A42C3460B90054FDD3 /* CardCollectionView.swift in Sources */,
 				60766CA02C38457000E67741 /* SendMoneyVC.swift in Sources */,
 				60E2149C2C342B3F0054FDD3 /* CardCollectionViewCell.swift in Sources */,

@@ -217,49 +217,6 @@ class FirestoreService {
         }
     }
     
-    func addCardToUser(userId: String, card: Card, completion: @escaping (Result<Void, Error>) -> Void) {
-        let userRef = db.collection("users").document(userId)
-        
-        userRef.getDocument { document, error in
-            if let document = document, document.exists {
-                do {
-                    var user = try document.data(as: User.self)
-                    user.cards.append(card)
-                    
-                    try userRef.setData(from: user) { error in
-                        if let error = error {
-                            completion(.failure(error))
-                        } else {
-                            self.saveData(user, forKey: "currentUser")
-                            completion(.success(()))
-                        }
-                    }
-                } catch {
-                    completion(.failure(error))
-                }
-            } else {
-                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
-            }
-        }
-    }
-    
-    func getCards(forUser userId: String, completion: @escaping (Result<[Card], Error>) -> Void) {
-        let userRef = db.collection("users").document(userId)
-        
-        userRef.getDocument { document, error in
-            if let document = document, document.exists {
-                do {
-                    let user = try document.data(as: User.self)
-                    completion(.success(user.cards))
-                } catch {
-                    completion(.failure(error))
-                }
-            } else {
-                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
-            }
-        }
-    }
-    
     private func updateLocalTransactions(with transaction: Transaction) {
         let userId = Auth.auth().currentUser?.uid ?? ""
         if var cachedTransactions: [Transaction] = loadData(forKey: "transactions_\(userId)", as: [Transaction].self) {
@@ -267,6 +224,34 @@ class FirestoreService {
             saveData(cachedTransactions, forKey: "transactions_\(userId)")
         } else {
             saveData([transaction], forKey: "transactions_\(userId)")
+        }
+    }
+    
+    func updateCardBalance(forUser userId: String, cardId: String, newBalance: Double, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    var user = try document.data(as: User.self)
+                    if let index = user.cards.firstIndex(where: { $0.id == cardId }) {
+                        user.cards[index].balance = newBalance
+                        try userRef.setData(from: user) { error in
+                            if let error = error {
+                                completion(.failure(error))
+                            } else {
+                                self.updateLocalUser(user)
+                                completion(.success(()))
+                            }
+                        }
+                    } else {
+                        completion(.failure(NSError(domain: "FirestoreService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Card not found"])))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
+            }
         }
     }
     
@@ -279,6 +264,30 @@ class FirestoreService {
             if let index = users.firstIndex(where: { $0.id == user.id }) {
                 users[index] = user
                 saveData(users, forKey: "users")
+            }
+        }
+    }
+    
+    func deleteCard(forUser userId: String, cardId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    var user = try document.data(as: User.self)
+                    user.cards.removeAll { $0.id == cardId }
+                    try userRef.setData(from: user) { error in
+                        if let error = error {
+                            completion(.failure(error))
+                        } else {
+                            self.updateLocalUser(user)
+                            completion(.success(()))
+                        }
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
             }
         }
     }
