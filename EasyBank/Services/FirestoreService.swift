@@ -217,6 +217,49 @@ class FirestoreService {
         }
     }
     
+    func addCardToUser(userId: String, card: Card, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    var user = try document.data(as: User.self)
+                    user.cards.append(card)
+                    
+                    try userRef.setData(from: user) { error in
+                        if let error = error {
+                            completion(.failure(error))
+                        } else {
+                            self.saveData(user, forKey: "currentUser")
+                            completion(.success(()))
+                        }
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
+            }
+        }
+    }
+    
+    func getCards(forUser userId: String, completion: @escaping (Result<[Card], Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    let user = try document.data(as: User.self)
+                    completion(.success(user.cards))
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
+            }
+        }
+    }
+    
     private func updateLocalTransactions(with transaction: Transaction) {
         let userId = Auth.auth().currentUser?.uid ?? ""
         if var cachedTransactions: [Transaction] = loadData(forKey: "transactions_\(userId)", as: [Transaction].self) {

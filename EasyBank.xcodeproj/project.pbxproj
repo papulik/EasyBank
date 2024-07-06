@@ -44,7 +44,7 @@
 		60E214AA2C346E630054FDD3 /* TransactionTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214A92C346E630054FDD3 /* TransactionTableView.swift */; };
 		60E214AC2C37299F0054FDD3 /* Contact.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214AB2C37299F0054FDD3 /* Contact.swift */; };
 		60E214AE2C38422A0054FDD3 /* CardsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214AD2C38422A0054FDD3 /* CardsViewController.swift */; };
-		60E214B12C3842680054FDD3 /* CardsViewModelDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214B02C3842680054FDD3 /* CardsViewModelDelegate.swift */; };
+		60E214B12C3842680054FDD3 /* CardsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60E214B02C3842680054FDD3 /* CardsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -83,7 +83,7 @@
 		60E214A92C346E630054FDD3 /* TransactionTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableView.swift; sourceTree = "<group>"; };
 		60E214AB2C37299F0054FDD3 /* Contact.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Contact.swift; sourceTree = "<group>"; };
 		60E214AD2C38422A0054FDD3 /* CardsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsViewController.swift; sourceTree = "<group>"; };
-		60E214B02C3842680054FDD3 /* CardsViewModelDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsViewModelDelegate.swift; sourceTree = "<group>"; };
+		60E214B02C3842680054FDD3 /* CardsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -338,7 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				60E214AD2C38422A0054FDD3 /* CardsViewController.swift */,
-				60E214B02C3842680054FDD3 /* CardsViewModelDelegate.swift */,
+				60E214B02C3842680054FDD3 /* CardsViewModel.swift */,
 			);
 			path = CardsVC;
 			sourceTree = "<group>";
@@ -448,7 +448,7 @@
 				60E2146D2C305C000054FDD3 /* CustomSecureFieldView.swift in Sources */,
 				60E214AC2C37299F0054FDD3 /* Contact.swift in Sources */,
 				60E2147A2C30D0090054FDD3 /* RegisterViewModel.swift in Sources */,
-				60E214B12C3842680054FDD3 /* CardsViewModelDelegate.swift in Sources */,
+				60E214B12C3842680054FDD3 /* CardsViewModel.swift in Sources */,
 				60E214992C3196A80054FDD3 /* Transaction.swift in Sources */,
 				60E214752C30CD5C0054FDD3 /* CustomSecureFieldWrapper.swift in Sources */,
 				60E214612C2ECF840054FDD3 /* LoginView.swift in Sources */,

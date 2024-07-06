@@ -95,11 +95,11 @@ class HomeViewController: UIViewController {
         setupViews()
         viewModel.fetchCurrentUser()
         viewModel.contacts = viewModel.generateDummyContacts()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.refreshCurrentUser()
         if viewModel.currentUser != nil {
             viewModel.fetchTransactions()
         } else {
@@ -181,15 +181,6 @@ class HomeViewController: UIViewController {
             contentView.bottomAnchor.constraint(greaterThanOrEqualTo: contactsCollectionView.bottomAnchor, constant: 20)
         ])
     }
-
-    func clearUserDefaults() {
-        let defaults = UserDefaults.standard
-        if let bundleID = Bundle.main.bundleIdentifier {
-            defaults.removePersistentDomain(forName: bundleID)
-        }
-        defaults.synchronize()
-    }
-
     
     private func sendMoneyTapped() {
         let sendMoneyVC = SendMoneyViewController(viewModel: viewModel)
