@@ -13,41 +13,22 @@ class SendMoneyViewController: UIViewController {
     init(viewModel: HomeViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
+        modalPresentationStyle = .custom
+        transitioningDelegate = self
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let fromCardIdTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "From Card ID"
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
+    private let fromCardIdTextField = CustomTextField(placeholder: "From Card ID")
+    private let toCardIdTextField = CustomTextField(placeholder: "To Card ID")
+    private let amountTextField = CustomTextField(placeholder: "Amount", keyboardType: .decimalPad)
     
-    private let toCardIdTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "To Card ID"
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
-    private let amountTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder = "Amount"
-        textField.keyboardType = .decimalPad
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
-    private let sendButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Send Money", for: .normal)
-        button.translatesAutoresizingMaskIntoConstraints = false
+    private lazy var sendButton: TabBarsCustomButton = {
+        let button = TabBarsCustomButton(title: "Send Money", action: UIAction { [weak self] _ in
+            self?.sendMoneyTapped()
+        })
         return button
     }()
     
@@ -55,17 +36,22 @@ class SendMoneyViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .white
         setupViews()
-        setupActions()
     }
     
     private func setupViews() {
+        let closeButton = DismissButton()
+        
+        view.addSubview(closeButton)
         view.addSubview(fromCardIdTextField)
         view.addSubview(toCardIdTextField)
         view.addSubview(amountTextField)
         view.addSubview(sendButton)
         
         NSLayoutConstraint.activate([
-            fromCardIdTextField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            fromCardIdTextField.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
             fromCardIdTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             fromCardIdTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
@@ -78,14 +64,10 @@ class SendMoneyViewController: UIViewController {
             amountTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             sendButton.topAnchor.constraint(equalTo: amountTextField.bottomAnchor, constant: 20),
-            sendButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            sendButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            sendButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            sendButton.heightAnchor.constraint(equalToConstant: 44)
         ])
-    }
-    
-    private func setupActions() {
-        sendButton.addAction(UIAction { [weak self] _ in
-            self?.sendMoneyTapped()
-        }, for: .touchUpInside)
     }
     
     private func sendMoneyTapped() {
@@ -93,12 +75,9 @@ class SendMoneyViewController: UIViewController {
               let toCardId = toCardIdTextField.text,
               let amountText = amountTextField.text,
               let amount = Double(amountText) else {
-            print("Invalid input")
             showAlert(title: "Invalid Input", message: "Please check the input values.")
             return
         }
-        
-        print("Sending money from \(fromCardId) to \(toCardId) amount \(amount)")
         
         viewModel.sendMoney(fromCardId: fromCardId, toCardId: toCardId, amount: amount) { [weak self] result in
             switch result {
@@ -118,5 +97,12 @@ class SendMoneyViewController: UIViewController {
             completion?()
         }))
         present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension SendMoneyViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

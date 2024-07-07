@@ -17,4 +17,7 @@ struct User: Codable {
 struct Card: Codable {
     let id: String
     var balance: Double
+    var expiryDate: String
+    var cardHolderName: String
+    var type: String
 }

@@ -39,6 +39,19 @@ class HomeViewModel {
             }
         }
     }
+    
+    func refreshCurrentUser() {
+        guard (Auth.auth().currentUser?.uid) != nil else { return }
+        FirestoreService.shared.getCurrentUser { [weak self] result in
+            switch result {
+            case .success(let user):
+                self?.currentUser = user
+                self?.delegate?.didFetchCurrentUser(user)
+            case .failure(let error):
+                self?.delegate?.didEncounterError("Error refreshing current user: \(error.localizedDescription)")
+            }
+        }
+    }
 
     private func fetchUsers() {
         FirestoreService.shared.getUsers { [weak self] result in

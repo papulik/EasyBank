@@ -41,13 +41,12 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private lazy var sendMoneyButtonView: SendMoneyButtonView = {
-        let view = SendMoneyButtonView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.button.addAction(UIAction { [weak self] _ in
+    private lazy var sendMoneyButton: TabBarsCustomButton = {
+        let action = UIAction { [weak self] _ in
             self?.sendMoneyTapped()
-        }, for: .touchUpInside)
-        return view
+        }
+        let button = TabBarsCustomButton(title: "Send Money", action: action)
+        return button
     }()
     
     private lazy var transactionLabelView: HeaderLabel = {
@@ -95,11 +94,11 @@ class HomeViewController: UIViewController {
         setupViews()
         viewModel.fetchCurrentUser()
         viewModel.contacts = viewModel.generateDummyContacts()
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.refreshCurrentUser()
         if viewModel.currentUser != nil {
             viewModel.fetchTransactions()
         } else {
@@ -132,7 +131,7 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(cardCollectionView)
-        contentView.addSubview(sendMoneyButtonView)
+        contentView.addSubview(sendMoneyButton)
         contentView.addSubview(transactionLabelView)
         contentView.addSubview(transactionTableView)
         contentView.addSubview(recentContactsLabelView)
@@ -155,12 +154,12 @@ class HomeViewController: UIViewController {
             cardCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            sendMoneyButtonView.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
-            sendMoneyButtonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            sendMoneyButtonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            sendMoneyButtonView.heightAnchor.constraint(equalToConstant: 44),
+            sendMoneyButton.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
+            sendMoneyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            sendMoneyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44),
             
-            transactionLabelView.topAnchor.constraint(equalTo: sendMoneyButtonView.bottomAnchor, constant: 20),
+            transactionLabelView.topAnchor.constraint(equalTo: sendMoneyButton.bottomAnchor, constant: 20),
             transactionLabelView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
             
@@ -181,19 +180,11 @@ class HomeViewController: UIViewController {
             contentView.bottomAnchor.constraint(greaterThanOrEqualTo: contactsCollectionView.bottomAnchor, constant: 20)
         ])
     }
-
-    func clearUserDefaults() {
-        let defaults = UserDefaults.standard
-        if let bundleID = Bundle.main.bundleIdentifier {
-            defaults.removePersistentDomain(forName: bundleID)
-        }
-        defaults.synchronize()
-    }
-
     
     private func sendMoneyTapped() {
         let sendMoneyVC = SendMoneyViewController(viewModel: viewModel)
-        sendMoneyVC.modalPresentationStyle = .pageSheet
+        sendMoneyVC.modalPresentationStyle = .custom
+        sendMoneyVC.transitioningDelegate = self
         present(sendMoneyVC, animated: true, completion: nil)
     }
     
@@ -290,5 +281,12 @@ extension HomeViewController: HomeViewModelDelegate {
         } else {
             print("Logout failed")
         }
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

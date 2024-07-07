@@ -13,12 +13,8 @@ struct LoginView: View {
     @State private var isLoading = false
 
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding(.top, 100)
-            } else {
+        ZStack {
+            VStack {
                 ScrollView {
                     VStack {
                         header
@@ -54,6 +50,10 @@ struct LoginView: View {
                     }
                 }
                 .navigationBarBackButtonHidden(true)
+            }
+
+            if isLoading {
+                CustomSpinnerView()
             }
         }
     }
