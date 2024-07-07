@@ -10,7 +10,7 @@ import UIKit
 class HalfSizePresentationController: UIPresentationController {
     override var frameOfPresentedViewInContainerView: CGRect {
         guard let containerView = containerView else { return .zero }
-        let height = containerView.bounds.height / 2
+        let height = containerView.bounds.height * 0.60
         let yOffset = containerView.bounds.height - height
         return CGRect(x: 0, y: yOffset, width: containerView.bounds.width, height: height)
     }

@@ -66,13 +66,16 @@ class CardsViewModel {
         }
     }
     
-    func updateCardBalance(cardId: String, newBalance: Double) {
+    func updateCardDetails(cardId: String, newBalance: Double, newExpiryDate: String, newCardHolderName: String, newType: String) {
         guard let userId = Auth.auth().currentUser?.uid else { return }
-        FirestoreService.shared.updateCardBalance(forUser: userId, cardId: cardId, newBalance: newBalance) { [weak self] result in
+        FirestoreService.shared.updateCardDetails(forUser: userId, cardId: cardId, newBalance: newBalance, newExpiryDate: newExpiryDate, newCardHolderName: newCardHolderName, newType: newType) { [weak self] result in
             switch result {
             case .success:
                 if let index = self?.cards.firstIndex(where: { $0.id == cardId }) {
                     self?.cards[index].balance = newBalance
+                    self?.cards[index].expiryDate = newExpiryDate
+                    self?.cards[index].cardHolderName = newCardHolderName
+                    self?.cards[index].type = newType
                     self?.delegate?.didUpdateCards()
                 }
             case .failure(let error):

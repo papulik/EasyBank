@@ -15,12 +15,8 @@ struct RegisterView: View {
     @State private var isLoading = false
 
     var body: some View {
-        VStack {
-            if isLoading {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-                    .padding(.top, 100)
-            } else {
+        ZStack {
+            VStack {
                 header
                 CustomTextFieldWrapper(text: $viewModel.email, placeholder: "Your Email", isValid: viewModel.isEmailValid)
                     .frame(height: 60)
@@ -54,8 +50,12 @@ struct RegisterView: View {
                 .padding(.top, 20)
                 .padding(.bottom, 30)
             }
+            .navigationBarBackButtonHidden(true)
+
+            if isLoading {
+                CustomSpinnerView()
+            }
         }
-        .navigationBarBackButtonHidden(true)
     }
     
     private var header: some View {

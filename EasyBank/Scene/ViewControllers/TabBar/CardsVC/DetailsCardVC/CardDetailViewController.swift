@@ -10,10 +10,10 @@ import UIKit
 class CardDetailViewController: UIViewController {
     private var card: Card
     private var viewModel: CardsViewModel
-    private var balanceTextField: UITextField!
-    private var expiryDateTextField: UITextField!
-    private var cardHolderNameTextField: UITextField!
-    private var cardTypeTextField: UITextField!
+    private var balanceTextField: CustomTextField!
+    private var expiryDateTextField: CustomTextField!
+    private var cardHolderNameTextField: CustomTextField!
+    private var cardTypeTextField: CustomTextField!
     
     init(card: Card, viewModel: CardsViewModel) {
         self.card = card
@@ -36,36 +36,32 @@ class CardDetailViewController: UIViewController {
     }
     
     private func setupViews() {
+        let closeButton = DismissButton()
         let idLabel = UILabel()
         idLabel.text = "Card ID: \(card.id)"
         idLabel.translatesAutoresizingMaskIntoConstraints = false
+        idLabel.isUserInteractionEnabled = true
         
-        balanceTextField = UITextField()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyCardId))
+        idLabel.addGestureRecognizer(tapGesture)
+        
+        balanceTextField = CustomTextField(placeholder: "Balance", keyboardType: .decimalPad)
         balanceTextField.text = String(card.balance)
-        balanceTextField.keyboardType = .decimalPad
-        balanceTextField.borderStyle = .roundedRect
-        balanceTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        expiryDateTextField = UITextField()
+        expiryDateTextField = CustomTextField(placeholder: "Expiry Date")
         expiryDateTextField.text = card.expiryDate
-        expiryDateTextField.borderStyle = .roundedRect
-        expiryDateTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        cardHolderNameTextField = UITextField()
+        cardHolderNameTextField = CustomTextField(placeholder: "Card Holder Name")
         cardHolderNameTextField.text = card.cardHolderName
-        cardHolderNameTextField.borderStyle = .roundedRect
-        cardHolderNameTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        cardTypeTextField = UITextField()
+        cardTypeTextField = CustomTextField(placeholder: "Card Type")
         cardTypeTextField.text = card.type
-        cardTypeTextField.borderStyle = .roundedRect
-        cardTypeTextField.translatesAutoresizingMaskIntoConstraints = false
         
-        let saveButton = UIButton(type: .system)
-        saveButton.setTitle("Save", for: .normal)
-        saveButton.addTarget(self, action: #selector(saveTapped), for: .touchUpInside)
-        saveButton.translatesAutoresizingMaskIntoConstraints = false
+        let saveButton = TabBarsCustomButton(title: "Save", action: UIAction { [weak self] _ in
+            self?.saveTapped()
+        })
         
+        view.addSubview(closeButton)
         view.addSubview(idLabel)
         view.addSubview(balanceTextField)
         view.addSubview(expiryDateTextField)
@@ -74,7 +70,10 @@ class CardDetailViewController: UIViewController {
         view.addSubview(saveButton)
         
         NSLayoutConstraint.activate([
-            idLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
+            closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            
+            idLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
             idLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             idLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
@@ -95,11 +94,18 @@ class CardDetailViewController: UIViewController {
             cardTypeTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             
             saveButton.topAnchor.constraint(equalTo: cardTypeTextField.bottomAnchor, constant: 20),
-            saveButton.centerXAnchor.constraint(equalTo: view.centerXAnchor)
+            saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            saveButton.heightAnchor.constraint(equalToConstant: 44)
         ])
     }
     
-    @objc private func saveTapped() {
+    @objc private func copyCardId() {
+        UIPasteboard.general.string = card.id
+        showAlert(title: "Copied", message: "Card ID copied to clipboard.")
+    }
+    
+    private func saveTapped() {
         guard let balanceText = balanceTextField.text, let newBalance = Double(balanceText),
               let newExpiryDate = expiryDateTextField.text,
               let newCardHolderName = cardHolderNameTextField.text,
@@ -113,7 +119,7 @@ class CardDetailViewController: UIViewController {
         card.cardHolderName = newCardHolderName
         card.type = newType
         
-        viewModel.updateCardBalance(cardId: card.id, newBalance: newBalance)
+        viewModel.updateCardDetails(cardId: card.id, newBalance: newBalance, newExpiryDate: newExpiryDate, newCardHolderName: newCardHolderName, newType: newType)
         dismiss(animated: true, completion: nil)
     }
     
