@@ -15,6 +15,8 @@ class CardDetailViewController: UIViewController {
     private var cardHolderNameTextField: CustomTextField!
     private var cardTypeTextField: CustomTextField!
     
+    private let datePicker = UIDatePicker()
+
     init(card: Card, viewModel: CardsViewModel) {
         self.card = card
         self.viewModel = viewModel
@@ -33,6 +35,7 @@ class CardDetailViewController: UIViewController {
         title = "Card Details"
         
         setupViews()
+        setupDatePicker()
     }
     
     private func setupViews() {
@@ -42,6 +45,7 @@ class CardDetailViewController: UIViewController {
         idLabel.translatesAutoresizingMaskIntoConstraints = false
         idLabel.isUserInteractionEnabled = true
         
+        //MARK: - Tap gesture for copying card ID
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyCardId))
         idLabel.addGestureRecognizer(tapGesture)
         
@@ -57,9 +61,16 @@ class CardDetailViewController: UIViewController {
         cardTypeTextField = CustomTextField(placeholder: "Card Type")
         cardTypeTextField.text = card.type
         
+        //MARK: - Save button with UIAction
         let saveButton = TabBarsCustomButton(title: "Save", action: UIAction { [weak self] _ in
             self?.saveTapped()
         })
+        
+        //MARK: - Delete button with UIAction
+        let deleteButton = TabBarsCustomButton(title: "Delete", action: UIAction { [weak self] _ in
+            self?.deleteTapped()
+        })
+        deleteButton.backgroundColor = .red
         
         view.addSubview(closeButton)
         view.addSubview(idLabel)
@@ -68,6 +79,7 @@ class CardDetailViewController: UIViewController {
         view.addSubview(cardHolderNameTextField)
         view.addSubview(cardTypeTextField)
         view.addSubview(saveButton)
+        view.addSubview(deleteButton)
         
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -96,8 +108,45 @@ class CardDetailViewController: UIViewController {
             saveButton.topAnchor.constraint(equalTo: cardTypeTextField.bottomAnchor, constant: 20),
             saveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             saveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            saveButton.heightAnchor.constraint(equalToConstant: 44)
+            saveButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            deleteButton.topAnchor.constraint(equalTo: saveButton.bottomAnchor, constant: 10),
+            deleteButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            deleteButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            deleteButton.heightAnchor.constraint(equalToConstant: 44)
         ])
+    }
+    
+    private func setupDatePicker() {
+        datePicker.datePickerMode = .date
+        datePicker.preferredDatePickerStyle = .wheels
+        datePicker.addTarget(self, action: #selector(dateChanged), for: .valueChanged)
+        
+        let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100.0, height: 44.0))
+        
+        //MARK: - Done button with UIAction to set the selected date and dismiss the picker
+        let doneAction = UIAction { [weak self] _ in
+            self?.expiryDateTextField.text = self?.formatDate(self?.datePicker.date ?? Date())
+            self?.expiryDateTextField.resignFirstResponder()
+        }
+        
+        let doneButton = UIBarButtonItem(systemItem: .done, primaryAction: doneAction, menu: nil)
+        let flexSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        toolbar.setItems([flexSpace, doneButton], animated: true)
+        
+        expiryDateTextField.inputAccessoryView = toolbar
+        expiryDateTextField.inputView = datePicker
+    }
+    
+    @objc private func dateChanged() {
+        expiryDateTextField.text = formatDate(datePicker.date)
+    }
+    
+    private func formatDate(_ date: Date) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        return dateFormatter.string(from: date)
     }
     
     @objc private func copyCardId() {
@@ -105,6 +154,7 @@ class CardDetailViewController: UIViewController {
         showAlert(title: "Copied", message: "Card ID copied to clipboard.")
     }
     
+    //MARK: - Action for Save button
     private func saveTapped() {
         guard let balanceText = balanceTextField.text, let newBalance = Double(balanceText),
               let newExpiryDate = expiryDateTextField.text,
@@ -121,6 +171,18 @@ class CardDetailViewController: UIViewController {
         
         viewModel.updateCardDetails(cardId: card.id, newBalance: newBalance, newExpiryDate: newExpiryDate, newCardHolderName: newCardHolderName, newType: newType)
         dismiss(animated: true, completion: nil)
+    }
+    
+    //MARK: - Action for Delete button
+    private func deleteTapped() {
+        let alert = UIAlertController(title: "Delete Card", message: "Are you sure you want to delete this card?", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+            self.viewModel.deleteCard(cardId: self.card.id)
+            self.dismiss(animated: true, completion: nil)
+        })
+        present(alert, animated: true, completion: nil)
     }
     
     private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {

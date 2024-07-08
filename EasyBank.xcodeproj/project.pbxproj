@@ -150,6 +150,14 @@
 			path = DetailsCardVC;
 			sourceTree = "<group>";
 		};
+		60766CB32C3B0B5600E67741 /* Loader */ = {
+			isa = PBXGroup;
+			children = (
+				60766CB12C3AD6FC00E67741 /* CustomSpinnerView.swift */,
+			);
+			path = Loader;
+			sourceTree = "<group>";
+		};
 		60E214372C2DAFD10054FDD3 = {
 			isa = PBXGroup;
 			children = (
@@ -259,7 +267,7 @@
 				60E214762C30CD8F0054FDD3 /* TextField */,
 				60E214772C30CDA60054FDD3 /* SecureField */,
 				60E214782C30CDB00054FDD3 /* Button */,
-				60766CB12C3AD6FC00E67741 /* CustomSpinnerView.swift */,
+				60766CB32C3B0B5600E67741 /* Loader */,
 			);
 			path = ReusableViews;
 			sourceTree = "<group>";
