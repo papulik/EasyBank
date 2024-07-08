@@ -58,6 +58,7 @@ class HomeViewController: UIViewController {
     
     private lazy var transactionTableView: TransactionTableView = {
         let view = TransactionTableView()
+        view.tableView.separatorStyle = .none
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tableView.dataSource = self
         view.tableView.delegate = self

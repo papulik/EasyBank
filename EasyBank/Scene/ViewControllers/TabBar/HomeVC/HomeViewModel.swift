@@ -28,14 +28,16 @@ class HomeViewModel {
 
     func fetchCurrentUser() {
         FirestoreService.shared.getCurrentUser { [weak self] result in
-            switch result {
-            case .success(let user):
-                self?.currentUser = user
-                self?.delegate?.didFetchCurrentUser(user)
-                self?.fetchUsers()
-                self?.fetchTransactions()
-            case .failure(let error):
-                self?.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self?.currentUser = user
+                    self?.delegate?.didFetchCurrentUser(user)
+                    self?.fetchUsers()
+                    self?.fetchTransactions()
+                case .failure(let error):
+                    self?.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -43,38 +45,44 @@ class HomeViewModel {
     func refreshCurrentUser() {
         guard (Auth.auth().currentUser?.uid) != nil else { return }
         FirestoreService.shared.getCurrentUser { [weak self] result in
-            switch result {
-            case .success(let user):
-                self?.currentUser = user
-                self?.delegate?.didFetchCurrentUser(user)
-            case .failure(let error):
-                self?.delegate?.didEncounterError("Error refreshing current user: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let user):
+                    self?.currentUser = user
+                    self?.delegate?.didFetchCurrentUser(user)
+                case .failure(let error):
+                    self?.delegate?.didEncounterError("Error refreshing current user: \(error.localizedDescription)")
+                }
             }
         }
     }
 
     private func fetchUsers() {
         FirestoreService.shared.getUsers { [weak self] result in
-            switch result {
-            case .success(let users):
-                self?.users = users
-                self?.delegate?.didFetchUsers(users)
-            case .failure(let error):
-                self?.delegate?.didEncounterError("Error fetching users: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let users):
+                    self?.users = users
+                    self?.delegate?.didFetchUsers(users)
+                case .failure(let error):
+                    self?.delegate?.didEncounterError("Error fetching users: \(error.localizedDescription)")
+                }
             }
         }
     }
 
     func sendMoney(fromCardId: String, toCardId: String, amount: Double, completion: @escaping (Result<Void, Error>) -> Void) {
         FirestoreService.shared.sendMoney(fromCardId: fromCardId, toCardId: toCardId, amount: amount) { [weak self] result in
-            switch result {
-            case .success:
-                self?.delegate?.didSendMoney()
-                self?.fetchCurrentUser()
-                completion(.success(()))
-            case .failure(let error):
-                self?.delegate?.didEncounterError("Error sending money: \(error.localizedDescription)")
-                completion(.failure(error))
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    self?.delegate?.didSendMoney()
+                    self?.fetchCurrentUser()
+                    completion(.success(()))
+                case .failure(let error):
+                    self?.delegate?.didEncounterError("Error sending money: \(error.localizedDescription)")
+                    completion(.failure(error))
+                }
             }
         }
     }
@@ -83,18 +91,20 @@ class HomeViewModel {
         guard let userId = currentUser?.id else { return }
         print("Fetching transactions for user \(userId)")
         FirestoreService.shared.getTransactions(forUser: userId) { [weak self] result in
-            switch result {
-            case .success(let transactions):
-                print("Fetched transactions: \(transactions)")
-                self?.transactions = transactions.map { transaction in
-                    var transaction = transaction
-                    transaction.isIncoming = (transaction.toUserId == userId)
-                    return transaction
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let transactions):
+                    print("Fetched transactions: \(transactions)")
+                    self?.transactions = transactions.map { transaction in
+                        var transaction = transaction
+                        transaction.isIncoming = (transaction.toUserId == userId)
+                        return transaction
+                    }
+                    self?.sortTransactionsByDate()
+                    self?.fetchUserNames(for: self?.transactions ?? [])
+                case .failure(let error):
+                    self?.delegate?.didEncounterError("Error fetching transactions: \(error.localizedDescription)")
                 }
-                self?.sortTransactionsByDate()
-                self?.fetchUserNames(for: self?.transactions ?? [])
-            case .failure(let error):
-                self?.delegate?.didEncounterError("Error fetching transactions: \(error.localizedDescription)")
             }
         }
     }
@@ -102,12 +112,14 @@ class HomeViewModel {
     private func fetchUserNames(for transactions: [Transaction]) {
         let userIds = Array(Set(transactions.map { $0.fromUserId } + transactions.map { $0.toUserId }))
         FirestoreService.shared.getUserNames(userIds: userIds) { [weak self] result in
-            switch result {
-            case .success(let userNames):
-                self?.userNames = userNames
-                self?.delegate?.didFetchTransactions(self?.transactions ?? [])
-            case .failure(let error):
-                self?.delegate?.didEncounterError("Error fetching user names: \(error.localizedDescription)")
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let userNames):
+                    self?.userNames = userNames
+                    self?.delegate?.didFetchTransactions(self?.transactions ?? [])
+                case .failure(let error):
+                    self?.delegate?.didEncounterError("Error fetching user names: \(error.localizedDescription)")
+                }
             }
         }
     }
@@ -119,9 +131,13 @@ class HomeViewModel {
     func logout() {
         do {
             try Auth.auth().signOut()
-            delegate?.didLogout(success: true)
+            DispatchQueue.main.async {
+                self.delegate?.didLogout(success: true)
+            }
         } catch {
-            delegate?.didLogout(success: false)
+            DispatchQueue.main.async {
+                self.delegate?.didLogout(success: false)
+            }
         }
     }
     
