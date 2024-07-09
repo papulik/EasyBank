@@ -20,7 +20,6 @@ class FirestoreService {
     private func saveData<T: Codable>(_ data: T, forKey key: String) {
         let encoder = JSONEncoder()
         if let encoded = try? encoder.encode(data) {
-            print("Saving data to UserDefaults with key: \(key)")
             userDefaults.set(encoded, forKey: key)
         }
     }
@@ -29,7 +28,6 @@ class FirestoreService {
         if let savedData = userDefaults.object(forKey: key) as? Data {
             let decoder = JSONDecoder()
             if let loadedData = try? decoder.decode(type, from: savedData) {
-                print("Loaded data from UserDefaults with key: \(key)")
                 return loadedData
             }
         }
@@ -88,32 +86,87 @@ class FirestoreService {
         }
     }
     
-    func sendMoney(fromUser: User, toUser: User, amount: Double, completion: @escaping (Result<Void, Error>) -> Void) {
-        guard fromUser.balance >= amount else {
-            completion(.failure(NSError(domain: "FirestoreService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Insufficient balance"])))
-            return
-        }
+    func sendMoney(fromCardId: String, toCardId: String, amount: Double, completion: @escaping (Result<Void, Error>) -> Void) {
+        print("Initiating sendMoney from \(fromCardId) to \(toCardId) amount \(amount)")
         
-        let transaction = Transaction(fromUserId: fromUser.id, toUserId: toUser.id, amount: amount, timestamp: Date(), iconName: "georgia")
+        let usersCollection = db.collection("users")
         
-        let batch = db.batch()
-        
-        let fromUserRef = db.collection("users").document(fromUser.id)
-        let toUserRef = db.collection("users").document(toUser.id)
-        let transactionRef = db.collection("transactions").document()
-        
-        batch.updateData(["balance": fromUser.balance - amount], forDocument: fromUserRef)
-        batch.updateData(["balance": toUser.balance + amount], forDocument: toUserRef)
-        batch.setData(try! Firestore.Encoder().encode(transaction), forDocument: transactionRef)
-        
-        batch.commit { error in
+        usersCollection.getDocuments { querySnapshot, error in
             if let error = error {
+                print("Error fetching users: \(error)")
                 completion(.failure(error))
-            } else {
-                self.updateLocalTransactions(with: transaction)
-                self.updateLocalUser(fromUser)
-                self.updateLocalUser(toUser)
-                completion(.success(()))
+                return
+            }
+            
+            guard let documents = querySnapshot?.documents else {
+                print("No users found")
+                completion(.failure(NSError(domain: "FirestoreService", code: -1, userInfo: [NSLocalizedDescriptionKey: "No users found"])))
+                return
+            }
+            
+            var fromUser: User?
+            var toUser: User?
+            var fromUserDoc: DocumentSnapshot?
+            var toUserDoc: DocumentSnapshot?
+            
+            for document in documents {
+                if let user = try? document.data(as: User.self) {
+                    if user.cards.first(where: { $0.id == fromCardId }) != nil {
+                        fromUser = user
+                        fromUserDoc = document
+                    }
+                    if user.cards.first(where: { $0.id == toCardId }) != nil {
+                        toUser = user
+                        toUserDoc = document
+                    }
+                }
+            }
+            
+            guard var validFromUser = fromUser, var validToUser = toUser,
+                  let fromUserSnapshot = fromUserDoc, let toUserSnapshot = toUserDoc else {
+                completion(.failure(NSError(domain: "FirestoreService", code: -1, userInfo: [NSLocalizedDescriptionKey: "From user or to user not found for given card ids"])))
+                return
+            }
+            
+            guard var fromCard = validFromUser.cards.first(where: { $0.id == fromCardId }),
+                  var toCard = validToUser.cards.first(where: { $0.id == toCardId }) else {
+                completion(.failure(NSError(domain: "FirestoreService", code: -1, userInfo: [NSLocalizedDescriptionKey: "From card or to card not found in user data"])))
+                return
+            }
+            
+            guard fromCard.balance >= amount else {
+                completion(.failure(NSError(domain: "FirestoreService", code: -2, userInfo: [NSLocalizedDescriptionKey: "Insufficient balance"])))
+                return
+            }
+            
+            fromCard.balance -= amount
+            toCard.balance += amount
+            
+            if let fromCardIndex = validFromUser.cards.firstIndex(where: { $0.id == fromCard.id }) {
+                validFromUser.cards[fromCardIndex] = fromCard
+            }
+            
+            if let toCardIndex = validToUser.cards.firstIndex(where: { $0.id == toCard.id }) {
+                validToUser.cards[toCardIndex] = toCard
+            }
+            
+            let transaction = Transaction(fromUserId: validFromUser.id, toUserId: validToUser.id, fromCardId: fromCardId, toCardId: toCardId, amount: amount, timestamp: Date(), iconName: "georgia")
+            
+            let batch = self.db.batch()
+            
+            batch.setData(try! Firestore.Encoder().encode(validFromUser), forDocument: fromUserSnapshot.reference)
+            batch.setData(try! Firestore.Encoder().encode(validToUser), forDocument: toUserSnapshot.reference)
+            
+            let transactionRef = self.db.collection("transactions").document()
+            batch.setData(try! Firestore.Encoder().encode(transaction), forDocument: transactionRef)
+            
+            batch.commit { error in
+                if let error = error {
+                    completion(.failure(error))
+                } else {
+                    self.updateLocalTransactions(with: transaction)
+                    completion(.success(()))
+                }
             }
         }
     }
@@ -174,6 +227,34 @@ class FirestoreService {
         }
     }
     
+    func updateCardBalance(forUser userId: String, cardId: String, newBalance: Double, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    var user = try document.data(as: User.self)
+                    if let index = user.cards.firstIndex(where: { $0.id == cardId }) {
+                        user.cards[index].balance = newBalance
+                        try userRef.setData(from: user) { error in
+                            if let error = error {
+                                completion(.failure(error))
+                            } else {
+                                self.updateLocalUser(user)
+                                completion(.success(()))
+                            }
+                        }
+                    } else {
+                        completion(.failure(NSError(domain: "FirestoreService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Card not found"])))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
+            }
+        }
+    }
+    
     private func updateLocalUser(_ user: User) {
         if let currentUser: User = loadData(forKey: "currentUser", as: User.self), currentUser.id == user.id {
             saveData(user, forKey: "currentUser")
@@ -183,6 +264,61 @@ class FirestoreService {
             if let index = users.firstIndex(where: { $0.id == user.id }) {
                 users[index] = user
                 saveData(users, forKey: "users")
+            }
+        }
+    }
+    
+    func updateCardDetails(forUser userId: String, cardId: String, newBalance: Double, newExpiryDate: String, newCardHolderName: String, newType: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    var user = try document.data(as: User.self)
+                    if let index = user.cards.firstIndex(where: { $0.id == cardId }) {
+                        user.cards[index].balance = newBalance
+                        user.cards[index].expiryDate = newExpiryDate
+                        user.cards[index].cardHolderName = newCardHolderName
+                        user.cards[index].type = newType
+                        try userRef.setData(from: user) { error in
+                            if let error = error {
+                                completion(.failure(error))
+                            } else {
+                                self.updateLocalUser(user)
+                                completion(.success(()))
+                            }
+                        }
+                    } else {
+                        completion(.failure(NSError(domain: "FirestoreService", code: -1, userInfo: [NSLocalizedDescriptionKey: "Card not found"])))
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
+            }
+        }
+    }
+    
+    func deleteCard(forUser userId: String, cardId: String, completion: @escaping (Result<Void, Error>) -> Void) {
+        let userRef = db.collection("users").document(userId)
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                do {
+                    var user = try document.data(as: User.self)
+                    user.cards.removeAll { $0.id == cardId }
+                    try userRef.setData(from: user) { error in
+                        if let error = error {
+                            completion(.failure(error))
+                        } else {
+                            self.updateLocalUser(user)
+                            completion(.success(()))
+                        }
+                    }
+                } catch {
+                    completion(.failure(error))
+                }
+            } else {
+                completion(.failure(error ?? NSError(domain: "FirestoreService", code: -1, userInfo: nil)))
             }
         }
     }

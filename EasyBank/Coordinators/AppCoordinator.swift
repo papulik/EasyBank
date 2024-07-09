@@ -28,6 +28,7 @@ class AppCoordinator: Coordinator {
             var registerView = RegisterView()
             registerView.coordinator = self
             let hostingController = UIHostingController(rootView: registerView)
+            hostingController.navigationItem.hidesBackButton = true
             navigationController.pushViewController(hostingController, animated: true)
         }
     }
@@ -39,6 +40,7 @@ class AppCoordinator: Coordinator {
             var loginView = LoginView()
             loginView.coordinator = self
             let hostingController = UIHostingController(rootView: loginView)
+            hostingController.navigationItem.hidesBackButton = true
             navigationController.pushViewController(hostingController, animated: true)
         }
     }
@@ -54,9 +56,16 @@ class AppCoordinator: Coordinator {
         let homeVC = HomeViewController(viewModel: homeViewModel)
         homeVC.coordinator = self
         
+        let cardsViewModel = CardsViewModel()
+        let cardsVC = CardsViewController(viewModel: cardsViewModel)
+        cardsVC.coordinator = self
+        
         homeVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
+        cardsVC.tabBarItem = UITabBarItem(title: "Cards", image: UIImage(systemName: "creditcard.fill"), tag: 1)
+        
         let homeNavigationController = UINavigationController(rootViewController: homeVC)
-
-        tabBarController.viewControllers = [homeNavigationController]
+        let cardsNavigationController = UINavigationController(rootViewController: cardsVC)
+        
+        tabBarController.viewControllers = [homeNavigationController, cardsNavigationController]
     }
 }

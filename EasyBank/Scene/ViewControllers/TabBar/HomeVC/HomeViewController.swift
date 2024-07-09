@@ -41,13 +41,12 @@ class HomeViewController: UIViewController {
         return view
     }()
     
-    private lazy var sendMoneyButtonView: SendMoneyButtonView = {
-        let view = SendMoneyButtonView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        view.button.addAction(UIAction { [weak self] _ in
+    private lazy var sendMoneyButton: TabBarsCustomButton = {
+        let action = UIAction { [weak self] _ in
             self?.sendMoneyTapped()
-        }, for: .touchUpInside)
-        return view
+        }
+        let button = TabBarsCustomButton(title: "Send Money", action: action)
+        return button
     }()
     
     private lazy var transactionLabelView: HeaderLabel = {
@@ -59,6 +58,7 @@ class HomeViewController: UIViewController {
     
     private lazy var transactionTableView: TransactionTableView = {
         let view = TransactionTableView()
+        view.tableView.separatorStyle = .none
         view.translatesAutoresizingMaskIntoConstraints = false
         view.tableView.dataSource = self
         view.tableView.delegate = self
@@ -99,6 +99,7 @@ class HomeViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        viewModel.refreshCurrentUser()
         if viewModel.currentUser != nil {
             viewModel.fetchTransactions()
         } else {
@@ -131,7 +132,7 @@ class HomeViewController: UIViewController {
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
         contentView.addSubview(cardCollectionView)
-        contentView.addSubview(sendMoneyButtonView)
+        contentView.addSubview(sendMoneyButton)
         contentView.addSubview(transactionLabelView)
         contentView.addSubview(transactionTableView)
         contentView.addSubview(recentContactsLabelView)
@@ -154,12 +155,12 @@ class HomeViewController: UIViewController {
             cardCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             cardCollectionView.heightAnchor.constraint(equalToConstant: 180),
             
-            sendMoneyButtonView.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
-            sendMoneyButtonView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            sendMoneyButtonView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            sendMoneyButtonView.heightAnchor.constraint(equalToConstant: 44),
+            sendMoneyButton.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
+            sendMoneyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
+            sendMoneyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
+            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44),
             
-            transactionLabelView.topAnchor.constraint(equalTo: sendMoneyButtonView.bottomAnchor, constant: 20),
+            transactionLabelView.topAnchor.constraint(equalTo: sendMoneyButton.bottomAnchor, constant: 20),
             transactionLabelView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
             
@@ -182,12 +183,10 @@ class HomeViewController: UIViewController {
     }
     
     private func sendMoneyTapped() {
-        print("Send Money button tapped")
-        guard let toUser = viewModel.users.first(where: { $0.id != viewModel.currentUser?.id }) else {
-            print("No other user found to send money to")
-            return
-        }
-        viewModel.sendMoney(toUser: toUser, amount: 10.0)
+        let sendMoneyVC = SendMoneyViewController(viewModel: viewModel)
+        sendMoneyVC.modalPresentationStyle = .custom
+        sendMoneyVC.transitioningDelegate = self
+        present(sendMoneyVC, animated: true, completion: nil)
     }
     
     private func logoutTapped() {
@@ -199,7 +198,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView == cardCollectionView.collectionView {
-            return 1
+            return viewModel.currentUser?.cards.count ?? 0
         } else {
             return viewModel.contacts.count
         }
@@ -208,8 +207,8 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView == cardCollectionView.collectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardCollectionViewCell.reuseIdentifier, for: indexPath) as! CardCollectionViewCell
-            if let currentUser = viewModel.currentUser {
-                cell.configure(with: currentUser.id, balance: String(format: "%.2f", currentUser.balance))
+            if let card = viewModel.currentUser?.cards[indexPath.item] {
+                cell.configure(with: card.id, balance: String(format: "%.2f", card.balance))
             }
             return cell
         } else {
@@ -249,12 +248,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-// MARK: - HomeViewModelDelegate
 extension HomeViewController: HomeViewModelDelegate {
     func didFetchCurrentUser(_ user: User) {
         print("Current User: \(user)")
         cardCollectionView.collectionView.reloadData()
         contactsCollectionView.reloadData()
+        viewModel.fetchTransactions()
     }
     
     func didFetchUsers(_ users: [User]) {
@@ -268,9 +267,11 @@ extension HomeViewController: HomeViewModelDelegate {
     
     func didSendMoney() {
         print("Money sent successfully")
+        viewModel.fetchTransactions()
     }
     
     func didFetchTransactions(_ transactions: [Transaction]) {
+        print("Fetched Transactions: \(transactions)")
         viewModel.transactions = transactions.sorted { $0.timestamp > $1.timestamp }
         transactionTableView.tableView.reloadData()
     }
@@ -281,5 +282,12 @@ extension HomeViewController: HomeViewModelDelegate {
         } else {
             print("Logout failed")
         }
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension HomeViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

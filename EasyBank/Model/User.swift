@@ -10,6 +10,14 @@ import Foundation
 struct User: Codable {
     let id: String
     let email: String
-    let balance: Double
     let name: String
+    var cards: [Card]
+}
+
+struct Card: Codable {
+    let id: String
+    var balance: Double
+    var expiryDate: String
+    var cardHolderName: String
+    var type: String
 }
