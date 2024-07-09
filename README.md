@@ -1,6 +1,6 @@
 # Online Banking App Simulation
 
-//Images For App <<<
+![AppMockup](https://github.com/papulik/EasyBank/assets/63560236/269b3bc6-1d7c-4645-b339-b1563b759ba7)
 
 An iOS app that simulates an online banking experience. The app includes essential banking features such as user login, registration, money transfers, card management, transaction history, and currency conversion.
 
