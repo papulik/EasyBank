@@ -7,6 +7,7 @@
 
 import Foundation
 import FirebaseAuth
+import FirebaseFirestore
 
 protocol HomeViewModelDelegate: AnyObject {
     func didFetchCurrentUser(_ user: User)
@@ -26,18 +27,35 @@ class HomeViewModel {
     var userNames: [String: String] = [:]
     var contacts: [Contact] = []
 
+    private var userListener: ListenerRegistration?
+    
+    deinit {
+        userListener?.remove()
+    }
+
     func fetchCurrentUser() {
-        FirestoreService.shared.getCurrentUser { [weak self] result in
-            DispatchQueue.main.async {
-                switch result {
-                case .success(let user):
-                    self?.currentUser = user
-                    self?.delegate?.didFetchCurrentUser(user)
-                    self?.fetchUsers()
-                    self?.fetchTransactions()
-                case .failure(let error):
-                    self?.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        userListener = Firestore.firestore().collection("users").document(userId).addSnapshotListener { [weak self] documentSnapshot, error in
+            guard let self = self else { return }
+            if let error = error {
+                DispatchQueue.main.async {
+                    self.delegate?.didEncounterError("Error fetching current user: \(error.localizedDescription)")
                 }
+                return
+            }
+            
+            guard let document = documentSnapshot, document.exists, let user = try? document.data(as: User.self) else {
+                DispatchQueue.main.async {
+                    self.delegate?.didEncounterError("User data not found")
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self.currentUser = user
+                self.delegate?.didFetchCurrentUser(user)
+                self.fetchUsers()
+                self.fetchTransactions()
             }
         }
     }
@@ -56,7 +74,7 @@ class HomeViewModel {
             }
         }
     }
-
+    
     private func fetchUsers() {
         FirestoreService.shared.getUsers { [weak self] result in
             DispatchQueue.main.async {
