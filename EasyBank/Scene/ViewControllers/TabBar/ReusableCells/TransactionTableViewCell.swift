@@ -12,7 +12,7 @@ class TransactionTableViewCell: UITableViewCell {
     
     private let transactionLabel: UILabel = {
         let label = UILabel()
-        label.font = .systemFont(ofSize: 16)
+        label.font = .systemFont(ofSize: 16, weight: .semibold)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

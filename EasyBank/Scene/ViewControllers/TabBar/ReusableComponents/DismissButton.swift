@@ -10,9 +10,9 @@ import UIKit
 class DismissButton: UIButton {
     init() {
         super.init(frame: .zero)
-        setTitle("X", for: .normal)
+        setImage(UIImage(named: "DismissIcon"), for: .normal)
         setTitleColor(.white, for: .normal)
-        backgroundColor = .systemRed
+        backgroundColor = .clear
         layer.cornerRadius = 10
         translatesAutoresizingMaskIntoConstraints = false
         addTarget(self, action: #selector(dismissTapped), for: .touchUpInside)
@@ -45,7 +45,7 @@ class DismissButton: UIButton {
     
     override var isHighlighted: Bool {
         didSet {
-            backgroundColor = isHighlighted ? UIColor.systemRed.withAlphaComponent(0.7) : .systemRed
+            backgroundColor = isHighlighted ? UIColor.systemRed.withAlphaComponent(0.7) : .clear
         }
     }
 }

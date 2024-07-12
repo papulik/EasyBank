@@ -50,6 +50,8 @@ class SendMoneyViewController: UIViewController {
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            closeButton.heightAnchor.constraint(equalToConstant: 40),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
             
             fromCardIdTextField.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
             fromCardIdTextField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),

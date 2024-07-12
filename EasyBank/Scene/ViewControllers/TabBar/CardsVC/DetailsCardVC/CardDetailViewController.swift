@@ -45,7 +45,7 @@ class CardDetailViewController: UIViewController {
         idLabel.translatesAutoresizingMaskIntoConstraints = false
         idLabel.isUserInteractionEnabled = true
         
-        //MARK: - Tap gesture for copying card ID
+        // MARK: - Tap gesture for copying card ID
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(copyCardId))
         idLabel.addGestureRecognizer(tapGesture)
         
@@ -61,16 +61,15 @@ class CardDetailViewController: UIViewController {
         cardTypeTextField = CustomTextField(placeholder: "Card Type")
         cardTypeTextField.text = card.type
         
-        //MARK: - Save button with UIAction
+        // MARK: - Save button with UIAction
         let saveButton = TabBarsCustomButton(title: "Save", action: UIAction { [weak self] _ in
             self?.saveTapped()
         })
         
-        //MARK: - Delete button with UIAction
+        // MARK: - Delete button with UIAction
         let deleteButton = TabBarsCustomButton(title: "Delete", action: UIAction { [weak self] _ in
             self?.deleteTapped()
-        })
-        deleteButton.backgroundColor = .red
+        }, backgroundColor: .red)
         
         view.addSubview(closeButton)
         view.addSubview(idLabel)
@@ -84,6 +83,8 @@ class CardDetailViewController: UIViewController {
         NSLayoutConstraint.activate([
             closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             closeButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            closeButton.heightAnchor.constraint(equalToConstant: 40),
+            closeButton.widthAnchor.constraint(equalToConstant: 40),
             
             idLabel.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: 20),
             idLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -124,7 +125,7 @@ class CardDetailViewController: UIViewController {
         
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 100.0, height: 44.0))
         
-        //MARK: - Done button with UIAction to set the selected date and dismiss the picker
+        // MARK: - Done button with UIAction to set the selected date and dismiss the picker
         let doneAction = UIAction { [weak self] _ in
             self?.expiryDateTextField.text = self?.formatDate(self?.datePicker.date ?? Date())
             self?.expiryDateTextField.resignFirstResponder()
@@ -154,7 +155,7 @@ class CardDetailViewController: UIViewController {
         showAlert(title: "Copied", message: "Card ID copied to clipboard.")
     }
     
-    //MARK: - Action for Save button
+    // MARK: - Action for Save button
     private func saveTapped() {
         guard let balanceText = balanceTextField.text, let newBalance = Double(balanceText),
               let newExpiryDate = expiryDateTextField.text,
@@ -173,7 +174,7 @@ class CardDetailViewController: UIViewController {
         dismiss(animated: true, completion: nil)
     }
     
-    //MARK: - Action for Delete button
+    // MARK: - Action for Delete button
     private func deleteTapped() {
         let alert = UIAlertController(title: "Delete Card", message: "Are you sure you want to delete this card?", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
