@@ -20,7 +20,7 @@ class CurrencyViewModel {
     var filteredCurrencies: [Currency] = []
     
     func fetchCurrencies() {
-        let urlString = "https://api.currencyfreaks.com/v2.0/rates/latest?apikey=d82caa27ba53422b9ab092bf5ad8b2bf"
+        let urlString = "\(Constants.API.currencyAPIBaseURL)\(Constants.API.ratesEndpoint)?apikey=\(Constants.API.currencyAPIKey)"
         guard let url = URL(string: urlString) else { return }
         
         let dispatchGroup = DispatchGroup()
