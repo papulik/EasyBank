@@ -15,7 +15,7 @@ An iOS app that simulates an online banking experience. The app includes essenti
     - **Edit Cards**: Edit existing cards.
     - **Add/Delete Cards**: Add new cards or delete existing ones.
   - **Transaction History**: View a detailed history of all transactions in a table view.
-  - **Currency Calculator Converter**: Convert currencies with a detailed list and search functionality.
+  - **Daily Currency List**: Currencies with a detailed list and search functionality.
 
 ## Installation
 
