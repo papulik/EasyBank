@@ -231,9 +231,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.transactions.count
+        let count = viewModel.transactions.count
+        transactionTableView.noTransactionsLabel.isHidden = count != 0
+        return count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
         let transaction = viewModel.transactions[indexPath.row]
@@ -242,7 +244,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
