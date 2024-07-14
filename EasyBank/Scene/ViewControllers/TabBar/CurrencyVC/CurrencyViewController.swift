@@ -89,21 +89,37 @@ class CurrencyViewController: UIViewController {
 
 //MARK: - TableView Extension
 extension CurrencyViewController: UITableViewDataSource, UITableViewDelegate {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return viewModel.sectionTitles.count
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.filteredCurrencies.count
+        let sectionKey = viewModel.sectionTitles[section]
+        return viewModel.currenciesGrouped[sectionKey]?.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: CurrencyTableViewCell.reuseIdentifier, for: indexPath) as! CurrencyTableViewCell
-        let currency = viewModel.filteredCurrencies[indexPath.row]
-        cell.configure(with: currency)
+        let sectionKey = viewModel.sectionTitles[indexPath.section]
+        if let currency = viewModel.currenciesGrouped[sectionKey]?[indexPath.row] {
+            cell.configure(with: currency)
+        }
         return cell
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        60
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return viewModel.sectionTitles[section]
+    }
+    
+    func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+        return viewModel.sectionTitles
+    }
+    
+    func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
+        return viewModel.sectionTitles.firstIndex(of: title) ?? index
     }
 }
+
 
 //MARK: - ViewModel Extension
 extension CurrencyViewController: CurrencyViewModelDelegate {

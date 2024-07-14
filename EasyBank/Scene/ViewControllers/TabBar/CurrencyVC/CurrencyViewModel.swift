@@ -17,41 +17,36 @@ class CurrencyViewModel {
     weak var delegate: CurrencyViewModelDelegate?
     
     private var allCurrencies: [Currency] = []
-    var filteredCurrencies: [Currency] = []
+    var currenciesGrouped: [String: [Currency]] = [:]
+    var sectionTitles: [String] = []
     
     func fetchCurrencies() {
         let urlString = "\(Constants.API.currencyAPIBaseURL)\(Constants.API.ratesEndpoint)?apikey=\(Constants.API.currencyAPIKey)"
         guard let url = URL(string: urlString) else { return }
         
-        let dispatchGroup = DispatchGroup()
-        
-        dispatchGroup.enter()
         NetworkingService.shared.fetchData(from: url) { (result: Result<CurrencyAPIResponse, Error>) in
-            switch result {
-            case .success(let response):
-                self.allCurrencies = response.rates.compactMap { key, value in
-                    guard let rate = Double(value) else { return nil }
-                    return Currency(code: key, name: self.currencyName(for: key), rate: rate, iconURL: self.iconURL(for: key))
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let response):
+                    self.allCurrencies = response.rates.compactMap { key, value in
+                        guard let rate = Double(value) else { return nil }
+                        return Currency(code: key, name: self.currencyName(for: key), rate: rate, iconURL: self.iconURL(for: key))
+                    }
+                    self.filterCurrencies(with: "")
+                case .failure(let error):
+                    self.delegate?.didEncounterError(error.localizedDescription)
                 }
-                self.filteredCurrencies = self.allCurrencies
-                dispatchGroup.leave()
-            case .failure(let error):
-                self.delegate?.didEncounterError(error.localizedDescription)
-                dispatchGroup.leave()
             }
-        }
-        
-        dispatchGroup.notify(queue: .main) {
-            self.delegate?.didUpdateCurrencies()
         }
     }
     
     func filterCurrencies(with searchText: String) {
         if searchText.isEmpty {
-            filteredCurrencies = allCurrencies
+            currenciesGrouped = Dictionary(grouping: allCurrencies, by: { String($0.name.prefix(1)) })
         } else {
-            filteredCurrencies = allCurrencies.filter { $0.code.lowercased().contains(searchText.lowercased()) || $0.name.lowercased().contains(searchText.lowercased()) }
+            currenciesGrouped = Dictionary(grouping: allCurrencies.filter { $0.code.lowercased().contains(searchText.lowercased()) || $0.name.lowercased().contains(searchText.lowercased()) }, by: { String($0.name.prefix(1)) })
         }
+        sectionTitles = currenciesGrouped.keys.sorted()
         delegate?.didUpdateCurrencies()
     }
     

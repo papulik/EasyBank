@@ -130,6 +130,7 @@ class CardsViewController: UIViewController {
     }
 }
 
+//MARK: - Cards Collection Extension
 extension CardsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.cards.count
@@ -150,6 +151,27 @@ extension CardsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
 }
 
+//MARK: - Transactions TableView Extension
+extension CardsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.transactions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+        let transaction = viewModel.transactions[indexPath.row]
+        let fromUserName = viewModel.userNames[transaction.fromUserId] ?? transaction.fromUserId
+        let toUserName = viewModel.userNames[transaction.toUserId] ?? transaction.toUserId
+        cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}
+
+//MARK: - ViewModel Extension
 extension CardsViewController: CardsViewModelDelegate {
     func didUpdateCards() {
         DispatchQueue.main.async {
@@ -170,21 +192,3 @@ extension CardsViewController: CardsViewModelDelegate {
     }
 }
 
-extension CardsViewController: UITableViewDataSource, UITableViewDelegate {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.transactions.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
-        let transaction = viewModel.transactions[indexPath.row]
-        let fromUserName = viewModel.userNames[transaction.fromUserId] ?? transaction.fromUserId
-        let toUserName = viewModel.userNames[transaction.toUserId] ?? transaction.toUserId
-        cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
-        return cell
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-}
