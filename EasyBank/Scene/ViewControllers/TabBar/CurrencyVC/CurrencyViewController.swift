@@ -11,6 +11,8 @@ class CurrencyViewController: UIViewController {
     private var viewModel: CurrencyViewModel
     weak var coordinator: AppCoordinator?
     
+    private var refreshControl = UIRefreshControl()
+    
     init(viewModel: CurrencyViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -45,8 +47,7 @@ class CurrencyViewController: UIViewController {
         tableView.register(CurrencyTableViewCell.self, forCellReuseIdentifier: CurrencyTableViewCell.reuseIdentifier)
         tableView.rowHeight = 60
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-        tableView.refreshControl = UIRefreshControl()
-        tableView.refreshControl?.addTarget(self, action: #selector(refreshCurrencyData), for: .valueChanged)
+        tableView.refreshControl = refreshControl
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -57,6 +58,7 @@ class CurrencyViewController: UIViewController {
         title = "Currencies"
         
         setupViews()
+        setupRefreshControl()
         viewModel.delegate = self
         viewModel.fetchCurrencies()
     }
@@ -78,6 +80,10 @@ class CurrencyViewController: UIViewController {
         ])
     }
     
+    private func setupRefreshControl() {
+        refreshControl.addTarget(self, action: #selector(refreshCurrencyData), for: .valueChanged)
+    }
+    
     @objc private func textFieldDidChange(_ textField: UITextField) {
         viewModel.filterCurrencies(with: textField.text ?? "")
     }
@@ -87,7 +93,7 @@ class CurrencyViewController: UIViewController {
     }
 }
 
-//MARK: - TableView Extension
+// MARK: - TableView Extension
 extension CurrencyViewController: UITableViewDataSource, UITableViewDelegate {
     func numberOfSections(in tableView: UITableView) -> Int {
         return viewModel.sectionTitles.count
@@ -120,14 +126,15 @@ extension CurrencyViewController: UITableViewDataSource, UITableViewDelegate {
     }
 }
 
-
-//MARK: - ViewModel Extension
+// MARK: - ViewModel Extension
 extension CurrencyViewController: CurrencyViewModelDelegate {
     func didUpdateCurrencies() {
+        refreshControl.endRefreshing()
         tableView.reloadData()
     }
     
     func didEncounterError(_ error: String) {
+        refreshControl.endRefreshing()
         let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
