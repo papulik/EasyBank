@@ -13,6 +13,7 @@ class TabBarController: UITabBarController {
     init(coordinator: AppCoordinator) {
         self.onboardingCoordinator = coordinator
         super.init(nibName: nil, bundle: nil)
+        setupTabBarAppearance()
     }
 
     required init?(coder: NSCoder) {
@@ -21,5 +22,28 @@ class TabBarController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+    }
+    
+    private func setupTabBarAppearance() {
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .white
+
+        tabBar.standardAppearance = appearance
+        tabBar.scrollEdgeAppearance = appearance
+        
+        tabBar.isTranslucent = false
+        
+        if #available(iOS 15.0, *) {
+            let itemAppearance = UITabBarItemAppearance()
+            itemAppearance.normal.iconColor = .white
+            itemAppearance.selected.iconColor = .white
+            itemAppearance.normal.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+            itemAppearance.selected.titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
+
+            appearance.stackedLayoutAppearance = itemAppearance
+            appearance.inlineLayoutAppearance = itemAppearance
+            appearance.compactInlineLayoutAppearance = itemAppearance
+        }
     }
 }

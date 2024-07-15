@@ -129,58 +129,96 @@ class HomeViewController: UIViewController {
     }
 
     private func setupViews() {
+        setupScrollView()
+        setupContentView()
+        setupCardCollectionView()
+        setupSendMoneyButton()
+        setupTransactionLabelView()
+        setupTransactionTableView()
+        setupRecentContactsLabelView()
+        setupContactsCollectionView()
+    }
+
+    private func setupScrollView() {
         view.addSubview(scrollView)
-        scrollView.addSubview(contentView)
-        contentView.addSubview(cardCollectionView)
-        contentView.addSubview(sendMoneyButton)
-        contentView.addSubview(transactionLabelView)
-        contentView.addSubview(transactionTableView)
-        contentView.addSubview(recentContactsLabelView)
-        contentView.addSubview(contactsCollectionView)
-        
         NSLayoutConstraint.activate([
             scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+
+    private func setupContentView() {
+        scrollView.addSubview(contentView)
+        NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.topAnchor),
             contentView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
             contentView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
             contentView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
+        ])
+    }
+
+    private func setupCardCollectionView() {
+        contentView.addSubview(cardCollectionView)
+        NSLayoutConstraint.activate([
             cardCollectionView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             cardCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             cardCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
-            cardCollectionView.heightAnchor.constraint(equalToConstant: 180),
-            
+            cardCollectionView.heightAnchor.constraint(equalToConstant: 180)
+        ])
+    }
+
+    private func setupSendMoneyButton() {
+        contentView.addSubview(sendMoneyButton)
+        NSLayoutConstraint.activate([
             sendMoneyButton.topAnchor.constraint(equalTo: cardCollectionView.bottomAnchor, constant: 16),
             sendMoneyButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
             sendMoneyButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -20),
-            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44),
-            
+            sendMoneyButton.heightAnchor.constraint(equalToConstant: 44)
+        ])
+    }
+
+    private func setupTransactionLabelView() {
+        contentView.addSubview(transactionLabelView)
+        NSLayoutConstraint.activate([
             transactionLabelView.topAnchor.constraint(equalTo: sendMoneyButton.bottomAnchor, constant: 20),
             transactionLabelView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
-            
+            transactionLabelView.heightAnchor.constraint(equalToConstant: 35)
+        ])
+    }
+
+    private func setupTransactionTableView() {
+        contentView.addSubview(transactionTableView)
+        NSLayoutConstraint.activate([
             transactionTableView.topAnchor.constraint(equalTo: transactionLabelView.bottomAnchor, constant: 5),
             transactionTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             transactionTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            transactionTableView.heightAnchor.constraint(equalToConstant: 250),
-            
+            transactionTableView.heightAnchor.constraint(equalToConstant: 250)
+        ])
+    }
+
+    private func setupRecentContactsLabelView() {
+        contentView.addSubview(recentContactsLabelView)
+        NSLayoutConstraint.activate([
             recentContactsLabelView.topAnchor.constraint(equalTo: transactionTableView.bottomAnchor, constant: 16),
             recentContactsLabelView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 20),
-            recentContactsLabelView.heightAnchor.constraint(equalToConstant: 35),
-            
+            recentContactsLabelView.heightAnchor.constraint(equalToConstant: 35)
+        ])
+    }
+
+    private func setupContactsCollectionView() {
+        contentView.addSubview(contactsCollectionView)
+        NSLayoutConstraint.activate([
             contactsCollectionView.topAnchor.constraint(equalTo: recentContactsLabelView.bottomAnchor, constant: 10),
             contactsCollectionView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             contactsCollectionView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16),
             contactsCollectionView.heightAnchor.constraint(equalToConstant: 80),
-            
             contentView.bottomAnchor.constraint(greaterThanOrEqualTo: contactsCollectionView.bottomAnchor, constant: 20)
         ])
     }
+
     
     private func sendMoneyTapped() {
         let sendMoneyVC = SendMoneyViewController(viewModel: viewModel)
@@ -231,9 +269,11 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 // MARK: - UITableViewDataSource, UITableViewDelegate
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.transactions.count
+        let count = viewModel.transactions.count
+        transactionTableView.noTransactionsLabel.isHidden = count != 0
+        return count
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
         let transaction = viewModel.transactions[indexPath.row]
@@ -242,7 +282,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
         return cell
     }
-    
+
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }

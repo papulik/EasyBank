@@ -43,6 +43,22 @@ class CardsViewController: UIViewController {
         return collectionView
     }()
     
+    private lazy var transactionLabelView: HeaderLabel = {
+        let view = HeaderLabel()
+        view.label.text = "Transactions"
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private lazy var transactionTableView: TransactionTableView = {
+        let view = TransactionTableView()
+        view.tableView.separatorStyle = .none
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.tableView.dataSource = self
+        view.tableView.delegate = self
+        return view
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .white
@@ -50,12 +66,18 @@ class CardsViewController: UIViewController {
         
         setupViews()
         viewModel.delegate = self
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         viewModel.fetchCards()
     }
     
     private func setupViews() {
-        view.addSubview(addButton)
         view.addSubview(collectionView)
+        view.addSubview(addButton)
+        view.addSubview(transactionLabelView)
+        view.addSubview(transactionTableView)
         
         NSLayoutConstraint.activate([
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -67,6 +89,15 @@ class CardsViewController: UIViewController {
             addButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             addButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            transactionLabelView.topAnchor.constraint(equalTo: addButton.bottomAnchor, constant: 20),
+            transactionLabelView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
+            
+            transactionTableView.topAnchor.constraint(equalTo: transactionLabelView.bottomAnchor, constant: 16),
+            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
+            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            transactionTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10)
         ])
     }
     
@@ -99,6 +130,7 @@ class CardsViewController: UIViewController {
     }
 }
 
+//MARK: - Cards Collection Extension
 extension CardsViewController: UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.cards.count
@@ -119,10 +151,37 @@ extension CardsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
 }
 
+//MARK: - Transactions TableView Extension
+extension CardsViewController: UITableViewDataSource, UITableViewDelegate {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return viewModel.transactions.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: TransactionTableViewCell.reuseIdentifier, for: indexPath) as! TransactionTableViewCell
+        let transaction = viewModel.transactions[indexPath.row]
+        let fromUserName = viewModel.userNames[transaction.fromUserId] ?? transaction.fromUserId
+        let toUserName = viewModel.userNames[transaction.toUserId] ?? transaction.toUserId
+        cell.configure(with: transaction, fromUserName: fromUserName, toUserName: toUserName, currentUserId: viewModel.currentUser?.id ?? "")
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+}
+
+//MARK: - ViewModel Extension
 extension CardsViewController: CardsViewModelDelegate {
     func didUpdateCards() {
         DispatchQueue.main.async {
             self.collectionView.reloadData()
+        }
+    }
+    
+    func didFetchTransactions() {
+        DispatchQueue.main.async {
+            self.transactionTableView.tableView.reloadData()
         }
     }
     
@@ -132,3 +191,4 @@ extension CardsViewController: CardsViewModelDelegate {
         present(alert, animated: true, completion: nil)
     }
 }
+
