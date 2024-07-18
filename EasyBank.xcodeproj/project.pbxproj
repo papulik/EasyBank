@@ -12,6 +12,7 @@
 		6050AF492C42DC6A0050A9FB /* CurrencyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6050AF482C42DC6A0050A9FB /* CurrencyTableViewCell.swift */; };
 		6050AF4B2C42DD3A0050A9FB /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6050AF4A2C42DD3A0050A9FB /* Currency.swift */; };
 		6050AF4D2C43022F0050A9FB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6050AF4C2C43022F0050A9FB /* Constants.swift */; };
+		6050AF502C4893E20050A9FB /* TextFieldExt+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6050AF4F2C4893E20050A9FB /* TextFieldExt+.swift */; };
 		60766CA02C38457000E67741 /* SendMoneyVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60766C9F2C38457000E67741 /* SendMoneyVC.swift */; };
 		60766CA32C39983100E67741 /* CardDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60766CA22C39983100E67741 /* CardDetailViewController.swift */; };
 		60766CA62C39988900E67741 /* HalfSizePresentationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 60766CA52C39988900E67741 /* HalfSizePresentationController.swift */; };
@@ -66,6 +67,7 @@
 		6050AF482C42DC6A0050A9FB /* CurrencyTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyTableViewCell.swift; sourceTree = "<group>"; };
 		6050AF4A2C42DD3A0050A9FB /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
 		6050AF4C2C43022F0050A9FB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		6050AF4F2C4893E20050A9FB /* TextFieldExt+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TextFieldExt+.swift"; sourceTree = "<group>"; };
 		60766C9F2C38457000E67741 /* SendMoneyVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SendMoneyVC.swift; sourceTree = "<group>"; };
 		60766CA22C39983100E67741 /* CardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewController.swift; sourceTree = "<group>"; };
 		60766CA52C39988900E67741 /* HalfSizePresentationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HalfSizePresentationController.swift; sourceTree = "<group>"; };
@@ -139,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				6050AF442C42DB650050A9FB /* ImageExt+.swift */,
+				6050AF4F2C4893E20050A9FB /* TextFieldExt+.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -551,6 +554,7 @@
 				60E214A82C3461460054FDD3 /* HeaderLabel.swift in Sources */,
 				60766CA32C39983100E67741 /* CardDetailViewController.swift in Sources */,
 				60766CAC2C39D44600E67741 /* TabBarsCustomButton.swift in Sources */,
+				6050AF502C4893E20050A9FB /* TextFieldExt+.swift in Sources */,
 				60E214632C2ED0330054FDD3 /* Coordinator.swift in Sources */,
 				60766CAE2C3AC15200E67741 /* CustomTextField.swift in Sources */,
 				6050AF422C42DAE70050A9FB /* ImageCache.swift in Sources */,

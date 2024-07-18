@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class CardsViewController: UIViewController {
     private var viewModel: CardsViewModel
@@ -95,8 +96,8 @@ class CardsViewController: UIViewController {
             transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
             
             transactionTableView.topAnchor.constraint(equalTo: transactionLabelView.bottomAnchor, constant: 16),
-            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             transactionTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10)
         ])
     }
@@ -128,6 +129,24 @@ class CardsViewController: UIViewController {
         })
         present(alert, animated: true, completion: nil)
     }
+    
+    private func authenticateUser(completion: @escaping (Bool) -> Void) {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Authenticate to view card details") { success, authenticationError in
+                DispatchQueue.main.async {
+                    completion(success)
+                }
+            }
+        } else {
+            let alert = UIAlertController(title: "Face ID not available", message: "Your device does not support Face ID.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            completion(false)
+        }
+    }
 }
 
 //MARK: - Cards Collection Extension
@@ -144,10 +163,19 @@ extension CardsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let card = viewModel.cards[indexPath.item]
-        let cardDetailVC = CardDetailViewController(card: card, viewModel: viewModel)
-        cardDetailVC.modalPresentationStyle = .custom
-        present(cardDetailVC, animated: true, completion: nil)
+        authenticateUser { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                let card = self.viewModel.cards[indexPath.item]
+                let cardDetailVC = CardDetailViewController(card: card, viewModel: self.viewModel)
+                cardDetailVC.modalPresentationStyle = .custom
+                self.present(cardDetailVC, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Authentication Failed", message: "You could not be verified; please try again.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 }
 
@@ -191,4 +219,3 @@ extension CardsViewController: CardsViewModelDelegate {
         present(alert, animated: true, completion: nil)
     }
 }
-
