@@ -93,18 +93,26 @@ class CardDetailViewController: UIViewController {
     
     private func setupTextFields() {
         balanceTextField = CustomTextField(placeholder: "Balance", keyboardType: .decimalPad)
+        balanceTextField.borderStyle = .roundedRect
+        balanceTextField.textColor = .secondaryLabel
         balanceTextField.text = String(card.balance)
         view.addSubview(balanceTextField)
         
         expiryDateTextField = CustomTextField(placeholder: "Expiry Date")
+        expiryDateTextField.borderStyle = .roundedRect
+        expiryDateTextField.textColor = .secondaryLabel
         expiryDateTextField.text = card.expiryDate
         view.addSubview(expiryDateTextField)
         
         cardHolderNameTextField = CustomTextField(placeholder: "Card Holder Name")
+        cardHolderNameTextField.borderStyle = .roundedRect
+        cardHolderNameTextField.textColor = .secondaryLabel
         cardHolderNameTextField.text = card.cardHolderName
         view.addSubview(cardHolderNameTextField)
         
         cardTypeTextField = CustomTextField(placeholder: "Card Type")
+        cardTypeTextField.borderStyle = .roundedRect
+        cardTypeTextField.textColor = .secondaryLabel
         cardTypeTextField.text = card.type
         view.addSubview(cardTypeTextField)
     }

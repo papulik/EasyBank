@@ -115,7 +115,7 @@ struct LoginView: View {
             HStack {
                 Image(imageName)
                     .resizable()
-                    .frame(width: 25, height: 24)
+                    .frame(width: 24, height: 24)
                     .scaledToFit()
                 Spacer()
                 Text(text)

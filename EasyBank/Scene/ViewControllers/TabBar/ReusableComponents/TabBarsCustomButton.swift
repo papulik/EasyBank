@@ -22,7 +22,6 @@ class TabBarsCustomButton: UIButton {
     private func setupButton(title: String, action: UIAction?) {
         setTitle(title, for: .normal)
         setTitleColor(.white, for: .normal)
-        
         layer.cornerRadius = 10
         titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         translatesAutoresizingMaskIntoConstraints = false

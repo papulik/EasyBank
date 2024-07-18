@@ -62,7 +62,8 @@ class SendMoneyViewController: UIViewController {
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
         button.setTitleColor(.white, for: .normal)
         
-        let lariImageView = UIImageView(image: UIImage(systemName: "larisign"))
+        let lariImageView = UIImageView(image: UIImage(systemName: "larisign.circle.fill"))
+        lariImageView.sizeToFit()
         lariImageView.tintColor = .white
         lariImageView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -70,7 +71,9 @@ class SendMoneyViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             lariImageView.centerYAnchor.constraint(equalTo: button.centerYAnchor),
-            lariImageView.trailingAnchor.constraint(equalTo: button.titleLabel!.trailingAnchor, constant: 30)
+            lariImageView.trailingAnchor.constraint(equalTo: button.titleLabel!.trailingAnchor, constant: 30),
+            lariImageView.heightAnchor.constraint(equalToConstant: 24),
+            lariImageView.widthAnchor.constraint(equalToConstant: 24)
         ])
         
         return button
