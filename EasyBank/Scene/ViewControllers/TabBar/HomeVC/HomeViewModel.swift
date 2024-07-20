@@ -18,7 +18,7 @@ protocol HomeViewModelDelegate: AnyObject {
     func didFetchTransactions(_ transactions: [Transaction])
 }
 
-class HomeViewModel {
+final class HomeViewModel {
     weak var delegate: HomeViewModelDelegate?
     
     var currentUser: User?

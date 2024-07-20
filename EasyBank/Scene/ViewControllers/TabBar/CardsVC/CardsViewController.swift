@@ -103,31 +103,13 @@ class CardsViewController: UIViewController {
     }
     
     private func addCardTapped() {
-        let alert = UIAlertController(title: "Add Card", message: nil, preferredStyle: .alert)
-        alert.addTextField { textField in
-            textField.placeholder = "Initial Balance"
-            textField.keyboardType = .decimalPad
+        let addCardVC = AddCardViewController()
+        addCardVC.transitioningDelegate = self
+        addCardVC.modalPresentationStyle = .custom
+        addCardVC.onAddCard = { [weak self] balance, expiryDate, cardHolderName, cardType in
+            self?.viewModel.addCard(balance: balance, expiryDate: expiryDate, cardHolderName: cardHolderName, type: cardType)
         }
-        alert.addTextField { textField in
-            textField.placeholder = "Expiry Date"
-        }
-        alert.addTextField { textField in
-            textField.placeholder = "Card Holder Name"
-        }
-        alert.addTextField { textField in
-            textField.placeholder = "Card Type"
-        }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if let balanceText = alert.textFields?[0].text, let balance = Double(balanceText),
-               let expiryDate = alert.textFields?[1].text,
-               let cardHolderName = alert.textFields?[2].text,
-               let type = alert.textFields?[3].text {
-                self.viewModel.addCard(balance: balance, expiryDate: expiryDate, cardHolderName: cardHolderName, type: type)
-            }
-        })
-        present(alert, animated: true, completion: nil)
+        present(addCardVC, animated: true, completion: nil)
     }
     
     private func authenticateUser(completion: @escaping (Bool) -> Void) {
@@ -217,5 +199,12 @@ extension CardsViewController: CardsViewModelDelegate {
         let alert = UIAlertController(title: "Error", message: error, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
+    }
+}
+
+// MARK: - UIViewControllerTransitioningDelegate
+extension CardsViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
     }
 }

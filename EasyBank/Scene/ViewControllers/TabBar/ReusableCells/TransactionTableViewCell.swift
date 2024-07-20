@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TransactionTableViewCell: UITableViewCell {
+final class TransactionTableViewCell: UITableViewCell {
     static let reuseIdentifier = "TransactionTableViewCell"
     
     private let transactionLabel: UILabel = {

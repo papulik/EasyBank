@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBarController: UITabBarController {
+final class TabBarController: UITabBarController {
     var onboardingCoordinator: AppCoordinator?
 
     init(coordinator: AppCoordinator) {

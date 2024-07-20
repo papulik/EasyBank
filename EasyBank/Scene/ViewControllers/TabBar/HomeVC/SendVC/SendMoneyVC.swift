@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SendMoneyViewController: UIViewController {
+final class SendMoneyViewController: UIViewController {
     private var viewModel: HomeViewModel
 
     init(viewModel: HomeViewModel) {
@@ -21,7 +21,7 @@ class SendMoneyViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private let fromCardIdTextField: CustomTextField = {
+    private lazy var fromCardIdTextField: CustomTextField = {
         let textField = CustomTextField(placeholder: "")
         let chevron = UIImage(systemName: "chevron.down")?.withTintColor(.gray, renderingMode: .alwaysOriginal)
         let chevronAttachment = NSTextAttachment(image: chevron!)
@@ -35,7 +35,7 @@ class SendMoneyViewController: UIViewController {
         return textField
     }()
     
-    private let toCardIdTextField: CustomTextField = {
+    private lazy var toCardIdTextField: CustomTextField = {
         let textField = CustomTextField(placeholder: "To Card ID")
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.systemGray4.cgColor
@@ -44,7 +44,7 @@ class SendMoneyViewController: UIViewController {
         return textField
     }()
     
-    private let amountTextField: CustomTextField = {
+    private lazy var amountTextField: CustomTextField = {
         let textField = CustomTextField(placeholder: "Amount", keyboardType: .decimalPad)
         textField.layer.borderWidth = 1
         textField.layer.borderColor = UIColor.systemGray4.cgColor
