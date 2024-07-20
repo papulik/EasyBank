@@ -150,7 +150,7 @@ class FirestoreService {
                 validToUser.cards[toCardIndex] = toCard
             }
             
-            let transaction = Transaction(fromUserId: validFromUser.id, toUserId: validToUser.id, fromCardId: fromCardId, toCardId: toCardId, amount: amount, timestamp: Date(), iconName: "georgia")
+            let transaction = Transaction(fromUserId: validFromUser.id, toUserId: validToUser.id, fromCardId: fromCardId, toCardId: toCardId, amount: amount, timestamp: Date(), iconName: "TransactionCellImage")
             
             let batch = self.db.batch()
             

@@ -18,7 +18,7 @@ protocol HomeViewModelDelegate: AnyObject {
     func didFetchTransactions(_ transactions: [Transaction])
 }
 
-class HomeViewModel {
+final class HomeViewModel {
     weak var delegate: HomeViewModelDelegate?
     
     var currentUser: User?
@@ -26,6 +26,7 @@ class HomeViewModel {
     var transactions: [Transaction] = []
     var userNames: [String: String] = [:]
     var contacts: [Contact] = []
+    var cardIds: [String] = []
 
     private var userListener: ListenerRegistration?
     
@@ -53,6 +54,7 @@ class HomeViewModel {
             
             DispatchQueue.main.async {
                 self.currentUser = user
+                self.cardIds = user.cards.map { $0.id }
                 self.delegate?.didFetchCurrentUser(user)
                 self.fetchUsers()
                 self.fetchTransactions()
@@ -67,6 +69,7 @@ class HomeViewModel {
                 switch result {
                 case .success(let user):
                     self?.currentUser = user
+                    self?.cardIds = user.cards.map { $0.id }
                     self?.delegate?.didFetchCurrentUser(user)
                 case .failure(let error):
                     self?.delegate?.didEncounterError("Error refreshing current user: \(error.localizedDescription)")
@@ -155,6 +158,30 @@ class HomeViewModel {
         } catch {
             DispatchQueue.main.async {
                 self.delegate?.didLogout(success: false)
+            }
+        }
+    }
+    
+    func fetchCards(completion: @escaping ([Card]) -> Void) {
+        guard let userId = Auth.auth().currentUser?.uid else { return }
+        Firestore.firestore().collection("users").document(userId).getDocument { [weak self] documentSnapshot, error in
+            if let error = error {
+                DispatchQueue.main.async {
+                    self?.delegate?.didEncounterError(error.localizedDescription)
+                }
+                return
+            }
+            
+            guard let document = documentSnapshot, document.exists, let user = try? document.data(as: User.self) else {
+                DispatchQueue.main.async {
+                    self?.delegate?.didEncounterError("User data not found")
+                }
+                return
+            }
+            
+            DispatchQueue.main.async {
+                self?.cardIds = user.cards.map { $0.id }
+                completion(user.cards)
             }
         }
     }

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import LocalAuthentication
 
 class CardsViewController: UIViewController {
     private var viewModel: CardsViewModel
@@ -95,38 +96,38 @@ class CardsViewController: UIViewController {
             transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
             
             transactionTableView.topAnchor.constraint(equalTo: transactionLabelView.bottomAnchor, constant: 16),
-            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             transactionTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10)
         ])
     }
     
     private func addCardTapped() {
-        let alert = UIAlertController(title: "Add Card", message: nil, preferredStyle: .alert)
-        alert.addTextField { textField in
-            textField.placeholder = "Initial Balance"
-            textField.keyboardType = .decimalPad
+        let addCardVC = AddCardViewController()
+        addCardVC.transitioningDelegate = self
+        addCardVC.modalPresentationStyle = .custom
+        addCardVC.onAddCard = { [weak self] balance, expiryDate, cardHolderName, cardType in
+            self?.viewModel.addCard(balance: balance, expiryDate: expiryDate, cardHolderName: cardHolderName, type: cardType)
         }
-        alert.addTextField { textField in
-            textField.placeholder = "Expiry Date"
-        }
-        alert.addTextField { textField in
-            textField.placeholder = "Card Holder Name"
-        }
-        alert.addTextField { textField in
-            textField.placeholder = "Card Type"
-        }
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Add", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            if let balanceText = alert.textFields?[0].text, let balance = Double(balanceText),
-               let expiryDate = alert.textFields?[1].text,
-               let cardHolderName = alert.textFields?[2].text,
-               let type = alert.textFields?[3].text {
-                self.viewModel.addCard(balance: balance, expiryDate: expiryDate, cardHolderName: cardHolderName, type: type)
+        present(addCardVC, animated: true, completion: nil)
+    }
+    
+    private func authenticateUser(completion: @escaping (Bool) -> Void) {
+        let context = LAContext()
+        var error: NSError?
+        
+        if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: &error) {
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: "Authenticate to view card details") { success, authenticationError in
+                DispatchQueue.main.async {
+                    completion(success)
+                }
             }
-        })
-        present(alert, animated: true, completion: nil)
+        } else {
+            let alert = UIAlertController(title: "Face ID not available", message: "Your device does not support Face ID.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+            present(alert, animated: true, completion: nil)
+            completion(false)
+        }
     }
 }
 
@@ -144,10 +145,19 @@ extension CardsViewController: UICollectionViewDataSource, UICollectionViewDeleg
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let card = viewModel.cards[indexPath.item]
-        let cardDetailVC = CardDetailViewController(card: card, viewModel: viewModel)
-        cardDetailVC.modalPresentationStyle = .custom
-        present(cardDetailVC, animated: true, completion: nil)
+        authenticateUser { [weak self] success in
+            guard let self = self else { return }
+            if success {
+                let card = self.viewModel.cards[indexPath.item]
+                let cardDetailVC = CardDetailViewController(card: card, viewModel: self.viewModel)
+                cardDetailVC.modalPresentationStyle = .custom
+                self.present(cardDetailVC, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Authentication Failed", message: "You could not be verified; please try again.", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
     }
 }
 
@@ -192,3 +202,9 @@ extension CardsViewController: CardsViewModelDelegate {
     }
 }
 
+// MARK: - UIViewControllerTransitioningDelegate
+extension CardsViewController: UIViewControllerTransitioningDelegate {
+    func presentationController(forPresented presented: UIViewController, presenting: UIViewController?, source: UIViewController) -> UIPresentationController? {
+        return HalfSizePresentationController(presentedViewController: presented, presenting: presenting)
+    }
+}

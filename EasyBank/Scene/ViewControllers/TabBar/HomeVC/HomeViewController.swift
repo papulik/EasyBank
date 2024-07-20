@@ -7,7 +7,7 @@
 
 import UIKit
 
-class HomeViewController: UIViewController {
+final class HomeViewController: UIViewController {
     private var viewModel: HomeViewModel
     weak var coordinator: AppCoordinator?
     
@@ -246,7 +246,7 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         if collectionView == cardCollectionView.collectionView {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CardCollectionViewCell.reuseIdentifier, for: indexPath) as! CardCollectionViewCell
             if let card = viewModel.currentUser?.cards[indexPath.item] {
-                cell.configure(with: card.id, balance: String(format: "%.2f", card.balance))
+                cell.configure(with: card.id, balance: String(format: "%.2f", card.balance), type: card.type)
             }
             return cell
         } else {
