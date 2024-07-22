@@ -28,7 +28,7 @@ class CardCollectionViewCell: UICollectionViewCell {
     
     let flagImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "georgia")
+        imageView.image = UIImage(named: "UnionLogo")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView

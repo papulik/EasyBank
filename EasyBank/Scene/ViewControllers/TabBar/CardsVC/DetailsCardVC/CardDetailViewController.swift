@@ -212,14 +212,18 @@ class CardDetailViewController: UIViewController {
     }
     
     private func deleteTapped() {
-        let alert = UIAlertController(title: "Delete Card", message: "Are you sure you want to delete this card?", preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
-        alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
-            guard let self = self else { return }
-            self.viewModel.deleteCard(cardId: self.card.id)
-            self.dismiss(animated: true, completion: nil)
-        })
-        present(alert, animated: true, completion: nil)
+        if card.balance > 0 {
+            showAlert(title: "Cannot Delete Card", message: "Please transfer or withdraw the remaining balance before deleting the card.")
+        } else {
+            let alert = UIAlertController(title: "Delete Card", message: "Are you sure you want to delete this card?", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
+            alert.addAction(UIAlertAction(title: "Delete", style: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                self.viewModel.deleteCard(cardId: self.card.id)
+                self.dismiss(animated: true, completion: nil)
+            })
+            present(alert, animated: true, completion: nil)
+        }
     }
     
     private func showAlert(title: String, message: String, completion: (() -> Void)? = nil) {

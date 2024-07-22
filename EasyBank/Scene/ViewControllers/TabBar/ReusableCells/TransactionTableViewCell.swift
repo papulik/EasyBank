@@ -74,7 +74,9 @@ final class TransactionTableViewCell: UITableViewCell {
     
     func configure(with transaction: Transaction, fromUserName: String, toUserName: String, currentUserId: String) {
         transactionLabel.text = transaction.isIncoming ?? false ? "From: \(fromUserName)" : "To: \(toUserName)"
-        amountLabel.text = "\(String(format: "%.2f", transaction.amount)) ₾"
+        
+        let amountText = transaction.isIncoming ?? false ? "\(String(format: "%.2f", transaction.amount)) ₾" : "-\(String(format: "%.2f", transaction.amount)) ₾"
+        amountLabel.text = amountText
         amountLabel.textColor = transaction.isIncoming ?? false ? .green : .red
         
         let dateFormatter = DateFormatter()
@@ -82,10 +84,12 @@ final class TransactionTableViewCell: UITableViewCell {
         dateFormatter.timeStyle = .short
         dateLabel.text = dateFormatter.string(from: transaction.timestamp)
         
-        if let iconName = transaction.iconName, let image = UIImage(named: iconName) {
-            iconImageView.image = image
+        if let iconName = transaction.iconName, let _ = UIImage(named: iconName) {
+            let imageName = transaction.isIncoming ?? false ? "leftArrow" : "rightArrow"
+            iconImageView.image = UIImage(named: imageName)
+            
         } else {
-            iconImageView.image = UIImage(systemName: "photo")
+            iconImageView.image = UIImage(named: "georgia")
         }
     }
 }
