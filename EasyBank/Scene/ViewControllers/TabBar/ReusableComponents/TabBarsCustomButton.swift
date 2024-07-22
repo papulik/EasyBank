@@ -8,12 +8,10 @@
 import UIKit
 
 class TabBarsCustomButton: UIButton {
-
-    private var normalBackgroundColor: UIColor = .systemPurple
-
-    init(title: String, action: UIAction? = nil, backgroundColor: UIColor = .systemBlue) {
-        self.normalBackgroundColor = backgroundColor
+    
+    init(title: String, action: UIAction? = nil) {
         super.init(frame: .zero)
+        backgroundColor = .systemBlue
         setupButton(title: title, action: action)
     }
 
@@ -24,18 +22,11 @@ class TabBarsCustomButton: UIButton {
     private func setupButton(title: String, action: UIAction?) {
         setTitle(title, for: .normal)
         setTitleColor(.white, for: .normal)
-        self.backgroundColor = normalBackgroundColor
         layer.cornerRadius = 10
         titleLabel?.font = .systemFont(ofSize: 16, weight: .bold)
         translatesAutoresizingMaskIntoConstraints = false
         if let action = action {
             addAction(action, for: .touchUpInside)
-        }
-    }
-
-    override var isHighlighted: Bool {
-        didSet {
-            backgroundColor = normalBackgroundColor.withAlphaComponent(isHighlighted ? 0.7 : 1.0)
         }
     }
 }

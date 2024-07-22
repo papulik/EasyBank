@@ -12,7 +12,7 @@ class CustomTextField: UITextField {
         super.init(frame: .zero)
         self.placeholder = placeholder
         self.keyboardType = keyboardType
-        self.borderStyle = .roundedRect
+//        self.borderStyle = .roundedRect
         self.translatesAutoresizingMaskIntoConstraints = false
     }
     

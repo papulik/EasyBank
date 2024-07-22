@@ -28,10 +28,18 @@ class CardCollectionViewCell: UICollectionViewCell {
     
     let flagImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "georgia")
+        imageView.image = UIImage(named: "UnionLogo")
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFit
         return imageView
+    }()
+    
+    let cardType: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15, weight: .semibold)
+        label.textColor = .label
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
     }()
     
     override init(frame: CGRect) {
@@ -51,12 +59,18 @@ class CardCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(cardIdLabel)
         contentView.addSubview(balanceLabel)
         contentView.addSubview(flagImageView)
+        contentView.addSubview(cardType)
         
         NSLayoutConstraint.activate([
             flagImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
             flagImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             flagImageView.heightAnchor.constraint(equalToConstant: 25),
             flagImageView.widthAnchor.constraint(equalToConstant: 25),
+            
+            cardType.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            cardType.leadingAnchor.constraint(equalTo: flagImageView.trailingAnchor, constant: 10),
+            cardType.heightAnchor.constraint(equalToConstant: 20),
+            cardType.widthAnchor.constraint(equalToConstant: 100),
             
             balanceLabel.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
             balanceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
@@ -67,8 +81,9 @@ class CardCollectionViewCell: UICollectionViewCell {
         ])
     }
     
-    func configure(with cardId: String, balance: String) {
+    func configure(with cardId: String, balance: String, type: String) {
         cardIdLabel.text = "id: \(cardId)"
         balanceLabel.text = balance
+        cardType.text = type
     }
 }

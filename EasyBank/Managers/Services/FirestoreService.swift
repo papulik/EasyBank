@@ -150,12 +150,24 @@ class FirestoreService {
                 validToUser.cards[toCardIndex] = toCard
             }
             
-            let transaction = Transaction(fromUserId: validFromUser.id, toUserId: validToUser.id, fromCardId: fromCardId, toCardId: toCardId, amount: amount, timestamp: Date(), iconName: "georgia")
+            let transaction = Transaction(fromUserId: validFromUser.id, toUserId: validToUser.id, fromCardId: fromCardId, toCardId: toCardId, amount: amount, timestamp: Date(), iconName: "TransactionCellImage")
             
             let batch = self.db.batch()
             
-            batch.setData(try! Firestore.Encoder().encode(validFromUser), forDocument: fromUserSnapshot.reference)
-            batch.setData(try! Firestore.Encoder().encode(validToUser), forDocument: toUserSnapshot.reference)
+            if validFromUser.id == validToUser.id {
+                validFromUser.cards = validFromUser.cards.map { card in
+                    if card.id == fromCard.id {
+                        return fromCard
+                    } else if card.id == toCard.id {
+                        return toCard
+                    }
+                    return card
+                }
+                batch.setData(try! Firestore.Encoder().encode(validFromUser), forDocument: fromUserSnapshot.reference)
+            } else {
+                batch.setData(try! Firestore.Encoder().encode(validFromUser), forDocument: fromUserSnapshot.reference)
+                batch.setData(try! Firestore.Encoder().encode(validToUser), forDocument: toUserSnapshot.reference)
+            }
             
             let transactionRef = self.db.collection("transactions").document()
             batch.setData(try! Firestore.Encoder().encode(transaction), forDocument: transactionRef)

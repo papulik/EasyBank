@@ -167,11 +167,15 @@ class CardsViewModel {
                         }
                         
                         DispatchQueue.main.async {
-                            self.transactions = transactions.map { transaction in
-                                var transaction = transaction
-                                transaction.isIncoming = (transaction.toUserId == userId)
-                                return transaction
-                            }
+                            self.transactions = transactions
+                                .filter { transaction in
+                                    !(transaction.fromUserId == userId && transaction.toUserId == userId)
+                                }
+                                .map { transaction in
+                                    var transaction = transaction
+                                    transaction.isIncoming = (transaction.toUserId == userId)
+                                    return transaction
+                                }
                             self.sortTransactionsByDate()
                             self.fetchUserNames(for: self.transactions)
                         }
