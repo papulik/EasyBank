@@ -8,9 +8,13 @@
 import SwiftUI
 
 struct LoginView: View {
-    @StateObject private var viewModel = LoginViewModel()
+    @StateObject private var viewModel: LoginViewModel
     weak var coordinator: AppCoordinator?
     @State private var isLoading = false
+
+    init(viewModel: LoginViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
@@ -144,5 +148,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView(coordinator: nil)
+    LoginView(viewModel: LoginViewModel())
 }

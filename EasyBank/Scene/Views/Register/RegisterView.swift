@@ -8,11 +8,15 @@
 import SwiftUI
 
 struct RegisterView: View {
-    @StateObject private var viewModel = RegisterViewModel()
+    @StateObject private var viewModel: RegisterViewModel
     var coordinator: AppCoordinator?
     @State private var showTermsOfUse = false
     @State private var showPrivacyPolicy = false
     @State private var isLoading = false
+
+    init(viewModel: RegisterViewModel) {
+        _viewModel = StateObject(wrappedValue: viewModel)
+    }
 
     var body: some View {
         ZStack {
@@ -111,5 +115,5 @@ struct RegisterView: View {
 }
 
 #Preview {
-    RegisterView()
+    RegisterView(viewModel: RegisterViewModel())
 }

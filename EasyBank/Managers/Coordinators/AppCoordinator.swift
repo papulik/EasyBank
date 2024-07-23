@@ -22,27 +22,21 @@ class AppCoordinator: Coordinator {
     }
 
     func showRegister() {
-        if let registerVC = navigationController.viewControllers.first(where: { $0 is UIHostingController<RegisterView> }) {
-            navigationController.popToViewController(registerVC, animated: true)
-        } else {
-            var registerView = RegisterView()
-            registerView.coordinator = self
-            let hostingController = UIHostingController(rootView: registerView)
-            hostingController.navigationItem.hidesBackButton = true
-            navigationController.pushViewController(hostingController, animated: true)
-        }
+        let viewModel = RegisterViewModel()
+        var registerView = RegisterView(viewModel: viewModel)
+        registerView.coordinator = self
+        let hostingController = UIHostingController(rootView: registerView)
+        hostingController.navigationItem.hidesBackButton = true
+        navigationController.pushViewController(hostingController, animated: true)
     }
 
     func showLogin() {
-        if let loginVC = navigationController.viewControllers.first(where: { $0 is UIHostingController<LoginView> }) {
-            navigationController.popToViewController(loginVC, animated: true)
-        } else {
-            var loginView = LoginView()
-            loginView.coordinator = self
-            let hostingController = UIHostingController(rootView: loginView)
-            hostingController.navigationItem.hidesBackButton = true
-            navigationController.pushViewController(hostingController, animated: true)
-        }
+        let viewModel = LoginViewModel()
+        var loginView = LoginView(viewModel: viewModel)
+        loginView.coordinator = self
+        let hostingController = UIHostingController(rootView: loginView)
+        hostingController.navigationItem.hidesBackButton = true
+        navigationController.pushViewController(hostingController, animated: true)
     }
     
     func showMainApp() {
