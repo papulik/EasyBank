@@ -310,7 +310,7 @@
 			isa = PBXGroup;
 			children = (
 				60E214642C2ED25A0054FDD3 /* ViewControllers */,
-				60E214652C2ED2650054FDD3 /* Views */,
+				60E214652C2ED2650054FDD3 /* SwiftUIViews */,
 			);
 			path = Scene;
 			sourceTree = "<group>";
@@ -333,14 +333,14 @@
 			path = ViewControllers;
 			sourceTree = "<group>";
 		};
-		60E214652C2ED2650054FDD3 /* Views */ = {
+		60E214652C2ED2650054FDD3 /* SwiftUIViews */ = {
 			isa = PBXGroup;
 			children = (
 				60E214692C305B3D0054FDD3 /* ReusableViews */,
 				60E214702C305C840054FDD3 /* Register */,
 				60E214712C305CA40054FDD3 /* Login */,
 			);
-			path = Views;
+			path = SwiftUIViews;
 			sourceTree = "<group>";
 		};
 		60E214662C2EFC940054FDD3 /* OnBoarding */ = {

@@ -96,8 +96,8 @@ class CardsViewController: UIViewController {
             transactionLabelView.heightAnchor.constraint(equalToConstant: 35),
             
             transactionTableView.topAnchor.constraint(equalTo: transactionLabelView.bottomAnchor, constant: 16),
-            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            transactionTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            transactionTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             transactionTableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 10)
         ])
     }
