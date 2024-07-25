@@ -22,21 +22,29 @@ class AppCoordinator: Coordinator {
     }
 
     func showRegister() {
-        let viewModel = RegisterViewModel()
-        var registerView = RegisterView(viewModel: viewModel)
-        registerView.coordinator = self
-        let hostingController = UIHostingController(rootView: registerView)
-        hostingController.navigationItem.hidesBackButton = true
-        navigationController.pushViewController(hostingController, animated: true)
+        if let registerVC = navigationController.viewControllers.first(where: { $0 is UIHostingController<RegisterView> }) {
+            navigationController.popToViewController(registerVC, animated: true)
+        } else {
+            let viewModel = RegisterViewModel()
+            var registerView = RegisterView(viewModel: viewModel)
+            registerView.coordinator = self
+            let hostingController = UIHostingController(rootView: registerView)
+            hostingController.navigationItem.hidesBackButton = true
+            navigationController.pushViewController(hostingController, animated: true)
+        }
     }
-
+    
     func showLogin() {
-        let viewModel = LoginViewModel()
-        var loginView = LoginView(viewModel: viewModel)
-        loginView.coordinator = self
-        let hostingController = UIHostingController(rootView: loginView)
-        hostingController.navigationItem.hidesBackButton = true
-        navigationController.pushViewController(hostingController, animated: true)
+        if let loginVC = navigationController.viewControllers.first(where: { $0 is UIHostingController<LoginView> }) {
+            navigationController.popToViewController(loginVC, animated: true)
+        } else {
+            let viewModel = LoginViewModel()
+            var loginView = LoginView(viewModel: viewModel)
+            loginView.coordinator = self
+            let hostingController = UIHostingController(rootView: loginView)
+            hostingController.navigationItem.hidesBackButton = true
+            navigationController.pushViewController(hostingController, animated: true)
+        }
     }
     
     func showMainApp() {
